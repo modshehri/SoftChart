@@ -17,7 +17,7 @@ let userCanvasesListener
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
-
+//Authentication State Listener
 auth.onAuthStateChanged(user => {
     if (user) {
         signedInDiv.hidden  = false;
@@ -31,14 +31,7 @@ auth.onAuthStateChanged(user => {
             components: []
         });
 
-        userCanvasesListener = firestore.collection('canvases')
-            .where('adminUid', '==', user.uid)
-            .onSnapshot(querySnapshot => {
-                queryCanvases = querySnapshot.docs.map(doc => {
-                    return `<li><a href="canvas.html?id=${ doc.id }">${ doc.id }</a></li>`;
-                });
-                userCanvasesDiv.innerHTML = queryCanvases.join('');
-            });
+        listenForUserCanvases();
     } else {
         signedInDiv.hidden  = true;
         signedOutDiv.hidden = false;
@@ -48,3 +41,24 @@ auth.onAuthStateChanged(user => {
         if (userCanvasesListener != null) { userCanvasesListener.unsubscribe(); }
     }
 });
+
+window.onbeforeunload = function() {
+    if (userCanvasesListener != null) { userCanvasesListener.unsubscribe(); }
+};
+
+window.onload = function() {
+    if (userCanvasesListener == null) {
+        listenForUserCanvases();
+    }
+}
+
+function listenForUserCanvases() {
+    userCanvasesListener = firestore.collection('canvases')
+    .where('adminUid', '==', user.uid)
+    .onSnapshot(querySnapshot => {
+        queryCanvases = querySnapshot.docs.map(doc => {
+            return `<li><a href="canvas.html?id=${ doc.id }">${ doc.id }</a></li>`;
+        });
+        userCanvasesDiv.innerHTML = queryCanvases.join('');
+    });
+}
