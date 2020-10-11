@@ -35,7 +35,7 @@ auth.onAuthStateChanged(user => {
             .where('adminUid', '==', user.uid)
             .onSnapshot(querySnapshot => {
                 queryCanvases = querySnapshot.docs.map(doc => {
-                    return `<li>${ doc.id }</li>`;
+                    return `<li><a href="canvas.html?id=${ doc.id }">${ doc.id }</a></li>`;
                 });
                 userCanvasesDiv.innerHTML = queryCanvases.join('');
             });
