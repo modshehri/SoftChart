@@ -4,47 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
-   <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js"></script>
-
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-analytics.js"></script>
-
-    <script>
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    var firebaseConfig = {
-        apiKey: "AIzaSyDMLAcVeQcK1ZYlLHQ265DXm8lGvr8sNCU",
-        authDomain: "softchart-3ee27.firebaseapp.com",
-        databaseURL: "https://softchart-3ee27.firebaseio.com",
-        projectId: "softchart-3ee27",
-        storageBucket: "softchart-3ee27.appspot.com",
-        messagingSenderId: "982966862546",
-        appId: "1:982966862546:web:1bd0a1cc80d2951c7ea30b",
-        measurementId: "G-N8L64ZPFXY"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-    </script>
-    
-    <script src="app.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-firestore.js"></script>
+
+    <script src="firebase-configuration.js"></script>
+    <script src="index-authentication.js" defer></script>
 </head>
 <body>
-    <h1>Hello GitHub</h1>
-    <section id="whenSignedOut">
-        <button id="signInBtn">Sign in with Google</button>
+    <h1>Home Screen</h1>
 
-    </section>
-
-    <section id="whenSignedIn">
+    <div id="signedIn" hidden="true">
         <div id="userDetails"></div>
-        <button id="signOutBtn">Sign out</button>
-        <button id="createCanvasBtn">Create Canvas</button>
-    </section>
+        <button id="signOutBtn">Sign Out</button>
+    </div>
+
+    <div id="signedOut">
+        <button id="signInGoogleBtn">Sign In With Google!</button>
+    </div>
 </body>
 </html>
