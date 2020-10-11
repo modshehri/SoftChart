@@ -1,20 +1,21 @@
 const auth = firebase.auth();
+const firestore = firebase.firestore();
 
 const whenSignedIn = document.getElementByClass('whenSignedIn');
 const whenSignedOut = document.getElementByClass('whenSignedOut');
 
-const signInBtn = document.getElementByCasss('signInBtn');
-const signOutBtn = document.getElementByClass('signOutBtn');
+const signInBtn = document.getElementById('signInBtn');
+const signOutBtn = document.getElementById('signOutBtn');
+const createCanvasBtn = document.getElementById('createCanvasBtn');
 
 const userDetails = document.getElementByClass('userDetails');
 
-
 const provider = new firebase.auth.GoogleAuthProvider();
 
-
+createCanvasBtn.onclick = () => auth.signOut();
 signInBtn.onclick = () => auth.signInWithPopup(provider);
-
 signOutBtn.onclick = () => auth.signOut();
+
 
 auth.onAuthStateChanged(user => {
     if (user) {
