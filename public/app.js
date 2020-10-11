@@ -12,7 +12,6 @@ const userDetails = document.getElementByClass('userDetails');
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
-createCanvasBtn.onclick = () => auth.signOut();
 signInBtn.onclick = () => auth.signInWithPopup(provider);
 signOutBtn.onclick = () => auth.signOut();
 
@@ -22,6 +21,10 @@ auth.onAuthStateChanged(user => {
         whenSignedIn.hidden = false;
         whenSignedOut.hidden = true;
         userDetails.innerHTML = `<h3>Hello ${user.displayName}!</h3> <p>User ID: ${user.uid}</p>`;
+        createCanvasBtn.onclick = () => firestore.collection('canvases').add({
+            uid: user.uid
+        });
+        
     } else {
         whenSignedIn.hidden = true;
         whenSignedOut.hidden = false;
