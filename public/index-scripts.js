@@ -11,6 +11,7 @@ const signInGoogleBtn = document.getElementById('signInGoogleBtn');
 const signOutBtn      = document.getElementById('signOutBtn');
 const createCanvasBtn = document.getElementById('createCanvas');
 
+const canvasNameTF = document.getElementById('canvasNameTF');
 
 //Firestore Listeners
 let userCanvasesListener
@@ -27,11 +28,19 @@ auth.onAuthStateChanged(user => {
         signOutBtn.onclick = () => auth.signOut();
         createCanvasBtn.onclick = () => firestore.collection('canvases').add({
             adminUid: user.uid,
+            canvasName: canvasNameTF.value,
             users: [],
             components: []
         });
 
-        listenForUserCanvases();
+        userCanvasesListener = firestore.collection('canvases')
+            .where('adminUid', '==', user.uid)
+            .onSnapshot(querySnapshot => {
+                queryCanvases = querySnapshot.docs.map(doc => {
+                    return `<li><a href="canvas.html?id=${ doc.id }">${ doc.data().canvasName }</a></li>`;
+                });
+                userCanvasesDiv.innerHTML = queryCanvases.join('');
+            });
     } else {
         signedInDiv.hidden  = true;
         signedOutDiv.hidden = false;
@@ -45,20 +54,3 @@ auth.onAuthStateChanged(user => {
 window.onbeforeunload = function() {
     if (userCanvasesListener != null) { userCanvasesListener.unsubscribe(); }
 };
-
-window.onload = function() {
-    if (userCanvasesListener == null) {
-        listenForUserCanvases();
-    }
-}
-
-function listenForUserCanvases() {
-    userCanvasesListener = firestore.collection('canvases')
-    .where('adminUid', '==', user.uid)
-    .onSnapshot(querySnapshot => {
-        queryCanvases = querySnapshot.docs.map(doc => {
-            return `<li><a href="canvas.html?id=${ doc.id }">${ doc.id }</a></li>`;
-        });
-        userCanvasesDiv.innerHTML = queryCanvases.join('');
-    });
-}
