@@ -1,12 +1,12 @@
 const auth = firebase.auth();
 
-const whenSignedIn = document.getElementById('whenSignedIn');
-const whenSignedOut = document.getElementById('whenSignedOut');
+const whenSignedIn = document.getElementByClass('whenSignedIn');
+const whenSignedOut = document.getElementByClass('whenSignedOut');
 
-const signInBtn = document.getElementById('signInBtn');
-const signOutBtn = document.getElementById('signOutBtn');
+const signInBtn = document.getElementByCasss('signInBtn');
+const signOutBtn = document.getElementByClass('signOutBtn');
 
-const userDetails = document.getElementById('userDetails');
+const userDetails = document.getElementByClass('userDetails');
 
 
 const provider = new firebase.auth.GoogleAuthProvider();
