@@ -80,7 +80,7 @@ function findGetParameter(parameterName) {
         // Use event.pageX / event.pageY here
 
         mouse.style = `display: flexbox; position: absolute; left: ${event.pageX}px; top: ${event.pageY}px; width: 100%; height: 100%;`
-        userName.innerHTML = '${ documentSnapshot.data().adminUid }'
+        userName.innerHTML = `<h1>Canvas name: ${ documentSnapshot.data().canvasName }</h1>`
         console.log(event.pageX)
     }
 })();
