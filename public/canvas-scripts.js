@@ -13,10 +13,7 @@ const userName = document.getElementById('userName');
 const mouse = document.getElementById('mouse');
 
 auth.onAuthStateChanged(user => {
-    if (user) {
-        var name = user.name
-        userName.innerHTML ='${ name} ';
-    } else {
+    if (!user) {
         window.location.replace("https://softchart-3ee27.web.app/");
     }
 });
@@ -37,7 +34,6 @@ canvasListener = firestore
             canvasNameDiv.innerHTML = `<h1>Canvas name: ${ documentSnapshot.data().canvasName }</h1>`;
             canvasAdminNameDiv.innerHTML = `<h2>Canvas admin: ${ documentSnapshot.data().adminUid }</h2>`;
             canvasMembersDiv.innerHTML = `<h2>Number of users: ${ documentSnapshot.data().users.length }</h2>`;
-            
         }
     }, err => {
         isCanvasFoundDiv.hidden = true;
@@ -56,6 +52,7 @@ function findGetParameter(parameterName) {
         });
     return result;
 }
+
 
 (function() {
     document.onmousemove = handleMouseMove;
@@ -83,6 +80,7 @@ function findGetParameter(parameterName) {
         // Use event.pageX / event.pageY here
 
         mouse.style = `display: flexbox; position: absolute; left: ${event.pageX}px; top: ${event.pageY}px; width: 100%; height: 100%;`
+        userName.innerHTML = '${auth.user.displayName}'
         console.log(event.pageX)
     }
 })();
