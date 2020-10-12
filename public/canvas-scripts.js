@@ -8,6 +8,7 @@ const isCanvasNotFoundDiv = document.getElementById('isCanvasNotFound');
 const canvasNameDiv = document.getElementById('canvasName');
 const canvasAdminNameDiv = document.getElementById('canvasAdminName');
 const canvasMembersDiv = document.getElementById('canvasMembers');
+const userName = document.getElementById('userName');
 
 const mouse = document.getElementById('mouse');
 
@@ -33,6 +34,7 @@ canvasListener = firestore
             canvasNameDiv.innerHTML = `<h1>Canvas name: ${ documentSnapshot.data().canvasName }</h1>`;
             canvasAdminNameDiv.innerHTML = `<h2>Canvas admin: ${ documentSnapshot.data().adminUid }</h2>`;
             canvasMembersDiv.innerHTML = `<h2>Number of users: ${ documentSnapshot.data().users.length }</h2>`;
+            userName.innerHTML = '<p>${user.displayName}</p>';
         }
     }, err => {
         isCanvasFoundDiv.hidden = true;
