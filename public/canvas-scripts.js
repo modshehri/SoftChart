@@ -27,6 +27,7 @@ canvasListener = firestore
         if (documentSnapshot.exists == false) {
             isCanvasFoundDiv.hidden = true;
             isCanvasNotFoundDiv.hidden = false;
+            
         } else {
             isCanvasFoundDiv.hidden = false;
             isCanvasNotFoundDiv.hidden = true;
@@ -34,6 +35,7 @@ canvasListener = firestore
             canvasNameDiv.innerHTML = `<h1>Canvas name: ${ documentSnapshot.data().canvasName }</h1>`;
             canvasAdminNameDiv.innerHTML = `<h2>Canvas admin: ${ documentSnapshot.data().adminUid }</h2>`;
             canvasMembersDiv.innerHTML = `<h2>Number of users: ${ documentSnapshot.data().users.length }</h2>`;
+            userName.innerHTML = `${ documentSnapshot.data().adminUid }`
         }
     }, err => {
         isCanvasFoundDiv.hidden = true;
@@ -80,7 +82,6 @@ function findGetParameter(parameterName) {
         // Use event.pageX / event.pageY here
 
         mouse.style = `display: flexbox; position: absolute; left: ${event.pageX}px; top: ${event.pageY}px; width: 100%; height: 100%;`
-        userName.innerHTML = `<h1>Canvas name: ${ auth.userId }</h1>`
         console.log(event.pageX)
     }
 })();
