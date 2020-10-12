@@ -13,10 +13,10 @@ const userName = document.getElementById('userName');
 const mouse = document.getElementById('mouse');
 
 auth.onAuthStateChanged(user => {
-    if (!user) {
-        window.location.replace("https://softchart-3ee27.web.app/");
-    } else {
+    if (user) {
         userName.innerHTML = '${ user.displayName }';
+    } else {
+        window.location.replace("https://softchart-3ee27.web.app/");
     }
 });
 
