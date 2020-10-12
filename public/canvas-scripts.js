@@ -14,7 +14,8 @@ const mouse = document.getElementById('mouse');
 
 auth.onAuthStateChanged(user => {
     if (user) {
-        userName.innerHTML = '${ user.displayName }';
+        var name = user.name
+        userName.innerHTML = '${name}';
     } else {
         window.location.replace("https://softchart-3ee27.web.app/");
     }
