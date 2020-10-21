@@ -1,5 +1,6 @@
 const auth = firebase.auth();
 const firestore = firebase.firestore();
+const realtimeDatabase = firebase.database();
 
 //HTML Elements
 const isCanvasFoundDiv = document.getElementById('isCanvasFound');
@@ -12,10 +13,20 @@ const canvasMembersDiv = document.getElementById('canvasMembers');
 const mouse = document.getElementById('mouse');
 
 auth.onAuthStateChanged(user => {
-    if (!user) {
-        window.location.replace("https://softchart-3ee27.web.app/");
+    if (user) {
+        retrieveCanvasData();
+    } else {
+        redirectToHomePage();
     }
 });
+
+function retrieveCanvasData() {
+    
+}
+
+function redirectToHomePage() {
+    window.location.replace("https://www.softchart-3ee27.web.app/");
+}
 
 let canvasListener;
 
@@ -33,11 +44,17 @@ canvasListener = firestore
             canvasNameDiv.innerHTML = `<h1>Canvas name: ${ documentSnapshot.data().canvasName }</h1>`;
             canvasAdminNameDiv.innerHTML = `<h2>Canvas admin: ${ documentSnapshot.data().adminUid }</h2>`;
             canvasMembersDiv.innerHTML = `<h2>Number of users: ${ documentSnapshot.data().users.length }</h2>`;
+
+            realtimeDatabase.ref(`canvasSessions/${ documentSnapshot.id }`).set({
+                cursorPosition: '0,0'
+            });
         }
     }, err => {
         isCanvasFoundDiv.hidden = true;
         isCanvasNotFoundDiv.hidden = false;
     });
+
+
 
 function findGetParameter(parameterName) {
     var result = null,
