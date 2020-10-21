@@ -18,7 +18,7 @@ let sessionListener;
 auth.onAuthStateChanged(user => {
     unsubscribeListeners();
     if (user) {
-        retrieveCanvasData(user.id);
+        retrieveCanvasData(user.uid);
     } else {
         redirectToHomePage();
     }
