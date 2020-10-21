@@ -1,58 +1,64 @@
-const auth = firebase.auth();
-const firestore = firebase.firestore();
+const auth             = firebase.auth();
+const firestore        = firebase.firestore();
 const realtimeDatabase = firebase.database();
 
 //HTML Elements
-const isCanvasFoundDiv = document.getElementById('isCanvasFound');
+const isCanvasFoundDiv    = document.getElementById('isCanvasFound');
 const isCanvasNotFoundDiv = document.getElementById('isCanvasNotFound');
+const canvasNameDiv       = document.getElementById('canvasName');
+const canvasAdminNameDiv  = document.getElementById('canvasAdminName');
+const canvasMembersDiv    = document.getElementById('canvasMembers');
+const mouse               = document.getElementById('mouse');
 
-const canvasNameDiv = document.getElementById('canvasName');
-const canvasAdminNameDiv = document.getElementById('canvasAdminName');
-const canvasMembersDiv = document.getElementById('canvasMembers');
+let canvasId = findGetParameter("id");
+let canvasListener;
+let sessionListener;
 
-const mouse = document.getElementById('mouse');
-
+// Listening for user authentication state changes
 auth.onAuthStateChanged(user => {
+    unsubscribeListeners();
     if (user) {
-        retrieveCanvasData();
+        retrieveCanvasData(user.id);
     } else {
         redirectToHomePage();
     }
 });
 
-function retrieveCanvasData() {
-    
+function retrieveCanvasData(uid) {
+    canvasListener = firestore
+        .collection('canvases')
+        .doc(`${ canvasId }`)
+        .onSnapshot(documentSnapshot => {
+            let canvasExists = documentSnapshot.exists;
+            isCanvasFoundDiv.hidden = !canvasExists
+            isCanvasNotFoundDiv.hidden = canvasExists
+
+            if (canvasExists) {
+                canvasNameDiv.innerHTML = `<h1>Canvas name: ${ documentSnapshot.data().canvasName }</h1>`;
+                canvasAdminNameDiv.innerHTML = `<h2>Canvas admin: ${ documentSnapshot.data().adminUid }</h2>`;
+                canvasMembersDiv.innerHTML = `<h2>Number of users: ${ documentSnapshot.data().users.length }</h2>`;
+
+                realtimeDatabase.ref(`canvasSessions/${ documentSnapshot.id }/${ uid }`).set({
+                    cursorPosition: '0,0'
+                });
+            }
+        }, err => {
+            isCanvasFoundDiv.hidden = true;
+            isCanvasNotFoundDiv.hidden = false;
+        });
 }
 
 function redirectToHomePage() {
     window.location.replace("https://www.softchart-3ee27.web.app/");
 }
 
-let canvasListener;
+function unsubscribeListeners() {
+    canvasListener && canvasListener.unsubscribe();
+    sessionListener && sessionListener.unsubscribe();
+}
 
-canvasListener = firestore
-    .collection('canvases')
-    .doc(`${ findGetParameter("id") }`)
-    .onSnapshot(documentSnapshot => {
-        if (documentSnapshot.exists == false) {
-            isCanvasFoundDiv.hidden = true;
-            isCanvasNotFoundDiv.hidden = false;
-        } else {
-            isCanvasFoundDiv.hidden = false;
-            isCanvasNotFoundDiv.hidden = true;
 
-            canvasNameDiv.innerHTML = `<h1>Canvas name: ${ documentSnapshot.data().canvasName }</h1>`;
-            canvasAdminNameDiv.innerHTML = `<h2>Canvas admin: ${ documentSnapshot.data().adminUid }</h2>`;
-            canvasMembersDiv.innerHTML = `<h2>Number of users: ${ documentSnapshot.data().users.length }</h2>`;
 
-            realtimeDatabase.ref(`canvasSessions/${ documentSnapshot.id }`).set({
-                cursorPosition: '0,0'
-            });
-        }
-    }, err => {
-        isCanvasFoundDiv.hidden = true;
-        isCanvasNotFoundDiv.hidden = false;
-    });
 
 
 
