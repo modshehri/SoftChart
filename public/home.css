@@ -47,3 +47,7 @@ button.primary {
 #promotional-right-column {
     padding-right: 10%;
 }
+
+.primary {
+    width: 100%;
+}
