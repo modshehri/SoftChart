@@ -45,3 +45,7 @@ button.primary {
 .txt_field {
     width: 100%;
 }
+
+.password-forgot {
+    margin-bottom: 30px;
+}
