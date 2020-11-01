@@ -34,13 +34,13 @@ auth.onAuthStateChanged(user => {
         });
 
         userCanvasesListener = firestore.collection('canvases')
-            .where('adminUid', '==', user.uid)
+            .where('users', 'array-contains', user.uid)
             .onSnapshot(querySnapshot => {
                 queryCanvases = querySnapshot.docs.map(doc => {
                     return `<li><a href="canvas.html?id=${ doc.id }">${ doc.data().canvasName }</a></li>`;
                 });
                 userCanvasesDiv.innerHTML = queryCanvases.join('');
-            });
+        });
     } else {
         signedInDiv.hidden  = true;
         signedOutDiv.hidden = false;

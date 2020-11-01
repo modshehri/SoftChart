@@ -8,39 +8,54 @@ const isCanvasNotFoundDiv = document.getElementById('isCanvasNotFound');
 const canvasNameDiv       = document.getElementById('canvasName');
 const canvasAdminNameDiv  = document.getElementById('canvasAdminName');
 const canvasMembersDiv    = document.getElementById('canvasMembers');
-const mouse               = document.getElementById('mouse');
+const cursorsDiv          = document.getElementById('cursors');
 
-let canvasId = findGetParameter("id");
+let canvasId;
+let userId;
+
 let canvasListener;
-let sessionListener;
+let canvasSessionListener;
+
+let mouseX = -1;
+let mouseY = -1;
 
 // Listening for user authentication state changes
 auth.onAuthStateChanged(user => {
     unsubscribeListeners();
     if (user) {
-        retrieveCanvasData(user.uid);
+        userId = user.uid
+        retrieveCanvasData(userId);
     } else {
         redirectToHomePage();
     }
 });
 
-function retrieveCanvasData(uid) {
+function retrieveCanvasData(userId) {
     canvasListener = firestore
         .collection('canvases')
-        .doc(`${ canvasId }`)
+        .doc(`${ findGetParameter("id") }`)
         .onSnapshot(documentSnapshot => {
             let canvasExists = documentSnapshot.exists;
             isCanvasFoundDiv.hidden = !canvasExists
             isCanvasNotFoundDiv.hidden = canvasExists
 
             if (canvasExists) {
+                canvasId = documentSnapshot.id;
                 canvasNameDiv.innerHTML = `<h1>Canvas name: ${ documentSnapshot.data().canvasName }</h1>`;
                 canvasAdminNameDiv.innerHTML = `<h2>Canvas admin: ${ documentSnapshot.data().adminUid }</h2>`;
                 canvasMembersDiv.innerHTML = `<h2>Number of users: ${ documentSnapshot.data().users.length }</h2>`;
 
-                realtimeDatabase.ref(`canvasSessions/${ documentSnapshot.id }/${ uid }`).set({
-                    cursorPosition: '0,0'
+                canvasSessionListener = realtimeDatabase.ref(`canvasSessions/${canvasId}`);
+                
+                canvasSessionListener.on('value', function(snapshot) {
+                    let innerHTML = ``
+                    snapshot.forEach(function(childSnapshot) {
+                        innerHTML += `<p style="position: absolute; left: ${childSnapshot.val().x}px; top: ${childSnapshot.val().y}px;">${childSnapshot.key}</p>`;
+                    });
+                    cursorsDiv.innerHTML = innerHTML;
                 });
+            } else {
+                canvasId = null;
             }
         }, err => {
             isCanvasFoundDiv.hidden = true;
@@ -54,13 +69,8 @@ function redirectToHomePage() {
 
 function unsubscribeListeners() {
     canvasListener && canvasListener.unsubscribe();
-    sessionListener && sessionListener.unsubscribe();
+    canvasSessionListener && canvasSessionListener.unsubscribe();
 }
-
-
-
-
-
 
 function findGetParameter(parameterName) {
     var result = null,
@@ -75,16 +85,29 @@ function findGetParameter(parameterName) {
     return result;
 }
 
+function refreshHTMLCursors(cursorPositions) {
+    cursorsDiv.innerHTML = ``;
+    for (snapshot in cursorPositions) {
+        let cursor = document.createElement("p");
+        cursor.innerHTML = snapshot.key;
+        cursorsDiv.appendChild(cursor);
+    }
+}
+
+function setDatabaseMousePosition(x, y) {
+    if (userId == null || canvasId == null) { return }
+    realtimeDatabase.ref(`canvasSessions/${canvasId}/${userId}`).set({
+        x: `${x}`,
+        y: `${y}`
+    });
+}
+
 (function() {
     document.onmousemove = handleMouseMove;
     function handleMouseMove(event) {
         var eventDoc, doc, body;
-
-        event = event || window.event; // IE-ism
-
-        // If pageX/Y aren't available and clientX/Y are,
-        // calculate pageX/Y - logic taken from jQuery.
-        // (This is to support old IE)
+        
+        event = event || window.event;
         if (event.pageX == null && event.clientX != null) {
             eventDoc = (event.target && event.target.ownerDocument) || document;
             doc = eventDoc.documentElement;
@@ -97,10 +120,9 @@ function findGetParameter(parameterName) {
               (doc && doc.scrollTop  || body && body.scrollTop  || 0) -
               (doc && doc.clientTop  || body && body.clientTop  || 0 );
         }
+        mouseX = event.pageX;
+        mouseY = event.pageY;
 
-        // Use event.pageX / event.pageY here
-
-        mouse.style = `position: absolute; top: ${ event.pageY }px; left: ${ event.pageX }px;`
-        console.log(event.pageX)
+        setDatabaseMousePosition(mouseX, mouseY);
     }
 })();
