@@ -4,42 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-analytics.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
-
-    <script src="firebase-configuration.js"></script>
-    <script src="index-scripts.js" defer></script>
 
     <link rel="stylesheet" href="primary.css">
+    <link rel="stylesheet" href="home.css">
 </head>
 <body>
-    <h1>Home Screen</h1>
 
-    <div id="signedIn" hidden="true">
-        <div id="userDetails"></div>
-        <button id="signOutBtn">Sign Out</button>
+    <header id="top-nav-bar">
+        <p class="logo">SoftChart</p>
+        <button class="navigation">Support</button>
+        <button class="primary" style="float: right;">My Account</button>
+    </header>
 
-        <hr>
+    <table id="promotion-table">
+        <tr>
+            <td id="promotional-left-column">
+                <div>
+                    <p id="promotion-text">
+                        Create UML Charts That <i>inspire</i>.
+                    </p>
+            
+                    <p id="join-free-text">
+                        Join us for <u>FREE!</u>
+                    </p>
+            
+                    <button class="primary">Join Us!</button>
+                </div>
+            </td>
 
-        <h1>Canvases-related Functionalities</h1>
-        
-        <input type="text" name="Canvas Name" placeholder="Canvas Name" id="canvasNameTF">
-        <button id="createCanvas">Create Canvas</button>
+            <td id="promotional-right-column">
+                <div>
+                    <img src="promotional-image.png" alt="">
+                </div>
+            </td>
+        </tr>
+    </table>
 
-        <p>Your canvases:</p>
-
-        <div id="userCanvases"></div>
-    </div>
-
-    <div id="signedOut">
-        <button id="signInGoogleBtn">Sign In With Google!</button>
-    </div>
-
-    <button class="primary">My Account</button>
-
-    <button class="navigation">Support</button>
+    <footer id="footer">
+        <a href="">About Us</a>
+    </footer>
 </body>
 </html>
