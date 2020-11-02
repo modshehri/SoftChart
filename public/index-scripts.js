@@ -13,6 +13,10 @@ const createCanvasBtn = document.getElementById('createCanvas');
 
 const canvasNameTF = document.getElementById('canvasNameTF');
 
+const supportButton = document.getElementById('supportBtn');
+supportButton.onclick() = function (){
+   location.href = "www.youtube.com";
+}
 //Firestore Listeners
 let userCanvasesListener
 
