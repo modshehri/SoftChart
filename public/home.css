@@ -2,7 +2,7 @@ body {
     background: linear-gradient(225deg, rgba(96,82,236,1) 35%, rgba(58,0,169,1) 100%) fixed;
 }
 
-p.logo {
+.logo {
     color: white;
     font-size: 40px;
     margin: 0 0;
@@ -10,6 +10,7 @@ p.logo {
     float: left;
     margin-left: 60px;
 }
+
 
 button.navigation {
     margin-left: 54px;
@@ -48,6 +49,21 @@ button.primary {
     padding-right: 10%;
 }
 
-.primary {
+#footer{
+    position: absolute;
+    bottom: 0;
+    height: 5%;
     width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+#footer p{
+    display: inline-block;
+    color: white;
+}
+
+#footer p a{
+    color: white;
+    text-decoration: none;
 }

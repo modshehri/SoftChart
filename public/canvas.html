@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>SoftChart - Make UML Charts</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="primary.css">
+    <link rel="stylesheet" href="canvas.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>  
     <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-auth.js"></script>
@@ -14,16 +22,45 @@
     <script src="canvas-scripts.js" defer></script>
 </head>
 <body>
-    <div id="isCanvasFound">
-        <div id="canvasName"></div>
-        <div id="canvasAdminName"></div>
-        <div id="canvasMembers"></div>
-    </div>
-    <div id="isCanvasNotFound">
-        <h1>No canvas found with this id.</h1>
-        <a href="http://https://softchart-3ee27.web.app/">Return to home screen</a>
+
+    <div class="row">
+        <div class="col-2 logo">
+            <a href="index.html">SoftChart</a></div>
+        <div class="col-8" >
+            <ul id="menu">
+                <li>File</li>
+                <li>Insert</li>
+                <li>Share</li>
+            </ul>
+        </div>
+        <div class="col-2">
+            <button class="primary" id="DocsButton">My Documents</button>
+        </div>
     </div>
 
-    <div id="cursors"></div>
+    <div class = "row"></div>
+
+    <div class="row" style="height: 100%;">
+        <div class="col-2" id= "shapes-bar">
+            <header  style="font-weight: bold; margin-top: 10px; margin-left: 10px;">
+                <p style=" display: inline;">
+                    Shapes
+                </p>
+                <img src="SearchIcon.png" alt="Search Icon" style="max-height: 25px; max-width: 25px;  float: right; display: inline;">
+                <hr>
+            </header>
+        </div>
+
+        <div class="col-10" id="canvas-container">
+                <div id="canvas">
+
+                </div>
+        </div>
+       
+    </div>
+
+    
+
+   
 </body>
 </html>
