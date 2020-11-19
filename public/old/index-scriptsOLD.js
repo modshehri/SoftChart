@@ -16,7 +16,7 @@ const canvasNameTF = document.getElementById('canvasNameTF');
 const supportButton = document.getElementById('supportBtn');
 
 //Firestore Listeners
-let userCanvasesListener
+let userCanvasesListener;
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
