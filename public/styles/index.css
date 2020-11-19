@@ -67,3 +67,7 @@ button.primary {
     color: white;
     text-decoration: none;
 }
+
+#account-btn {
+    float: right;
+}
