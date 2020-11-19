@@ -90,7 +90,54 @@
 }
 
 #documents {
-    border-top: 1px solid #F0F0F0;
     border-left: 1px solid #F0F0F0;
+    height: 70vh;
+}
 
+.document {
+    width: 160px;
+    height: 160px;
+    background-color: #fafafa;
+    border-radius: 20px;
+    box-shadow: 0px 12px 20px 1px rgba(0,0,0,0.10), 0px 1px 2px 0px rgba(0,0,0,0.16);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: left;
+    margin-right: 20px;
+}
+
+#document-add {
+    background: linear-gradient(45deg, #3A00A9 0%, #6052EC 100%);
+    box-shadow: 0px 12px 20px 1px rgba(96, 82, 236, 0.4);
+}
+
+#document-name-add {
+    color: white;
+}
+
+#document-add:hover {
+    background: linear-gradient(45deg, #38269b 0%, #756ae9 100%);
+}
+
+#document-add:active {
+    background: linear-gradient(45deg, #2d0081 0%, #5046c5 100%);
+}
+
+.document:hover {
+    background-color: #ffffff;
+}
+
+.document:active {
+    background-color: #eeeeee;
+}
+
+.document-image {
+    position: absolute;
+    transform: translate(0%, -25px);
+}
+
+.document-name {
+    transform: translate(0%, +56px);
 }
