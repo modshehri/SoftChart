@@ -6,7 +6,7 @@ const provider = new firebase.auth.GoogleAuthProvider();
 
 auth.onAuthStateChanged(user => {
     if (user) {
-        window.location.replace("/documents.html");;
+        window.location.replace("/documents.html");
     } else {
         signInGoogleBtn.onclick = () => auth.signInWithPopup(provider);
     }
