@@ -23,10 +23,6 @@ const provider = new firebase.auth.GoogleAuthProvider();
 //Authentication State Listener
 auth.onAuthStateChanged(user => {
     if (user) {
-        signedInDiv.hidden  = false;
-        signedOutDiv.hidden = true;
-        userDetailsDiv.innerHTML = `<p>Hello ${user.displayName}!</h3> <p>User ID: ${user.uid}</p>`;
-
         signOutBtn.onclick = () => auth.signOut();
         createCanvasBtn.onclick = () => firestore.collection('canvases').add({
             adminUid: user.uid,
