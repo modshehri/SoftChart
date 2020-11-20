@@ -101,10 +101,13 @@
 
     function addClass(){
         var classComponent = document.createElement("Div");
+        var classTitle = document.createElement("p"); 
         var textnode = document.createTextNode("Class");     
         classComponent.className = "ClassComponent";
-        classComponent.appendChild(textnode); 
+        classTitle.appendChild(textnode); 
+        classComponent.appendChild(classTitle); 
         canvas.appendChild(classComponent);
+        classTitle.contentEditable = "true";
         makeClassDragable(classComponent);
     }
 

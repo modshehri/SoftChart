@@ -78,7 +78,7 @@ background-image: url(../images/Canvas.png);
 
 .ClassComponent {
     position: absolute;
-    z-index: 9;
+    z-index: 2;
     background-color: transparent;
     border: 1px solid black;
     text-align: center;
@@ -86,3 +86,12 @@ background-image: url(../images/Canvas.png);
     width: 15%;
 
 }
+
+.ClassComponent p {
+    margin: 0;
+    z-index: 3;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
