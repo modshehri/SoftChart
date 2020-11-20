@@ -45,7 +45,6 @@ body {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
 }
 
 #menu li {
@@ -67,11 +66,23 @@ body {
 
 #canvas{
 object-fit: contain;
+background-size: cover;
 min-width: 90%;
 max-width: 90%;
 max-height: 90%;
 min-height: 95%;
 margin-top: 10px;
 margin-left: 10px;
-background-image: url(Canvas.png);
+background-image: url(../images/Canvas.png);
+}
+
+.ClassComponent {
+    position: absolute;
+    z-index: 9;
+    background-color: transparent;
+    border: 1px solid black;
+    text-align: center;
+    height: 10%;
+    width: 15%;
+
 }

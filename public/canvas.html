@@ -20,29 +20,46 @@
 
     <script src="scripts/firebase-configuration.js"></script>
     <script src="scripts/canvas-scripts.js" defer></script>
+    <script>
+        $('#draggable-containment').draggable({
+  containment: '.draggable-container',
+});
+    </script>
 </head>
 <body>
 
-    <div class="row">
-        <div class="col-2 logo">
+    <div class="row" id="menu-outer">
+        <div class="col-2 logo ">
             <a href="index.html">SoftChart</a></div>
-        <div class="col-8" >
-            <ul id="menu">
-                <li>File</li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      File
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="z-index: 10000">
-                      <a class="dropdown-item" href="#">Insert</a>
-                      <a class="dropdown-item" href="#" >Save</a>
-                      <a class="dropdown-item" href="#" >Save us</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Invite</a>
-                    </div>
-                  </li>
-                <li>Insert</li>
-                <li>Share</li>
+        <div class="col-8 header" >
+            <ul id="menu" style="position: relative; z-index: 2;">
+                <li>
+                    <div class="dropdown">
+                        <a type="button" class="btn dropdown" data-toggle="dropdown" style="padding: 0%;">
+                          File
+                        </a>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="#">Save</a>
+                          <a class="dropdown-item" href="#">Export</a>
+                        </div>
+                </li>
+                <li>
+                    <div class="dropdown">
+                        <a type="button" class="btn dropdown" data-toggle="dropdown" style="padding: 0%;">
+                            Insert
+                        </a>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="#">Link 1</a>
+                          <a class="dropdown-item" href="#">Link 2</a>
+                          <a class="dropdown-item" href="#">Link 3</a>
+                        </div>
+                </li>
+                <li>
+                    <div class="dropdown">
+                        <a type="button" class="btn" style="padding: 0%;">
+                            Share
+                        </a>
+                </li>
             </ul>
         </div>
         <div class="col-2">
@@ -60,7 +77,15 @@
                 </p>
                 <img src="images/SearchIcon.png" alt="Search Icon" style="max-height: 25px; max-width: 25px;  float: right; display: inline;">
                 <hr>
+                <button type="button" class="btn btn-light" id="class-btn" onclick="addClass()">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                      </svg>
+                </button>
             </header>
+
+            
+
         </div>
 
         <div class="col-10" id="canvas-container">
@@ -71,7 +96,65 @@
        
     </div>
 
+<script>
+    const canvas = document.getElementById("canvas");
+
+    function addClass(){
+        var classComponent = document.createElement("Div");
+        var textnode = document.createTextNode("Class");     
+        classComponent.className = "ClassComponent";
+        classComponent.appendChild(textnode); 
+        canvas.appendChild(classComponent);
+        makeClassDragable(classComponent);
+    }
+
+    // Make the DIV element draggable:
+    function makeClassDragable(comp){
+        dragElement(comp);
+
+        function dragElement(elmnt) {
+            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            if (document.getElementById(elmnt.id + "header")) {
+                // if present, the header is where you move the DIV from:
+                document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+            } else {
+                // otherwise, move the DIV from anywhere inside the DIV:
+                elmnt.onmousedown = dragMouseDown;
+            }
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // get the mouse cursor position at startup:
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                // call a function whenever the cursor moves:
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // calculate the new cursor position:
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // set the element's new position:
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                // stop moving when mouse button is released:
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+    }
     
+</script>    
 
    
 </body>
