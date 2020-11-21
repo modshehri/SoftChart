@@ -83,9 +83,14 @@ function getDocumentHTMLComponent(documentObj) {
     deleteDocumentButton.src = "images/delete.svg"
     deleteDocumentButton.onclick = () => deleteDocument(documentObj.id)
 
+    var documentTypeImage = document.createElement("img")
+    documentTypeImage.className = "document-type"
+    documentTypeImage.src = documentObj.isDocumentAdmin(userId) ? "images/document-admin-icon.svg" : "images/shared-document-icon.svg"
+
     documentDiv.append(documentImg)
     documentDiv.append(documentName)
     documentDiv.append(deleteDocumentButton)
+    documentDiv.append(documentTypeImage)
 
     documentDiv.onmouseenter = function() {
         $(`#${documentObj.id}`).animate({ opacity: 1.0 });
@@ -94,7 +99,6 @@ function getDocumentHTMLComponent(documentObj) {
     documentDiv.onmouseleave = function() {
         $(`#${documentObj.id}`).animate({ opacity: 0.0 });
     }
-
     return documentDiv
 }
 
