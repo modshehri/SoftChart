@@ -66,8 +66,9 @@ function addDocumentToHTML(document) {
 }
 
 function getDocumentHTMLComponent(documentObj) {
-    var documentDiv = document.createElement("div")
+    var documentDiv = document.createElement("a")
     documentDiv.className = "document"
+    documentDiv.href = `/canvas.html?id=${documentObj.id}`
 
     var documentImg = document.createElement("img")
     documentImg.className = "document-image"
@@ -99,6 +100,11 @@ function getDocumentHTMLComponent(documentObj) {
     documentDiv.onmouseleave = function() {
         $(`#${documentObj.id}`).animate({ opacity: 0.0 });
     }
+
+    documentDiv.onclick = function() {
+
+    }
+
     return documentDiv
 }
 
