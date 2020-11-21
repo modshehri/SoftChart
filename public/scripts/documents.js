@@ -10,6 +10,10 @@ var userId = null
 
 var isAnimating = false
 
+window.onload = function() {
+    $.getScript("scripts/models/Document.js");
+};
+
 auth.onAuthStateChanged(user => {
     if (user) {
         userId = user.uid
@@ -30,15 +34,9 @@ function loadDocuments() {
         .onSnapshot(querySnapshot => {
             clearDocumentsHTML()
             queryCanvases = querySnapshot.docs.map(doc => {
-                var document = {
-                    id: doc.id,
-                    adminUid: doc.data().adminUid,
-                    name: doc.data().name,
-                    components: doc.data().components,
-                    users: doc.data().users
-                }
-                console.log("here")
-                $("#user-documents").append(getDocumentHTMLComponent(document))
+                var document = new Document(doc.id, doc.data().adminUid, doc.data().name, doc.data().components, doc.data().user);
+                console.log(document.isDocumentAdmin(userId))
+                addDocumentToHTML(document);
             })
         })
 }
@@ -56,17 +54,21 @@ function addDocument() {
         name = "Untitled"
     }
 
-    firestore.collection('documents').add({
-        adminUid: userId,
-        name: name,
-        users: [userId],
-        components: []
-    });
+    var document = Document.create(userId, name);
+
+    firestore.collection('documents')
+        .withConverter(documentConveter)
+        .add(document);
+}
+
+function addDocumentToHTML(document) {
+    $("#user-documents").append(getDocumentHTMLComponent(document))
 }
 
 function getDocumentHTMLComponent(documentObj) {
-    var documentDiv = document.createElement("div")
+    var documentDiv = document.createElement("a")
     documentDiv.className = "document"
+    documentDiv.href = `/canvas.html?id=${documentObj.id}`
 
     var documentImg = document.createElement("img")
     documentImg.className = "document-image"
@@ -76,17 +78,20 @@ function getDocumentHTMLComponent(documentObj) {
     documentName.className = "document-name"
     documentName.innerHTML = documentObj.name
 
-    
-    
     var deleteDocumentButton = document.createElement("img")
     deleteDocumentButton.className = "delete-document"
     deleteDocumentButton.id = documentObj.id
     deleteDocumentButton.src = "images/delete.svg"
     deleteDocumentButton.onclick = () => deleteDocument(documentObj.id)
 
+    var documentTypeImage = document.createElement("img")
+    documentTypeImage.className = "document-type"
+    documentTypeImage.src = documentObj.isDocumentAdmin(userId) ? "images/document-admin-icon.svg" : "images/shared-document-icon.svg"
+
     documentDiv.append(documentImg)
     documentDiv.append(documentName)
     documentDiv.append(deleteDocumentButton)
+    documentDiv.append(documentTypeImage)
 
     documentDiv.onmouseenter = function() {
         $(`#${documentObj.id}`).animate({ opacity: 1.0 });
@@ -94,6 +99,10 @@ function getDocumentHTMLComponent(documentObj) {
 
     documentDiv.onmouseleave = function() {
         $(`#${documentObj.id}`).animate({ opacity: 0.0 });
+    }
+
+    documentDiv.onclick = function() {
+
     }
 
     return documentDiv
@@ -106,3 +115,4 @@ function clearDocumentsHTML() {
 function deleteDocument(id) {
     firestore.collection('documents').doc(id).delete()
 }
+
