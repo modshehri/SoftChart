@@ -77,13 +77,13 @@ background-image: url(../images/Canvas.png);
 }
 
 .ClassComponent {
-    position: absolute;
+    position: fixed;
     z-index: 2;
     background-color: transparent;
     border: 1px solid black;
     text-align: center;
-    height: 10%;
-    width: 15%;
+    height: 130px;
+    width: 250px;
 
 }
 
