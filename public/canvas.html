@@ -25,7 +25,53 @@
     <div id="canvas-shadow"></div>
 
     <div id="user-management">
+        <h3>Manage Users</h3>
 
+        <hr>
+
+        <h5>Invite</h5>
+        <div style="width: 100%; padding-right: 20px; position: relative;">
+            <input id="invite-email-text-field" type="email" placeholder="Email" style="width: 80%; height: 24px; font-size: small;">
+            <button id="invite-button" style="float: right;">Invite</button>
+        </div>
+
+        <hr>
+
+        <h5>Users</h5>
+
+        <div style="overflow-y: scroll; height: 45%; padding: 0;">
+            <div class="user-information">
+                <img src="images/user.svg" class="document-user-icon">
+                <p class="user-email">abdulelahhajjar@gmail.com</p>
+                <img id="document-admin-icon" src="images/document-admin-icon-gold.svg" alt="">
+            </div>
+    
+            <div class="user-information">
+                <img src="images/user.svg" class="document-user-icon">
+                <p class="user-email">abdulelahhajjar@gmail.com</p>
+                <button id="delete-user">Delete</button>
+            </div>
+            <div class="user-information">
+                <img src="images/user.svg" class="document-user-icon">
+                <p class="user-email">abdulelahhajjar@gmail.com</p>
+                <button id="delete-user">Delete</button>
+            </div>
+            <div class="user-information">
+                <img src="images/user.svg" class="document-user-icon">
+                <p class="user-email">abdulelahhajjar@gmail.com</p>
+                <button id="delete-user">Delete</button>
+            </div>
+            <div class="user-information">
+                <img src="images/user.svg" class="document-user-icon">
+                <p class="user-email">abdulelahhajjar@gmail.com</p>
+                <button id="delete-user">Delete</button>
+            </div>
+            <div class="user-information">
+                <img src="images/user.svg" class="document-user-icon">
+                <p class="user-email">abdulelahhajjar@gmail.com</p>
+                <button id="delete-user">Delete</button>
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -35,12 +81,11 @@
             <ul id="menu">
                 <li>File</li>
                 <li>Insert</li>
-                <li>Share</li>
+                <li id="user-management-button">Share</li>
             </ul>
         </div>
         <div class="col-2">
             <button class="primary" id="DocsButton">My Documents</button>
-            <button id="user-management-button">umc</button>
         </div>
     </div>
 

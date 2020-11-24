@@ -75,19 +75,6 @@ margin-left: 10px;
 background-image: url(Canvas.png);
 }
 
-#user-management {
-    position: absolute;
-    width: 375px;
-    height: 450px;
-    background-color: white;
-    z-index: 1;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 20px;
-    box-shadow: 0px 12px 20px 1px rgba(0,0,0,0.10), 0px 1px 2px 0px rgba(0,0,0,0.16);
-}
-
 #canvas-shadow {
     position: absolute;
     width: 100%;
@@ -95,4 +82,64 @@ background-image: url(Canvas.png);
     background-color: black;
     z-index: 1;
     opacity: 0.3;
+}
+
+#user-management {
+    position: absolute;
+    width: 400px;
+    height: 420px;
+    background-color: white;
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+    box-shadow: 0px 12px 20px 1px rgba(0,0,0,0.10), 0px 1px 2px 0px rgba(0,0,0,0.16);
+    padding: 40px 0px 0px 20px;
+}
+
+.user-information {
+    margin-right: 10px;
+}
+
+.document-user-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.user-email {
+    display: inline-block;
+    font-size: small;
+}
+
+#document-admin-icon {
+    width: 20px;
+    height: 20px;
+    float: right;
+}
+
+#delete-user {
+    width: 50px;
+    height: 20px;
+    font-size: x-small;
+    border-radius: 6px;
+    background-color: #d30a1e;
+    float: right;
+    color: white;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+#invite-button {
+    width: 68px;
+    height: 25px;
+    font-size: small;
+    border-radius: 6px;
+    background-color: #fe3f7a;
+    float: right;
+    color: white;
+    border: none;
+    outline: none;
+    cursor: pointer;
 }

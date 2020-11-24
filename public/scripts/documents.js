@@ -1,5 +1,5 @@
-const auth = firebase.auth()
-const firestore = firebase.firestore()
+const auth = firebase.auth();
+const firestore = firebase.firestore();
 
 const logout = document.getElementById("Logout")
 const documentAdd = document.getElementById("document-add")
