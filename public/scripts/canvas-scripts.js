@@ -11,6 +11,7 @@ const documentUsersDiv = document.getElementById("document-users");
 
 var userId;
 var docId = findGetParameter("id");
+var documentObject;
 
 var documentUsersListener;
 
@@ -47,6 +48,8 @@ function getDocumentUsersListener() {
             let documentExists = documentSnapshot.exists;
             let documentData = documentSnapshot.data();
 
+            this.documentObject = documentData;
+
             if (documentExists) {
                 setUsersHTML(documentData.users)
             } else {
@@ -65,7 +68,8 @@ function setUsersHTML(documentUsers) {
     documentUsersDiv.innerHTML = "";
     for (userIndex in documentUsers) {
         let user = documentUsers[userIndex];
-        documentUsersDiv.append(createUserHTMLElement(user, user == userId));
+        console.log(this.document.adminUid);
+        documentUsersDiv.append(createUserHTMLElement(user, user == this.documentObject.adminUid));
     }
 }
 
