@@ -100,11 +100,7 @@ function getDocumentHTMLComponent(documentObj) {
     documentDiv.onmouseleave = function() {
         $(`#${documentObj.id}`).animate({ opacity: 0.0 });
     }
-
-    documentDiv.onclick = function() {
-
-    }
-
+    
     return documentDiv
 }
 

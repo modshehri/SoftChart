@@ -6,7 +6,7 @@ class Invitation {
         this.recipientId = recipientId;
         this.status = "UNDECIDED";
     }
-    
+
     static create(docId, senderId, recipientId) {
         return new Invitation(null, docId, senderId, recipientId, "UNDECIDED");
     }
@@ -20,7 +20,7 @@ class Invitation {
     }
 
     recipientHasDecided() {
-        return this.status != null;
+        return this.status != "UNDECIDED";
     }
 }
 

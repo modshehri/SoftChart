@@ -7,9 +7,12 @@ const canvasShadowDiv = document.getElementById("canvas-shadow");
 const userManagementDiv = document.getElementById("user-management");
 const inviteEmailTextField = document.getElementById("invite-email-text-field");
 const inviteButton = document.getElementById("invite-button");
+const documentUsersDiv = document.getElementById("document-users");
 
 var userId;
 var docId = findGetParameter("id");
+
+var documentUsersListener;
 
 window.onload = function() {
     $.getScript("scripts/models/Invitation.js");
@@ -18,11 +21,81 @@ window.onload = function() {
 auth.onAuthStateChanged(user => {
     if (user) {
         userId = user.uid
+        loadData();
     } else {
+        unsubscribeListeners();
         auth.signOut()
         window.location.replace("/index.html")
     }
 })
+
+function loadData() {
+    documentUsersListener = getDocumentUsersListener();
+}
+
+function unsubscribeListeners() {
+    if (documentUsersListener != null) {
+        documentUsersListener.unsubscribe()
+    }
+}
+
+function getDocumentUsersListener() {
+    firestore
+        .collection('documents')
+        .doc(docId)
+        .onSnapshot(documentSnapshot => {
+            let documentExists = documentSnapshot.exists;
+            let documentData = documentSnapshot.data();
+
+            if (documentExists) {
+                setUsersHTML(documentData.users)
+            } else {
+                redirectToIndex();
+            }
+        }, err => {
+            redirectToIndex();
+        });
+}
+
+function redirectToIndex() {
+    //TODO: Implement
+}
+
+function setUsersHTML(documentUsers) {
+    documentUsersDiv.innerHTML = "";
+    for (userIndex in documentUsers) {
+        let user = documentUsers[userIndex];
+        documentUsersDiv.append(createUserHTMLElement(user, user == userId));
+    }
+}
+
+function createUserHTMLElement(email, isAdmin) {
+    var userInformationDiv = document.createElement("div");
+    userInformationDiv.className = "user-information";
+
+    var userImg = document.createElement("img");
+    userImg.src = "images/user.svg";
+    userImg.className = "document-user-icon";
+
+    var userEmailP = document.createElement("p");
+    userEmailP.className = "user-email";
+    userEmailP.innerHTML = email;
+
+    if (isAdmin) {
+        var documentAdminStarIcon = document.createElement("img");
+        documentAdminStarIcon.src = "images/document-admin-icon-gold.svg";
+        documentAdminStarIcon.id = "document-admin-icon";
+        
+        userInformationDiv.append(userImg, userEmailP, documentAdminStarIcon);
+    } else {
+        var deleteButton = document.createElement("button");
+        deleteButton.id = "delete-user";
+        deleteButton.innerHTML = "Delete";
+
+        userInformationDiv.append(userImg, userEmailP, deleteButton);
+    }
+    return userInformationDiv
+}
 
 myDocs.onclick = function () {
     location.href = "documents.html";
@@ -49,7 +122,7 @@ inviteButton.onclick = async function() {
     let email = inviteEmailTextField.value;
 
     if (email == null || email == "" || !isValidEmail(email)) {
-        alert("Error: Please enter a valid email.")
+        alert("Error: Please enter a valid email.");
         return
     }
 
@@ -59,12 +132,17 @@ inviteButton.onclick = async function() {
         invitationSentPreviously = await checkIfInviteSentPreviously(recipientId);
 
         if (invitationSentPreviously) {
-            alert(`An invite has already been sent to the user with email: ${email}.`);
+            alert(`An invitation has already been sent to the user with email: ${email}.`);
             return
         }
+
         sendInvite(recipientId);
+        alert(`An invitation to the user with the email ${email} was sent successfully.`);
+
+    } else {
+        alert(`No user with the email ${email} exists.`);
+        return
     }
-    alert(`An invite will be sent to user with email ${email} if the user exists.`);
 }
 
 function isValidEmail(email) {
@@ -93,9 +171,7 @@ async function userIdWithEmail(recipientEmail) {
     let activeRef = await usersRef
         .where("email", "==", recipientEmail)
         .get();
-
-    console.log(activeRef.docs[0].data())
-
+        
     for (docIndex in activeRef.docs) {
         if (activeRef.docs[docIndex].data().email == recipientEmail) {
             return activeRef.docs[docIndex].id
