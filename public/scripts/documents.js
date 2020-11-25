@@ -6,6 +6,10 @@ const documentAdd = document.getElementById("document-add")
 const userDocuments = document.getElementById("user-documents")
 const userInvitations = document.getElementById("user-invitations");
 
+const invitationsDialogDiv = document.getElementById("invitations-dialog");
+const documentsShadowDiv = document.getElementById("documents-shadow");
+const userInvitationsButton = document.getElementById("user-invitations-button");
+
 var documentsListener
 var invitationsListener
 var userId = null
@@ -17,6 +21,24 @@ window.onload = function() {
     $.getScript("scripts/models/Invitation.js");
 
 };
+
+userInvitationsButton.onclick = function() {
+    $(`#${documentsShadowDiv.id}`).css({"z-index": "1"});
+    $(`#${invitationsDialogDiv.id}`).css({"z-index": "1"});
+    $(`#${documentsShadowDiv.id}`).fadeIn('slow');
+    $(`#${invitationsDialogDiv.id}`).fadeIn('slow');
+}
+
+documentsShadowDiv.onclick = function() {
+    console.log("shehri");
+    $(`#${documentsShadowDiv.id}`).fadeOut('slow', function() {
+        $(`#${documentsShadowDiv.id}`).css({"z-index": "0"});
+    });
+
+    $(`#${invitationsDialogDiv.id}`).fadeOut('slow', function() {
+        $(`#${invitationsDialogDiv.id}`).css({"z-index": "0"});
+    });
+}
 
 auth.onAuthStateChanged(user => {
     if (user) {
@@ -103,7 +125,7 @@ function acceptInvitation(invitation) {
                     .withConverter(documentConveter)
                     .set(documentData);
             }
-            
+
             invitation.status = "ACCEPTED";
             
             firestore
@@ -115,7 +137,35 @@ function acceptInvitation(invitation) {
 }
 
 function rejectInvitation(invitation) {
+    firestore
+        .collection('documents')
+        .doc(invitation.docId)
+        .get()
+        .then(function(document) {
+            if (document.exists == false || document == null) { return; }
 
+            var documentData = document.data();
+            var documentUsers = documentData.users;
+
+            if (documentUsers.includes(invitation.recipientId)) {
+                documentUsers.pop(invitation.recipientId);
+                documentData.users = documentUsers;
+
+                firestore
+                    .collection('documents')
+                    .doc(invitation.docId)
+                    .withConverter(documentConveter)
+                    .set(documentData);
+            }
+
+            invitation.status = "REJECTED";
+            
+            firestore
+                .collection('invitations')
+                .doc(invitation.id)
+                .withConverter(invitationConverter)
+                .set(invitation);
+        });
 }
 
 function loadDocuments() {
