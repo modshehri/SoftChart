@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="styles/primary.css">
     <link rel="stylesheet" href="styles/canvas.css">
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>  
     <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js"></script>
@@ -22,6 +22,27 @@
     <script src="scripts/canvas-scripts.js" defer></script>
 </head>
 <body>
+    <div id="canvas-shadow"></div>
+
+    <div id="user-management">
+        <h3>Manage Users</h3>
+
+        <hr>
+
+        <h5>Invite</h5>
+        <div style="width: 100%; padding-right: 20px; position: relative;">
+            <input id="invite-email-text-field" type="email" placeholder="Email" style="width: 80%; height: 24px; font-size: small;">
+            <button id="invite-button" style="float: right;">Invite</button>
+        </div>
+
+        <hr>
+
+        <h5>Users</h5>
+
+        <div style="overflow-y: scroll; height: 45%; padding: 0;" id="document-users">
+            
+        </div>
+    </div>
 
     <div class="row" id="menu-outer">
         <div class="col-2 logo ">
