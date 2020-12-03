@@ -1,38 +1,37 @@
 #logo-link {
     color: black;
-    text-decoration: none;
-    font-style: normal;
+    font-size: 40px;
     font-weight: bold;
-    font-size: 45px;
-    line-height: 54px;
+    text-decoration: none;
+    margin-right: 60px;
 }
 
 #logo-row {
-    background-color: #EAEAEA;
     padding: 0;
-    margin: 0;
+    padding: 20px 60px 10px 60px;
 }
 
-#supportBtn {
-
+hr {
+    padding: 0;
+    margin: 0;
 }
 
 #welcoming {
     font-weight: lighter;
     font-style: normal;
-    font-size: 35px;
-    line-height: 54px;
-    margin: 20px 0px 10px 30px;
+    font-size: 28px;
+    padding: 0;
+    margin: 0;
 }
 
 #docCatagories{
-    padding-right: 30px;
+    padding-top: 20px;
 }
 
 #docCatagories button {
     border-radius: 8px;
     border: none;
-    margin: 10px;
+    margin-bottom: 20px;
 }
 
 #selected {
@@ -41,28 +40,34 @@
     width: 100%;
     text-align: left;
     padding: 6px 16px;
+    cursor: pointer;
+    outline: none;
+    border: none;
 }
 
-#searchDocs{
+#searchDocs {
     border-radius: 26px;
     border: 1px solid #CCCCCC;
     display: block;
-    margin: 10px;
     margin-bottom: 20px;
     background: #F2F2F2;
     width: 100%;
     height: 2em;
-    text-align: center;
+    font-size: small;
+    padding: 0 10px;
 }
 
-.unselected{
+.unselected {
     background: #F2F2F2;
     width: 100%;
     text-align: left;
     padding: 6px 16px;
+    cursor: pointer;
+    outline: none;
+    border: none;
 }
 
-#profile-card{
+#profile-card {
     position: absolute;
     bottom: 0;
     right: 15px;
@@ -71,7 +76,7 @@
     width: 70%;
 }
 
-#Logout{  
+#Logout {  
     width: 100%;  
     background: #FF5B5B;
     border-radius: 8px;
@@ -85,12 +90,9 @@
     border: none;
 }
 
-#main-documents-row {
-    margin-left: 10px;
-}
-
 #documents {
     border-left: 1px solid #F0F0F0;
+    padding-top: 20px;
     height: 70vh;
 }
 

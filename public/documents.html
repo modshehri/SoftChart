@@ -22,69 +22,70 @@
     <script src="scripts/documents.js" defer></script>
 </head>
 <body>
-    <div id="documents-shadow"></div>
+    <div class="container-fluid">
+        <div id="documents-shadow"></div>
 
-    <div id="invitations-dialog">
-        <h3>Invitations</h3>
-        <p id="no-invitations-prompt"><i>You have no document invitations.</i></p>
-        <div id="user-invitations"></div>
-    </div>
-
-    <div id="logo-row" class="row">
-        <div class="col-12">
-            <p style="height: 100%; margin: 0;">
-                <a id="logo-link" href="index.html">SoftChart</a>
-                <button class="navigation" id="supportBtn">Support</button>
-            </p>
-            <button id="user-invitations-button">Invitations</button>
+        <div id="invitations-dialog">
+            <h3>Invitations</h3>
+            <p id="no-invitations-prompt"><i>You have no document invitations.</i></p>
+            <div id="user-invitations"></div>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12" id="welcoming">
-            <p>Good morning, Abdulelah!</p>
-        </div>
-    </div>
-
-    <div class="row" id="main-documents-row">
-        <div class="col-2" id="docCatagories">
-            <input id="searchDocs" type="text" placeholder="Search Documents...">
-
-            <button id="selected">
-                All documents
-            </button>
-
-            <button class="unselected">
-                Your documents
-            </button>
-            
-            <button class="unselected">
-                Shared with you
-            </button>
-                        
-            <button class="unselected">
-                Trash
-            </button>
-
-            <button id="Logout">
-                Logout
-            </button>
-        </div>
-
-        <div class="col-10" id="documents">
-            <div id="user-documents">
+    
+        <div id="logo-row" class="row">
+            <div class="col-12" style="display: flex; align-items: center; justify-content: space-between; padding: 0;">
+                <div style="display: flex; align-items: center;">
+                    <a id="logo-link" href="index.html">SoftChart</a>
+                    <button class="navigation">Support</button>
+                </div>
+                <button class="primary" id="user-invitations-button">Invitations</button>
             </div>
-            
-            <div class="document" id="document-add">
-                <img class="document-image" src="images/document-add.svg" alt="">
-                <p class="document-name" id="document-name-add">Add Document</p>
+            <div>
+                <p id="welcoming">Good evening, Abdulelah!</p>
             </div>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12" style="background-color: #252525; height: 100px;">
-            
+    
+        <hr id="under-logo-seperator">
+    
+        <div class="row" id="main-documents-row">
+            <div class="col-2" id="docCatagories">
+                <input id="searchDocs" type="text" placeholder="Search Documents...">
+    
+                <button id="selected">
+                    All documents
+                </button>
+    
+                <button class="unselected">
+                    Your documents
+                </button>
+                
+                <button class="unselected">
+                    Shared with you
+                </button>
+                            
+                <button class="unselected">
+                    Trash
+                </button>
+    
+                <button id="Logout">
+                    Logout
+                </button>
+            </div>
+    
+            <div class="col-10" id="documents">
+                <div id="user-documents">
+                </div>
+                
+                <div class="document" id="document-add">
+                    <img class="document-image" src="images/document-add.svg" alt="">
+                    <p class="document-name" id="document-name-add">Add Document</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-12" style="background-color: #252525; height: 100px;">
+                
+            </div>
         </div>
     </div>
 </body>
