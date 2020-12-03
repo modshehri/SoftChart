@@ -178,6 +178,7 @@
     background-color: black;
     z-index: 1;
     opacity: 0.3;
+    display: none;
 }
 
 #invitations-dialog {
@@ -192,6 +193,16 @@
     border-radius: 20px;
     box-shadow: 0px 12px 20px 1px rgba(0,0,0,0.10), 0px 1px 2px 0px rgba(0,0,0,0.16);
     padding: 40px 0px 0px 20px;
+    display: none;
+}
+
+#no-invitations-prompt {
+    color: rgb(172, 172, 172);
+    width: 70%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .invitation-document-name {
@@ -200,4 +211,11 @@
 
 .sender-email {
 
+}
+
+#user-invitations {
+    overflow-y: scroll;
+    height: 75%;
+    padding: 0;
+    position: relative;
 }

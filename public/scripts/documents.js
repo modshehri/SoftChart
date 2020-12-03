@@ -19,10 +19,10 @@ var isAnimating = false
 window.onload = function() {
     $.getScript("scripts/models/Document.js");
     $.getScript("scripts/models/Invitation.js");
-
 };
 
 userInvitationsButton.onclick = function() {
+    console.log("hello from the other side")
     $(`#${documentsShadowDiv.id}`).css({"z-index": "1"});
     $(`#${invitationsDialogDiv.id}`).css({"z-index": "1"});
     $(`#${documentsShadowDiv.id}`).fadeIn('slow');
@@ -30,7 +30,6 @@ userInvitationsButton.onclick = function() {
 }
 
 documentsShadowDiv.onclick = function() {
-    console.log("shehri");
     $(`#${documentsShadowDiv.id}`).fadeOut('slow', function() {
         $(`#${documentsShadowDiv.id}`).css({"z-index": "0"});
     });
@@ -74,6 +73,8 @@ function loadInvitations() {
 }
 
 function setHTMLInvitations(invitations) {
+    setNoInvitationsPromptHidden(invitations.length > 0);
+
     userInvitations.innerHTML = "";
     for (invitationIndex in invitations) {
         let invitation = invitations[invitationIndex];
@@ -102,6 +103,14 @@ function setHTMLInvitations(invitations) {
         userInvitations.append(invitationDiv);
     }
 
+}
+
+function setNoInvitationsPromptHidden(hidden) {
+    if (hidden) {
+        $('#no-invitations-prompt').hide();
+    } else {
+        $('#no-invitations-prompt').show();
+    }
 }
 
 function acceptInvitation(invitation) {
