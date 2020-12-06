@@ -37,7 +37,7 @@ class Component {
             classNameHeader.className = "table-component-header";
             classAttributesDetails.innerHTML = this.textContents[1];
             classMethodsDetails.innerHTML = this.textContents[2];
-
+            
             var classNameRow = document.createElement("tr");
             var classAttributesRow = document.createElement("tr");
             var classMethodsRow = document.createElement("tr");
@@ -52,6 +52,10 @@ class Component {
 
             componentContainerDiv.append(table);
 
+            classNameHeader.onblur = () => this.updateTextContents(this.type, componentContainerDiv);
+            classAttributesDetails.onblur = () => this.updateTextContents(this.type, componentContainerDiv);
+            classMethodsDetails.onblur = () => this.updateTextContents(this.type, componentContainerDiv);
+
         } else if (this.type == 'INTERFACE') {
             var interfaceNameHeader = document.createElement("th");
             var interfaceMethodsDetails = document.createElement("td");
@@ -59,9 +63,9 @@ class Component {
             interfaceNameHeader.contentEditable = "true";
             interfaceMethodsDetails.contentEditable = "true";
 
+            interfaceNameHeader.className = "table-component-header";
             interfaceNameHeader.innerHTML = this.textContents[0];
             interfaceMethodsDetails.innerHTML = this.textContents[1];
-            interfaceNameHeader.className = "table-component-header";
 
             var interfaceNameRow = document.createElement("tr");
             var interfaceMethodsRow = document.createElement("tr");
@@ -75,13 +79,18 @@ class Component {
 
             componentContainerDiv.append(table);
 
+            interfaceNameHeader.onblur = () => this.updateTextContents(this.type, componentContainerDiv);
+            interfaceMethodsDetails.onblur = () => this.updateTextContents(this.type, componentContainerDiv);
+
         } else if (this.type == 'USECASE') {
             var useCaseDiv = document.createElement("div");
             useCaseDiv.innerHTML = this.textContents[0];
             useCaseDiv.className = "use-case";
             useCaseDiv.contentEditable = "true";
+
             componentContainerDiv.append(useCaseDiv);
 
+            useCaseDiv.onblur = () => updateTextContents(this.type, componentContainerDiv);
         } else if (this.type == 'ACTOR') {
             var actorImage = document.createElement("img");
             actorImage.src = "images/actor.png";
@@ -93,9 +102,32 @@ class Component {
             actorNameP.contentEditable = "true";
 
             componentContainerDiv.append(actorImage, actorNameP);
-
+            actorNameP.onblur = () => updateTextContents(this.type, componentContainerDiv);
         }
         return componentContainerDiv;
+    }
+
+    updateTextContents(type, html) {
+        if (type == 'CLASS') {
+            var componentClassName = html.getElementsByTagName("th")[0].innerHTML;
+            var componentClassAttributes = html.getElementsByTagName("td")[0].innerHTML;
+            var componentClassMethods = html.getElementsByTagName("td")[1].innerHTML;
+            this.textContents = [componentClassName, componentClassAttributes, componentClassMethods];
+            console.log(this.textContents);
+        } else if (type == 'INTERFACE') {
+            var componentInterfaceName = html.getElementsByTagName("th")[0].innerHTML;
+            var componentInterfaceMethods = html.getElementsByTagName("td")[0].innerHTML;
+            this.textContents = [componentInterfaceName, componentInterfaceMethods];
+            
+        } else if (type == 'USECASE') {
+            var componentUseCase = html.getElementsByTagName("div")[0].innerHTML;
+            this.textContents = [componentUseCase];
+
+        } else if (type == 'ACTOR') {
+            var componentActorName = html.getElementsByTagName("p")[0].innerHTML;
+            this.textContents = [componentActorName];
+
+        }
     }
 }
 

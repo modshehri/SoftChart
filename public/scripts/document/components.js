@@ -93,13 +93,13 @@ function makeComponentDraggable(htmlElement, component) {
 
         function closeDragElement(e) {
             console.log("Ended Dragging");
-
+            console.log(component.textContents);
             firestore
                 .collection('documents')
                 .doc(documentObject.id)
                 .collection('components')
                 .doc(component.id)
-                .update({ x: e.clientX, y: e.clientY } )
+                .update({ textContents: component.textContents, x: e.clientX, y: e.clientY } );
 
             // stop moving when mouse button is released:
             document.onmouseup = null;
