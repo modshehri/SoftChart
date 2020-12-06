@@ -207,8 +207,8 @@ async function checkIfInviteSentPreviously(recipientId) {
         .where("recipientId", "==", recipientId)
         .where("status", "==", "UNDECIDED")
         .get();
-
-    return activeRef.length > 0
+        
+    return activeRef.docs.length > 0
 }
 
 async function userIdWithEmail(recipientEmail) {

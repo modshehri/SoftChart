@@ -39,6 +39,8 @@ documentsShadowDiv.onclick = function() {
     });
 }
 
+logout.onclick = auth.signOut;
+
 auth.onAuthStateChanged(user => {
     if (user) {
         userId = user.uid
@@ -47,8 +49,8 @@ auth.onAuthStateChanged(user => {
         logout.onclick = () => auth.signOut()
     } else {
         unsubscribeListeners()
-        auth.signOut()
         documentAdd.onclick = null
+        auth.signOut()
         window.location.replace("/index.html")
     }
 })
@@ -198,7 +200,7 @@ function loadDocuments() {
 
 function unsubscribeListeners() {
     if (documentsListener != null) {
-        documentsListener.unsubscribe()
+        documentsListener();
     }
 }
 
