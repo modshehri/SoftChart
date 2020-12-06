@@ -66,7 +66,13 @@ function loadInvitations() {
             var invitations = [];
             for (docIndex in querySnapshot.docs) {
                 let invitation = querySnapshot.docs[docIndex].data();
-                invitations.push(new Invitation(querySnapshot.docs[docIndex].id, invitation.docId, invitation.senderId, invitation.recipientId, invitation.status))
+                invitations.push(new Invitation(querySnapshot.docs[docIndex].id,
+                                                invitation.docId,
+                                                invitation.docName,
+                                                invitation.senderId,
+                                                invitation.senderEmail,
+                                                invitation.recipientId,
+                                                invitation.status))
             }
             setHTMLInvitations(invitations);
         });
@@ -78,12 +84,12 @@ function setHTMLInvitations(invitations) {
     userInvitations.innerHTML = "";
     for (invitationIndex in invitations) {
         let invitation = invitations[invitationIndex];
-
+        
         var invitationDiv = document.createElement("div");
         invitationDiv.className = "invitation";
 
         var invitationDocumentName = document.createElement("p");
-        invitationDocumentName.innerHTML = `<b>${invitation.docId}</b><br>From: ${invitation.senderId}`;
+        invitationDocumentName.innerHTML = `<b>${invitation.docName}</b><br>From: ${invitation.senderEmail}`;
         invitationDocumentName.className = "invitation-document-name";
 
         var decisionButtons = document.createElement("div");

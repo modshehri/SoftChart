@@ -61,18 +61,16 @@ body {
     color: black;
 }
 
-
-
 #canvas {
-object-fit: contain;
-background-size: cover;
-min-width: 90%;
-max-width: 90%;
-max-height: 90%;
-min-height: 95%;
-margin-top: 10px;
-margin-left: 10px;
-background-image: url(../images/Canvas.png);
+    object-fit: contain;
+    background-size: cover;
+    min-width: 90%;
+    max-width: 90%;
+    max-height: 90%;
+    min-height: 95%;
+    margin-top: 10px;
+    margin-left: 10px;
+    background-image: url(../images/Canvas.png);
 }
 
 .ClassComponent {
@@ -103,6 +101,7 @@ background-image: url(../images/Canvas.png);
     background-color: black;
     z-index: 1;
     opacity: 0.3;
+    display: none;
 }
 
 #user-management {
@@ -117,25 +116,32 @@ background-image: url(../images/Canvas.png);
     border-radius: 20px;
     box-shadow: 0px 12px 20px 1px rgba(0,0,0,0.10), 0px 1px 2px 0px rgba(0,0,0,0.16);
     padding: 40px 0px 0px 20px;
+    display: none;
 }
 
 .user-information {
     margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between
 }
 
 .document-user-icon {
     width: 20px;
     height: 20px;
     margin-right: 10px;
+    float: left;
 }
 
 .user-email {
-    display: inline-block;
     font-size: small;
+    padding: 0;
+    margin: 8px 0;
+    float: left;
 }
 
 #document-admin-icon {
-    width: 20px;
+    width: 50px;
     height: 20px;
     float: right;
 }
@@ -164,4 +170,9 @@ background-image: url(../images/Canvas.png);
     border: none;
     outline: none;
     cursor: pointer;
+}
+
+.email-icon-container {
+    display: flex;
+    align-items: center;
 }

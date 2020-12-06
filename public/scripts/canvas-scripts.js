@@ -9,8 +9,8 @@ const inviteEmailTextField = document.getElementById("invite-email-text-field");
 const inviteButton = document.getElementById("invite-button");
 const documentUsersDiv = document.getElementById("document-users");
 
-var userId;
 var docId = findGetParameter("id");
+var user;
 var documentObject;
 
 var documentUsersListener;
@@ -21,7 +21,7 @@ window.onload = function() {
 
 auth.onAuthStateChanged(user => {
     if (user) {
-        userId = user.uid
+        this.user = user
         loadData();
     } else {
         unsubscribeListeners();
@@ -51,6 +51,10 @@ function getDocumentUsersListener() {
             this.documentObject = documentData;
 
             if (documentExists) {
+                var collectionReference = firestore.collection('documents');
+                // for (userIdIndex in documentObject.users) {
+                    
+                // }
                 setUsersHTML(documentData.users)
             } else {
                 redirectToIndex();
@@ -85,20 +89,34 @@ function createUserHTMLElement(email, isAdmin) {
     userEmailP.className = "user-email";
     userEmailP.innerHTML = email;
 
+    var emailIconContainer = document.createElement("div");
+    emailIconContainer.className = "email-icon-container";
+    emailIconContainer.append(userImg, userEmailP);
+
+    userInformationDiv.append(emailIconContainer);
+
     if (isAdmin) {
         var documentAdminStarIcon = document.createElement("img");
         documentAdminStarIcon.src = "images/document-admin-icon-gold.svg";
         documentAdminStarIcon.id = "document-admin-icon";
         
-        userInformationDiv.append(userImg, userEmailP, documentAdminStarIcon);
-    } else {
+        userInformationDiv.append(documentAdminStarIcon);
+    }
+    else if (!isAdmin && documentObject.adminUid == user.uid) {
         var deleteButton = document.createElement("button");
         deleteButton.id = "delete-user";
         deleteButton.innerHTML = "Delete";
+        deleteButton.onclick = () => deleteUserFromCanvas(email);
 
-        userInformationDiv.append(userImg, userEmailP, deleteButton);
+        userInformationDiv.append(deleteButton);
     }
     return userInformationDiv
+}
+
+function deleteUserFromCanvas(userId) {
+    if(confirm(`Are you sure you want to delete the user with email ${userId}?`)) {
+
+    }
 }
 
 myDocs.onclick = function () {
@@ -132,10 +150,12 @@ inviteButton.onclick = async function() {
 
     let recipientId = await userIdWithEmail(email);
 
+    /* Re-enable important
     if (documentObject.users.includes(recipientId)) {
         alert(`The user with email ${email} already exists in this document.`);
         return
     }
+    */
 
     if (recipientId != null) {
         invitationSentPreviously = await checkIfInviteSentPreviously(recipientId);
@@ -191,7 +211,7 @@ async function userIdWithEmail(recipientEmail) {
 }
 
 function sendInvite(recipientId) {
-    var invitation = Invitation.create(docId, userId, recipientId);
+    var invitation = Invitation.create(docId, documentObject.name, user.uid, user.email, recipientId);
 
     firestore
         .collection('invitations')
