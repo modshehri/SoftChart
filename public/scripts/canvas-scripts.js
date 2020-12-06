@@ -19,7 +19,7 @@ var documentUsersListener;
 window.onload = function () {
     $.getScript("scripts/models/Invitation.js");
     $.getScript("scripts/models/User.js");
-
+    $.getScript("scripts/models/Document.js");
 };
 
 auth.onAuthStateChanged(user => {
@@ -29,7 +29,7 @@ auth.onAuthStateChanged(user => {
     } else {
         unsubscribeListeners();
         auth.signOut()
-        window.location.replace("/index.html")
+        redirectToIndex();
     }
 })
 
@@ -51,9 +51,14 @@ function getDocumentUsersListener() {
             let documentExists = documentSnapshot.exists;
             let documentData = documentSnapshot.data();
 
-            this.documentObject = documentData;
+            this.documentObject = new Document(documentSnapshot.id, documentData.adminUid, documentData.name, documentData.components, documentData.users);
 
             if (documentExists) {
+                if (!this.documentObject.users.includes(this.user.uid)) {
+                    redirectToIndex();
+                    return;
+                }
+
                 firestore
                     .collection('users')
                     .where(firebase.firestore.FieldPath.documentId(), 'in', documentObject.users)
@@ -75,7 +80,7 @@ function getDocumentUsersListener() {
 }
 
 function redirectToIndex() {
-    //TODO: Implement
+    window.location.replace("/index.html")
 }
 
 function setUsersHTML() {
@@ -111,7 +116,7 @@ function createUserHTMLElement(user, isAdmin) {
 
         userInformationDiv.append(documentAdminStarIcon);
     }
-    else if (!isAdmin && documentObject.adminUid == user.uid) {
+    else if (!isAdmin && documentObject.adminUid == this.user.uid) {
         var deleteButton = document.createElement("button");
         deleteButton.id = "delete-user";
         deleteButton.innerHTML = "Delete";
@@ -124,7 +129,13 @@ function createUserHTMLElement(user, isAdmin) {
 
 function deleteUserFromCanvas(user) {
     if (confirm(`Are you sure you want to delete the user with email ${user.email}?`)) {
-        
+        console.log(documentObject.adminUid);
+        firestore
+            .collection('documents')
+            .doc(documentObject.id)
+            .update({
+                users: firebase.firestore.FieldValue.arrayRemove(user.id)
+            });
     }
 }
 
