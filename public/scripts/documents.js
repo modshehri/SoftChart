@@ -19,10 +19,10 @@ var isAnimating = false
 window.onload = function() {
     $.getScript("scripts/models/Document.js");
     $.getScript("scripts/models/Invitation.js");
-
 };
 
 userInvitationsButton.onclick = function() {
+    console.log("hello from the other side")
     $(`#${documentsShadowDiv.id}`).css({"z-index": "1"});
     $(`#${invitationsDialogDiv.id}`).css({"z-index": "1"});
     $(`#${documentsShadowDiv.id}`).fadeIn('slow');
@@ -30,7 +30,6 @@ userInvitationsButton.onclick = function() {
 }
 
 documentsShadowDiv.onclick = function() {
-    console.log("shehri");
     $(`#${documentsShadowDiv.id}`).fadeOut('slow', function() {
         $(`#${documentsShadowDiv.id}`).css({"z-index": "0"});
     });
@@ -67,22 +66,30 @@ function loadInvitations() {
             var invitations = [];
             for (docIndex in querySnapshot.docs) {
                 let invitation = querySnapshot.docs[docIndex].data();
-                invitations.push(new Invitation(querySnapshot.docs[docIndex].id, invitation.docId, invitation.senderId, invitation.recipientId, invitation.status))
+                invitations.push(new Invitation(querySnapshot.docs[docIndex].id,
+                                                invitation.docId,
+                                                invitation.docName,
+                                                invitation.senderId,
+                                                invitation.senderEmail,
+                                                invitation.recipientId,
+                                                invitation.status))
             }
             setHTMLInvitations(invitations);
         });
 }
 
 function setHTMLInvitations(invitations) {
+    setNoInvitationsPromptHidden(invitations.length > 0);
+
     userInvitations.innerHTML = "";
     for (invitationIndex in invitations) {
         let invitation = invitations[invitationIndex];
-
+        
         var invitationDiv = document.createElement("div");
         invitationDiv.className = "invitation";
 
         var invitationDocumentName = document.createElement("p");
-        invitationDocumentName.innerHTML = `<b>${invitation.docId}</b><br>From: ${invitation.senderId}`;
+        invitationDocumentName.innerHTML = `<b>${invitation.docName}</b><br>From: ${invitation.senderEmail}`;
         invitationDocumentName.className = "invitation-document-name";
 
         var decisionButtons = document.createElement("div");
@@ -102,6 +109,14 @@ function setHTMLInvitations(invitations) {
         userInvitations.append(invitationDiv);
     }
 
+}
+
+function setNoInvitationsPromptHidden(hidden) {
+    if (hidden) {
+        $('#no-invitations-prompt').hide();
+    } else {
+        $('#no-invitations-prompt').show();
+    }
 }
 
 function acceptInvitation(invitation) {

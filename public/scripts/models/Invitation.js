@@ -1,14 +1,16 @@
 class Invitation {
-    constructor(id, docId, senderId, recipientId) {
+    constructor(id, docId, docName, senderId, senderEmail, recipientId, status) {
         this.id    = id;
         this.docId = docId;
+        this.docName = docName;
         this.senderId  = senderId;
+        this.senderEmail = senderEmail;
         this.recipientId = recipientId;
-        this.status = "UNDECIDED";
+        this.status = status;
     }
 
-    static create(docId, senderId, recipientId) {
-        return new Invitation(null, docId, senderId, recipientId, "UNDECIDED");
+    static create(docId, docName, senderId, senderEmail, recipientId) {
+        return new Invitation(null, docId, docName, senderId, senderEmail, recipientId, "UNDECIDED");
     }
 
     accept() {
@@ -28,13 +30,15 @@ var invitationConverter = {
     toFirestore: function(invitation) {
         return {
             docId: invitation.docId,
+            docName: invitation.docName,
             senderId: invitation.senderId,
+            senderEmail: invitation.senderEmail,
             recipientId: invitation.recipientId,
             status: invitation.status
         }
     },
     fromFirestore: function(snapshot, options) {
         const data = snapshot.data(options);
-        return new Invitation(data.id, data.docId, data.senderId, data.recipientId, data.status)
+        return new Invitation(data.id, data.docId, data.docName, data.senderId, data.senderEmail, data.recipientId, data.status)
     }
 }

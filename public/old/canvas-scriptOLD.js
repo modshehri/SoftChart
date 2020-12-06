@@ -32,7 +32,7 @@ auth.onAuthStateChanged(user => {
 
 function retrieveCanvasData(userId) {
     canvasListener = firestore
-        .collection('canvases')
+        .collection('documents')
         .doc(`${ findGetParameter("id") }`)
         .onSnapshot(documentSnapshot => {
             let canvasExists = documentSnapshot.exists;
