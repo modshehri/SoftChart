@@ -3,11 +3,9 @@ const firestore = firebase.firestore();
 
 const myDocs = document.getElementById("DocsButton");
 
-var docId = findGetParameter("id");
 var documentObject;
-var documentUsers;
+var documentListener;
 var user;
-var documentUsersListener;
 
 auth.onAuthStateChanged(user => {
     if (user) {
@@ -21,33 +19,30 @@ auth.onAuthStateChanged(user => {
 });
 
 function loadData() {
-    documentUsersListener = firestore
+    documentListener = firestore
     .collection('documents')
-    .doc(docId)
+    .doc(findGetParameter("id"))
     .onSnapshot(documentSnapshot => {
         let documentExists = documentSnapshot.exists;
         
         if (documentExists) {
             let documentData = documentSnapshot.data();
-            this.documentObject = new Document(documentSnapshot.id, documentData.adminUid, documentData.name, documentData.components, documentData.users);
+
+            var components = [];
+            for (documentIndex in documentData.components) {
+                var dbComponent = documentData.components[documentIndex];
+                components.push(new Component(dbComponent.id, dbComponent.type, dbComponent.textContents, dbComponent.x, dbComponent.y));
+            }
+
+            this.documentObject = new Document(documentSnapshot.id, documentData.adminUid, documentData.name, components, documentData.users);
 
             if (!this.documentObject.users.includes(this.user.uid)) {
                 redirectToIndex();
                 return;
             }
-
-            firestore
-                .collection('users')
-                .where(firebase.firestore.FieldPath.documentId(), 'in', documentObject.users)
-                .get()
-                .then(function(querySnapshot) {
-                    var users = [];
-                    querySnapshot.forEach(function(doc) {
-                        users.push(new User(doc.id, doc.data().email));
-                    });
-                    this.documentUsers = users;
-                    setUsersHTML(documentData.users);
-                });
+            
+            retrieveDocumentUsers();
+            drawComponents(documentObject.components);
         } else {
             redirectToIndex();
         }
@@ -57,8 +52,8 @@ function loadData() {
 }
 
 function unsubscribeListeners() {
-    if (documentUsersListener != null) {
-        documentUsersListener.unsubscribe()
+    if (documentListener != null) {
+        documentListener.unsubscribe()
     }
 }
 

@@ -1,5 +1,7 @@
 const canvas = document.getElementById("canvas");
 
+var currentlyDragging = false;
+
 function allowDrop(ev) {
     ev.preventDefault();
 }
@@ -8,18 +10,32 @@ function dragComponent(ev, componentType) {
     ev.dataTransfer.setData("ComponentType", componentType);
 }
 
-function drawComponent(event) {
+function drawComponents(components) {
+    for (index in components) {
+        drawComponent(components[index]);
+    }
+}
+
+function drawComponent(component) {
+    var html = component.getHTMLElement();
+    html.style.left = (component.x - 125) + "px";
+    html.style.top = (component.y - 65) + "px";
+    makeComponentDraggable(html);
+    canvas.append(html);
+}
+
+function dropComponent(event) {
     var componentType = event.dataTransfer.getData("ComponentType");
     var x = event.clientX;
     var y = event.clientY;
+    drawNewComponent(componentType, x, y);
+}
 
+function drawNewComponent(componentType, x, y) {
     var componentElement = Component.create(componentType, x, y).getHTMLElement();
-    
     componentElement.style.left = (x - 125) + "px";
     componentElement.style.top = (y - 65) + "px";
-
     makeComponentDraggable(componentElement);
-    console.log("sdf1");
     canvas.append(componentElement);
 }
 
@@ -37,7 +53,8 @@ function makeComponentDraggable(comp) {
         }
 
         function dragMouseDown(e) {
-            console.log("sdf2");
+            console.log("Started Dragging");
+            currentlyDragging = true;
 
             e = e || window.event;
             e.preventDefault();
@@ -50,7 +67,7 @@ function makeComponentDraggable(comp) {
         }
 
         function elementDrag(e) {
-            console.log("sdf3");
+            console.log("Dragging");
 
             e = e || window.event;
             e.preventDefault();
@@ -65,7 +82,9 @@ function makeComponentDraggable(comp) {
         }
 
         function closeDragElement() {
-            console.log("sdf4");
+            console.log("Ended Dragging");
+
+            currentlyDragging = false;
 
             // stop moving when mouse button is released:
             document.onmouseup = null;
@@ -74,31 +93,3 @@ function makeComponentDraggable(comp) {
     }
 }
 
-//Un-needed methods
-// function dragClass(ev) {
-//     ev.dataTransfer.setData("ComponentType", "Class");
-// }
-// function dragInterfice(ev) {
-//     ev.dataTransfer.setData("ComponentType", "Interfice");
-// }
-
-// function addClass(type, x, y) {
-//     var classComponent = document.createElement("Div"); //DONE
-//     var classTitle = document.createElement("p");       //DONE
-//     var textnode = document.createTextNode(type);       //DONE
-//     classComponent.className = "ClassComponent";        //DONE
-//     classTitle.appendChild(textnode);                   //DONE
-//     classComponent.appendChild(classTitle);             //DONE
-//     classComponent.style.left = (x - 125) + "px";       //DONE
-//     classComponent.style.top = (y - 65) + "px";         //DONE
-//     canvas.appendChild(classComponent);                 //DONE
-//     classTitle.contentEditable = "true";                //DONE
-//     makeComponentDraggable(classComponent);             //DONE
-// }
-
-// function drop(ev) {
-//     var componentType = ev.dataTransfer.getData("ComponentType");
-//     var x = ev.clientX;
-//     var y = ev.clientY;
-//     drawComponent(componentType, x, y);
-// }

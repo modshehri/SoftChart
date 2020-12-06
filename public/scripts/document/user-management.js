@@ -5,6 +5,8 @@ const inviteEmailTextField = document.getElementById("invite-email-text-field");
 const inviteButton = document.getElementById("invite-button");
 const documentUsersDiv = document.getElementById("document-users");
 
+var documentUsers;
+
 inviteButton.onclick = async function () {
     let email = inviteEmailTextField.value;
 
@@ -52,6 +54,22 @@ canvasShadowDiv.onclick = function () {
     $(`#${userManagementDiv.id}`).fadeOut('slow', function () {
         $(`#${userManagementDiv.id}`).css({ "z-index": "0" });
     });
+}
+
+function retrieveDocumentUsers() {
+    firestore
+        .collection('users')
+        .where(firebase.firestore.FieldPath.documentId(), 'in', documentObject.users)
+        .get()
+        .then(function(querySnapshot) {
+            var users = [];
+
+            querySnapshot.forEach(function(doc) {
+                users.push(new User(doc.id, doc.data().email));
+            });
+            this.documentUsers = users;
+            setUsersHTML(documentObject.users);
+        });
 }
 
 function setUsersHTML() {
