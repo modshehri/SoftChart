@@ -12,11 +12,14 @@ const documentUsersDiv = document.getElementById("document-users");
 var docId = findGetParameter("id");
 var user;
 var documentObject;
+var documentUsers;
 
 var documentUsersListener;
 
-window.onload = function() {
+window.onload = function () {
     $.getScript("scripts/models/Invitation.js");
+    $.getScript("scripts/models/User.js");
+
 };
 
 auth.onAuthStateChanged(user => {
@@ -51,11 +54,18 @@ function getDocumentUsersListener() {
             this.documentObject = documentData;
 
             if (documentExists) {
-                var collectionReference = firestore.collection('documents');
-                // for (userIdIndex in documentObject.users) {
-                    
-                // }
-                setUsersHTML(documentData.users)
+                firestore
+                    .collection('users')
+                    .where(firebase.firestore.FieldPath.documentId(), 'in', documentObject.users)
+                    .get()
+                    .then(function(querySnapshot) {
+                        var users = [];
+                        querySnapshot.forEach(function(doc) {
+                            users.push(new User(doc.id, doc.data().email));
+                        });
+                        this.documentUsers = users;
+                        setUsersHTML(documentData.users);
+                    });
             } else {
                 redirectToIndex();
             }
@@ -68,16 +78,15 @@ function redirectToIndex() {
     //TODO: Implement
 }
 
-function setUsersHTML(documentUsers) {
+function setUsersHTML() {
     documentUsersDiv.innerHTML = "";
     for (userIndex in documentUsers) {
         let user = documentUsers[userIndex];
-        console.log(this.document.adminUid);
-        documentUsersDiv.append(createUserHTMLElement(user, user == this.documentObject.adminUid));
+        documentUsersDiv.append(createUserHTMLElement(user, user.id == this.documentObject.adminUid));
     }
 }
 
-function createUserHTMLElement(email, isAdmin) {
+function createUserHTMLElement(user, isAdmin) {
     var userInformationDiv = document.createElement("div");
     userInformationDiv.className = "user-information";
 
@@ -87,7 +96,7 @@ function createUserHTMLElement(email, isAdmin) {
 
     var userEmailP = document.createElement("p");
     userEmailP.className = "user-email";
-    userEmailP.innerHTML = email;
+    userEmailP.innerHTML = user.email;
 
     var emailIconContainer = document.createElement("div");
     emailIconContainer.className = "email-icon-container";
@@ -99,23 +108,23 @@ function createUserHTMLElement(email, isAdmin) {
         var documentAdminStarIcon = document.createElement("img");
         documentAdminStarIcon.src = "images/document-admin-icon-gold.svg";
         documentAdminStarIcon.id = "document-admin-icon";
-        
+
         userInformationDiv.append(documentAdminStarIcon);
     }
     else if (!isAdmin && documentObject.adminUid == user.uid) {
         var deleteButton = document.createElement("button");
         deleteButton.id = "delete-user";
         deleteButton.innerHTML = "Delete";
-        deleteButton.onclick = () => deleteUserFromCanvas(email);
+        deleteButton.onclick = () => deleteUserFromCanvas(user);
 
         userInformationDiv.append(deleteButton);
     }
     return userInformationDiv
 }
 
-function deleteUserFromCanvas(userId) {
-    if(confirm(`Are you sure you want to delete the user with email ${userId}?`)) {
-
+function deleteUserFromCanvas(user) {
+    if (confirm(`Are you sure you want to delete the user with email ${user.email}?`)) {
+        
     }
 }
 
@@ -123,24 +132,24 @@ myDocs.onclick = function () {
     location.href = "documents.html";
 };
 
-umcButton.onclick = function() {
-    $(`#${canvasShadowDiv.id}`).css({"z-index": "1"});
-    $(`#${userManagementDiv.id}`).css({"z-index": "1"});
+umcButton.onclick = function () {
+    $(`#${canvasShadowDiv.id}`).css({ "z-index": "1" });
+    $(`#${userManagementDiv.id}`).css({ "z-index": "1" });
     $(`#${canvasShadowDiv.id}`).fadeIn('slow');
     $(`#${userManagementDiv.id}`).fadeIn('slow');
 }
 
-canvasShadowDiv.onclick = function() {
-    $(`#${canvasShadowDiv.id}`).fadeOut('slow', function() {
-        $(`#${canvasShadowDiv.id}`).css({"z-index": "0"});
+canvasShadowDiv.onclick = function () {
+    $(`#${canvasShadowDiv.id}`).fadeOut('slow', function () {
+        $(`#${canvasShadowDiv.id}`).css({ "z-index": "0" });
     });
 
-    $(`#${userManagementDiv.id}`).fadeOut('slow', function() {
-        $(`#${userManagementDiv.id}`).css({"z-index": "0"});
+    $(`#${userManagementDiv.id}`).fadeOut('slow', function () {
+        $(`#${userManagementDiv.id}`).css({ "z-index": "0" });
     });
 }
 
-inviteButton.onclick = async function() {
+inviteButton.onclick = async function () {
     let email = inviteEmailTextField.value;
 
     if (email == null || email == "" || !isValidEmail(email)) {
@@ -154,7 +163,7 @@ inviteButton.onclick = async function() {
         alert(`The user with email ${email} already exists in this document.`);
         return
     }
-    
+
     if (recipientId != null) {
         invitationSentPreviously = await checkIfInviteSentPreviously(recipientId);
 
@@ -198,7 +207,7 @@ async function userIdWithEmail(recipientEmail) {
     let activeRef = await usersRef
         .where("email", "==", recipientEmail)
         .get();
-        
+
     for (docIndex in activeRef.docs) {
         if (activeRef.docs[docIndex].data().email == recipientEmail) {
             return activeRef.docs[docIndex].id
@@ -224,8 +233,8 @@ function findGetParameter(parameterName) {
         .substr(1)
         .split("&")
         .forEach(function (item) {
-          tmp = item.split("=");
-          if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+            tmp = item.split("=");
+            if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
         });
     return result;
 }

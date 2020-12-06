@@ -38,7 +38,7 @@ auth.onAuthStateChanged(user => {
                     return `<li><a href="canvas.html?id=${ doc.id }">${ doc.data().canvasName }</a></li>`;
                 });
                 userCanvasesDiv.innerHTML = queryCanvases.join('');
-        });
+            });
     } else {
         signedInDiv.hidden  = true;
         signedOutDiv.hidden = false;
