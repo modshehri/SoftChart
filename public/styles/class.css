@@ -3,12 +3,17 @@ table, th, td {
     border-collapse: collapse;
 }
 
+.canvas-component {
+    position: fixed;
+}
+
 .table-component {
     min-width: 220px;
     min-height: 160px;
 }
 
 .use-case {
+    position: fixed;
     background-color: white;
     height: 100px;
     width: 150px;
@@ -17,5 +22,10 @@ table, th, td {
 }
 
 .actor {
+    position: fixed;
     height: 160px;
+}
+
+.table-component-header {
+    text-align: center;
 }

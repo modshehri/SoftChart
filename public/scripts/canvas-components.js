@@ -3,52 +3,27 @@ function allowDrop(ev) {
     ev.preventDefault();
 }
 
-function dragClass(ev) {
-    ev.dataTransfer.setData("ComponentType", "Class");
-}
-function dragInterfice(ev) {
-    ev.dataTransfer.setData("ComponentType", "Interfice");
+//Hajjar new methods
+function dragComponent(ev, componentType) {
+    ev.dataTransfer.setData("ComponentType", componentType);
 }
 
-function drop(ev) {
-    var data = ev.dataTransfer.getData("ComponentType");
-    var x = ev.clientX;
-    var y = ev.clientY;
-    if (data == "Class") {
-        addClass("Class", x, y);
-    } else if (data == "Interfice") {
-        addClass("Interfice", x, y);
-    }
+function drawComponent(event) {
+    var componentType = event.dataTransfer.getData("ComponentType");
+    var x = event.clientX;
+    var y = event.clientY;
+
+    var componentElement = Component.create(componentType, x, y).getHTMLElement();
+    
+    componentElement.style.left = (x - 125) + "px";
+    componentElement.style.top = (y - 65) + "px";
+
+    makeComponentDraggable(componentElement);
+
+    canvas.append(componentElement);
 }
 
-function addClass(type, x, y) {
-    var classComponent = document.createElement("Div");
-    var classTitle = document.createElement("p");
-    var textnode = document.createTextNode(type);
-    classComponent.className = "ClassComponent";
-    classTitle.appendChild(textnode);
-    classComponent.appendChild(classTitle);
-    classComponent.style.left = (x - 125) + "px";
-    classComponent.style.top = (y - 65) + "px";
-    canvas.appendChild(classComponent);
-    classTitle.contentEditable = "true";
-    makeClassDragable(classComponent);
-}
-
-function addInterfice() {
-    var traingleComponent = document.createElement("Div");
-    var classTitle = document.createElement("p");
-    var textnode = document.createTextNode("Interfice");
-    classComponent.className = "ClassComponent";
-    classTitle.appendChild(textnode);
-    classComponent.appendChild(classTitle);
-    canvas.appendChild(classComponent);
-    classTitle.contentEditable = "true";
-    makeClassDragable(classComponent);
-}
-
-// Make the DIV element draggable:
-function makeClassDragable(comp) {
+function makeComponentDraggable(comp) {
     dragElement(comp);
 
     function dragElement(elmnt) {
@@ -92,3 +67,32 @@ function makeClassDragable(comp) {
         }
     }
 }
+
+//Un-needed methods
+// function dragClass(ev) {
+//     ev.dataTransfer.setData("ComponentType", "Class");
+// }
+// function dragInterfice(ev) {
+//     ev.dataTransfer.setData("ComponentType", "Interfice");
+// }
+
+// function addClass(type, x, y) {
+//     var classComponent = document.createElement("Div"); //DONE
+//     var classTitle = document.createElement("p");       //DONE
+//     var textnode = document.createTextNode(type);       //DONE
+//     classComponent.className = "ClassComponent";        //DONE
+//     classTitle.appendChild(textnode);                   //DONE
+//     classComponent.appendChild(classTitle);             //DONE
+//     classComponent.style.left = (x - 125) + "px";       //DONE
+//     classComponent.style.top = (y - 65) + "px";         //DONE
+//     canvas.appendChild(classComponent);                 //DONE
+//     classTitle.contentEditable = "true";                //DONE
+//     makeComponentDraggable(classComponent);             //DONE
+// }
+
+// function drop(ev) {
+//     var componentType = ev.dataTransfer.getData("ComponentType");
+//     var x = ev.clientX;
+//     var y = ev.clientY;
+//     drawComponent(componentType, x, y);
+// }

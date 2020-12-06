@@ -7,9 +7,23 @@ class Component {
         this.y = y;
     }
 
-    getHTML() {
+    static create(type, x, y) {
+        if (type == 'CLASS') {
+            return new Component(null, 'CLASS', ['Class Name', 'Attributes', 'Methods'], x, y);
+        } else if (type == 'INTERFACE') {
+            return new Component(null, 'INTERFACE', ['Interface Name', 'Methods'], x, y);
+        } else if (type == 'USECASE') {
+            return new Component(null, 'USECASE', ['Use Case'], x, y);
+        } else if (type == 'ACTOR') {
+            return new Component(null, 'ACTOR', ['Actor Name'], x, y);
+        }
+        return null;
+    }
+
+    getHTMLElement() {
         var componentContainerDiv = document.createElement("div");
-        
+        componentContainerDiv.className = "canvas-component";
+
         if (this.type == 'CLASS') {
             var classNameHeader = document.createElement("th");
             var classAttributesDetails = document.createElement("td");
@@ -20,6 +34,7 @@ class Component {
             classMethodsDetails.contentEditable = "true";
 
             classNameHeader.innerHTML = this.textContents[0];
+            classNameHeader.className = "table-component-header";
             classAttributesDetails.innerHTML = this.textContents[1];
             classMethodsDetails.innerHTML = this.textContents[2];
 
@@ -46,6 +61,7 @@ class Component {
 
             interfaceNameHeader.innerHTML = this.textContents[0];
             interfaceMethodsDetails.innerHTML = this.textContents[1];
+            interfaceNameHeader.className = "table-component-header";
 
             var interfaceNameRow = document.createElement("tr");
             var interfaceMethodsRow = document.createElement("tr");
