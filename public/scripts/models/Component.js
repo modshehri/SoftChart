@@ -79,7 +79,7 @@ class Component {
             var useCaseDiv = document.createElement("div");
             useCaseDiv.innerHTML = this.textContents[0];
             useCaseDiv.className = "use-case";
-
+            useCaseDiv.contentEditable = "true";
             componentContainerDiv.append(useCaseDiv);
 
         } else if (this.type == 'ACTOR') {
@@ -90,6 +90,7 @@ class Component {
 
             var actorNameP = document.createElement("p");
             actorNameP.innerHTML = this.textContents[0];
+            actorNameP.contentEditable = "true";
 
             componentContainerDiv.append(actorImage, actorNameP);
 

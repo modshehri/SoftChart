@@ -1,9 +1,9 @@
 const canvas = document.getElementById("canvas");
+
 function allowDrop(ev) {
     ev.preventDefault();
 }
 
-//Hajjar new methods
 function dragComponent(ev, componentType) {
     ev.dataTransfer.setData("ComponentType", componentType);
 }
@@ -19,7 +19,7 @@ function drawComponent(event) {
     componentElement.style.top = (y - 65) + "px";
 
     makeComponentDraggable(componentElement);
-
+    console.log("sdf1");
     canvas.append(componentElement);
 }
 
@@ -37,6 +37,8 @@ function makeComponentDraggable(comp) {
         }
 
         function dragMouseDown(e) {
+            console.log("sdf2");
+
             e = e || window.event;
             e.preventDefault();
             // get the mouse cursor position at startup:
@@ -48,6 +50,8 @@ function makeComponentDraggable(comp) {
         }
 
         function elementDrag(e) {
+            console.log("sdf3");
+
             e = e || window.event;
             e.preventDefault();
             // calculate the new cursor position:
@@ -61,6 +65,8 @@ function makeComponentDraggable(comp) {
         }
 
         function closeDragElement() {
+            console.log("sdf4");
+
             // stop moving when mouse button is released:
             document.onmouseup = null;
             document.onmousemove = null;
