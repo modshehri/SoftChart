@@ -165,7 +165,7 @@ async function userIdWithEmail(recipientEmail) {
 }
 
 function sendInvite(recipientId) {
-    var invitation = Invitation.create(docId, documentObject.name, user.uid, user.email, recipientId);
+    var invitation = Invitation.create(documentObject.id, documentObject.name, user.uid, user.email, recipientId);
 
     firestore
         .collection('invitations')
