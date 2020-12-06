@@ -1,6 +1,6 @@
 const canvas = document.getElementById("canvas");
 
-var currentlyDragging = false;
+var draggingComponent = null;
 
 function allowDrop(ev) {
     ev.preventDefault();
@@ -20,7 +20,7 @@ function drawComponent(component) {
     var html = component.getHTMLElement();
     html.style.left = (component.x - 125) + "px";
     html.style.top = (component.y - 65) + "px";
-    makeComponentDraggable(html);
+    makeComponentDraggable(html, component);
     canvas.append(html);
 }
 
@@ -32,17 +32,28 @@ function dropComponent(event) {
 }
 
 function drawNewComponent(componentType, x, y) {
-    var componentElement = Component.create(componentType, x, y).getHTMLElement();
-    componentElement.style.left = (x - 125) + "px";
-    componentElement.style.top = (y - 65) + "px";
-    makeComponentDraggable(componentElement);
-    canvas.append(componentElement);
+    var component = Component.create(componentType, x, y);
+    var componentHTMLElement = component.getHTMLElement();
+    componentHTMLElement.style.left = (x - 125) + "px";
+    componentHTMLElement.style.top = (y - 65) + "px";
+    makeComponentDraggable(componentHTMLElement, component);
+    canvas.append(componentHTMLElement);
 }
 
-function makeComponentDraggable(comp) {
-    dragElement(comp);
+function makeComponentDraggable(htmlElement, component) {
+    dragElement(htmlElement);
 
     function dragElement(elmnt) {
+        // A neewly dropped element has id == null is not saved in the database, therefore, save it.
+        if (component.id == null) {
+            firestore
+                .collection('documents')
+                .doc(documentObject.id)
+                .collection('components')
+                .withConverter(componentConverter)
+                .add(component)
+        }
+        
         var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
         if (document.getElementById(elmnt.id + "header")) {
             // if present, the header is where you move the DIV from:
@@ -54,7 +65,6 @@ function makeComponentDraggable(comp) {
 
         function dragMouseDown(e) {
             console.log("Started Dragging");
-            currentlyDragging = true;
 
             e = e || window.event;
             e.preventDefault();
@@ -81,10 +91,15 @@ function makeComponentDraggable(comp) {
             elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
         }
 
-        function closeDragElement() {
+        function closeDragElement(e) {
             console.log("Ended Dragging");
 
-            currentlyDragging = false;
+            firestore
+                .collection('documents')
+                .doc(documentObject.id)
+                .collection('components')
+                .doc(component.id)
+                .update({ x: e.clientX, y: e.clientY } )
 
             // stop moving when mouse button is released:
             document.onmouseup = null;
@@ -93,3 +108,21 @@ function makeComponentDraggable(comp) {
     }
 }
 
+function retrieveDocumentComponents() {
+    firestore
+        .collection('documents')
+        .doc(documentObject.id)
+        .collection('components')
+        .onSnapshot(function (querySnapshot) {
+            clearAllComponents();
+            var components = [];
+            querySnapshot.forEach(function (doc) {
+                components.push(new Component(doc.id, doc.data().type, doc.data().textContents, doc.data().x, doc.data().y));
+            });
+            drawComponents(components);
+        });
+}
+
+function clearAllComponents() {
+    canvas.innerHTML = "";
+}

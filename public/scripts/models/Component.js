@@ -98,3 +98,18 @@ class Component {
         return componentContainerDiv;
     }
 }
+
+var componentConverter = {
+    toFirestore: function(component) {
+        return {
+            type: component.type,
+            textContents: component.textContents,
+            x: component.x,
+            y: component.y
+        }
+    },
+    fromFirestore: function(snapshot, options) {
+        const data = snapshot.data(options);
+        return new Component(data.id, data.type, data.textContents, data.x, data.y);
+    }
+}

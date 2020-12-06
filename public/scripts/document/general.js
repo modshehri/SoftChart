@@ -24,25 +24,18 @@ function loadData() {
     .doc(findGetParameter("id"))
     .onSnapshot(documentSnapshot => {
         let documentExists = documentSnapshot.exists;
-        
         if (documentExists) {
             let documentData = documentSnapshot.data();
 
-            var components = [];
-            for (documentIndex in documentData.components) {
-                var dbComponent = documentData.components[documentIndex];
-                components.push(new Component(dbComponent.id, dbComponent.type, dbComponent.textContents, dbComponent.x, dbComponent.y));
-            }
-
-            this.documentObject = new Document(documentSnapshot.id, documentData.adminUid, documentData.name, components, documentData.users);
+            this.documentObject = new Document(documentSnapshot.id, documentData.adminUid, documentData.name, documentData.users);
 
             if (!this.documentObject.users.includes(this.user.uid)) {
                 redirectToIndex();
                 return;
             }
-            
+
+            retrieveDocumentComponents();
             retrieveDocumentUsers();
-            drawComponents(documentObject.components);
         } else {
             redirectToIndex();
         }
