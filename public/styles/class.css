@@ -1,0 +1,21 @@
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.table-component {
+    min-width: 220px;
+    min-height: 160px;
+}
+
+.use-case {
+    background-color: white;
+    height: 100px;
+    width: 150px;
+    border-radius: 50%;
+    border: 1pt solid black;
+}
+
+.actor {
+    height: 160px;
+}
