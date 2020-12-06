@@ -150,13 +150,11 @@ inviteButton.onclick = async function() {
 
     let recipientId = await userIdWithEmail(email);
 
-    /* Re-enable important
     if (documentObject.users.includes(recipientId)) {
         alert(`The user with email ${email} already exists in this document.`);
         return
     }
-    */
-
+    
     if (recipientId != null) {
         invitationSentPreviously = await checkIfInviteSentPreviously(recipientId);
 
