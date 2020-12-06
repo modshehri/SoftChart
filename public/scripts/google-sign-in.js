@@ -15,7 +15,7 @@ auth.onAuthStateChanged(user => {
                 }
             )
             .then(function(docRef) {
-                window.location.replace("/documents.html");
+                location.href = "documents.html";
             });
     } else {
         signInGoogleBtn.onclick = () => auth.signInWithPopup(provider);

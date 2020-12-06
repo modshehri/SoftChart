@@ -64,7 +64,7 @@ function retrieveCanvasData(userId) {
 }
 
 function redirectToHomePage() {
-    window.location.replace("https://www.softchart-3ee27.web.app/");
+    location.href("index.html");
 }
 
 function unsubscribeListeners() {

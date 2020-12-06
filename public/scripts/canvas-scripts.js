@@ -80,7 +80,7 @@ function getDocumentUsersListener() {
 }
 
 function redirectToIndex() {
-    window.location.replace("/index.html")
+    location.href = "index.html";
 }
 
 function setUsersHTML() {

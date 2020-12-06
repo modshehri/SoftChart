@@ -51,7 +51,7 @@ auth.onAuthStateChanged(user => {
         unsubscribeListeners()
         documentAdd.onclick = null
         auth.signOut()
-        window.location.replace("/index.html")
+        location.href = "index.html";
     }
 })
 
@@ -223,9 +223,8 @@ function addDocumentToHTML(document) {
 }
 
 function getDocumentHTMLComponent(documentObj) {
-    var documentDiv = document.createElement("a")
+    var documentDiv = document.createElement("div")
     documentDiv.className = "document"
-    documentDiv.href = `/canvas.html?id=${documentObj.id}`
 
     var documentImg = document.createElement("img")
     documentImg.className = "document-image"
@@ -250,13 +249,17 @@ function getDocumentHTMLComponent(documentObj) {
     documentDiv.append(deleteDocumentButton)
     documentDiv.append(documentTypeImage)
 
+    documentDiv.onclick = function() {
+        location.href = `canvas.html?id=${documentObj.id}`;
+    };
+
     documentDiv.onmouseenter = function() {
         $(`#${documentObj.id}`).animate({ opacity: 1.0 });
     };
 
     documentDiv.onmouseleave = function() {
         $(`#${documentObj.id}`).animate({ opacity: 0.0 });
-    }
+    };
     
     return documentDiv
 }

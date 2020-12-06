@@ -19,62 +19,58 @@
     <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
 
     <script src="scripts/firebase-configuration.js"></script>
+    <script src="scripts/canvas-components.js" defer></script>
     <script src="scripts/canvas-scripts.js" defer></script>
 </head>
 <body>
+    <!-- Shadow To Cover Canvas -->
     <div id="canvas-shadow"></div>
 
+    <!-- User Management Dialog -->
     <div id="user-management">
         <h3>Manage Users</h3>
-
         <hr>
-
         <h5>Invite</h5>
         <div style="width: 100%; padding-right: 20px; position: relative;">
             <input id="invite-email-text-field" type="email" placeholder="Email" style="width: 80%; height: 24px; font-size: small;">
             <button id="invite-button" style="float: right;">Invite</button>
         </div>
-
         <hr>
-
         <h5>Users</h5>
-
         <div style="overflow-y: scroll; height: 45%; padding: 0;" id="document-users">
-            
         </div>
     </div>
 
-    <div class="row" id="menu-outer">
-        <div class="col-2 logo ">
-            <a href="index.html">SoftChart</a></div>
-        <div class="col-8 header" >
-            <ul id="menu" style="position: relative; z-index: 2;">
+    <div class="row" id="menu-outer"">
+        <div class="col-2 logo">
+            <a href="index.html">SoftChart</a>
+        </div>
+
+        <div class="col-8 header">
+            <ul id="menu">
                 <li>
                     <div class="dropdown">
-                        <a type="button" class="btn dropdown" data-toggle="dropdown" style="padding: 0%;">
-                          File
-                        </a>
+                        <a type="button" class="btn dropdown menu-button" data-toggle="dropdown">File</a>
                         <div class="dropdown-menu">
                           <a class="dropdown-item" href="#">Save</a>
                           <a class="dropdown-item" href="#">Export</a>
                         </div>
+                    </div>
                 </li>
                 <li>
                     <div class="dropdown">
-                        <a type="button" class="btn dropdown" data-toggle="dropdown" style="padding: 0%;">
-                            Insert
-                        </a>
+                        <a type="button" class="btn dropdown menu-button" data-toggle="dropdown">Insert</a>
                         <div class="dropdown-menu">
                           <a class="dropdown-item" href="#">Link 1</a>
                           <a class="dropdown-item" href="#">Link 2</a>
                           <a class="dropdown-item" href="#">Link 3</a>
                         </div>
+                    </div>
                 </li>
                 <li>
                     <div class="dropdown">
-                        <a type="button" id="user-management-button" class="btn" style="padding: 0%;">
-                            Share
-                        </a>
+                        <a type="button" id="user-management-button" class="btn menu-button">Share</a>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -107,118 +103,10 @@
                     Interfice
                 </div>
             </div>
-            
-
         </div>
-
         <div class="col-10" id="canvas-container">
-                <div id="canvas" ondrop="drop(event)" ondragover="allowDrop(event)" >
-                    
-                </div>
+                <div id="canvas" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
         </div>
-       
     </div>
-
-<script>
-    const canvas = document.getElementById("canvas");
-
-
-    function allowDrop(ev) {
-        ev.preventDefault();
-    }
-
-    function dragClass(ev) {
-        ev.dataTransfer.setData("ComponentType", "Class");
-    }
-    function dragInterfice(ev) {
-        ev.dataTransfer.setData("ComponentType", "Interfice");
-    }
-
-    function drop(ev) {
-        var data = ev.dataTransfer.getData("ComponentType");
-        var x = ev.clientX;
-        var y = ev.clientY;
-        if(data == "Class"){
-            addClass("Class", x, y);
-        } else if (data == "Interfice"){
-            addClass("Interfice", x, y);
-        }
-    }
-
-    function addClass(type, x, y){
-        var classComponent = document.createElement("Div");
-        var classTitle = document.createElement("p"); 
-        var textnode = document.createTextNode(type);     
-        classComponent.className = "ClassComponent";
-        classTitle.appendChild(textnode); 
-        classComponent.appendChild(classTitle); 
-        classComponent.style.left = (x - 125) +"px";
-        classComponent.style.top = (y - 65) +"px";
-        canvas.appendChild(classComponent);
-        classTitle.contentEditable = "true";
-        makeClassDragable(classComponent);
-    }
-
-    function addInterfice(){
-        var traingleComponent = document.createElement("Div");
-        var classTitle = document.createElement("p"); 
-        var textnode = document.createTextNode("Interfice");     
-        classComponent.className = "ClassComponent";
-        classTitle.appendChild(textnode); 
-        classComponent.appendChild(classTitle); 
-        canvas.appendChild(classComponent);
-        classTitle.contentEditable = "true";
-        makeClassDragable(classComponent);
-    }
-
-    // Make the DIV element draggable:
-    function makeClassDragable(comp){
-        dragElement(comp);
-        
-        function dragElement(elmnt) {
-            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            if (document.getElementById(elmnt.id + "header")) {
-                // if present, the header is where you move the DIV from:
-                document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-            } else {
-                // otherwise, move the DIV from anywhere inside the DIV:
-                elmnt.onmousedown = dragMouseDown;
-            }
-
-            function dragMouseDown(e) {
-                e = e || window.event;
-                e.preventDefault();
-                // get the mouse cursor position at startup:
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                // call a function whenever the cursor moves:
-                document.onmousemove = elementDrag;
-            }
-
-            function elementDrag(e) {
-                e = e || window.event;
-                e.preventDefault();
-                // calculate the new cursor position:
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                // set the element's new position:
-                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-            }
-
-            function closeDragElement() {
-                // stop moving when mouse button is released:
-                document.onmouseup = null;
-                document.onmousemove = null;
-            }
-        }
-    }
-    
-</script>    
-
-   
 </body>
 </html>
