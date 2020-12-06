@@ -79,33 +79,27 @@
         </div>
     </div>
 
-    <div class = "row"></div>
-
-    <div class="row" style="height: 100%;">
+    <div class="row">
         <div class="col-2" id= "shapes-bar">
-            <header  style="font-weight: bold; margin-top: 10px; margin-left: 10px;">
-                <p style=" display: inline;">
-                    Shapes
-                </p>
-                <img src="images/SearchIcon.png" alt="Search Icon" style="max-height: 25px; max-width: 25px;  float: right; display: inline;">
+            <div id="search-shapes-div">
+                <p id="search-title">Shapes</p>
+                <img src="images/SearchIcon.png" id="search-icon" alt="Search Icon">
                 <hr>
-            </header>
+            </div>
 
-            <div style="margin: 10px;">
-                <div style="display: inline-block; font-size: small; text-align: center;">
-                    <div draggable="true" ondragstart="dragClass(event)" style="min-height: 30px; min-width: 60px; border: 1px solid black; border-radius: 5px;">
-                    </div>
-                    Class
+            <div>
+                <div class="component-container">
+                    <div draggable="true" class="component" ondragstart="dragClass(event)"></div>
+                    <p>Class</p>
                  </div>
-                 <div style="display: inline-block; font-size: small; text-align: center;">
-                    <div draggable="true" ondragstart="dragInterfice(event)" style="min-height: 30px; min-width: 60px; border: 1px solid black; border-radius: 5px;">
-                    </div>    
-                    Interfice
+                 <div class="component-container">
+                    <div draggable="true" class="component" ondragstart="dragInterfice(event)"></div>
+                    <p>Interface</p>
                 </div>
             </div>
         </div>
         <div class="col-10" id="canvas-container">
-                <div id="canvas" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            <div id="canvas" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
         </div>
     </div>
 </body>
