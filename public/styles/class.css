@@ -20,10 +20,12 @@ table, th, td {
     width: 150px;
     border-radius: 50%;
     border: 1pt solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .actor {
-    position: fixed;
     height: 160px;
 }
 
@@ -35,4 +37,8 @@ table, th, td {
     width: 20px;
     cursor: pointer;
     opacity: 0;
+}
+
+.actor-container {
+    text-align: center;
 }

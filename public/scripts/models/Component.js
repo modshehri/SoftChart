@@ -15,7 +15,7 @@ class Component {
         } else if (type == 'USECASE') {
             return new Component(null, 'USECASE', ['Use Case'], x, y);
         } else if (type == 'ACTOR') {
-            return new Component(null, 'ACTOR', ['Actor Name'], x, y);
+            return new Component(null, 'ACTOR', ['Actor Nameasdasdasdasdasdasdasd'], x, y);
         }
         return null;
     }
@@ -126,8 +126,13 @@ class Component {
             var actorNameP = document.createElement("p");
             actorNameP.innerHTML = this.textContents[0];
             actorNameP.contentEditable = "true";
+            actorNameP.className = "actor-name";
 
-            componentContainerDiv.append(actorImage, actorNameP);
+            var actorContainerDiv = document.createElement("div");
+            actorContainerDiv.className = "actor-container";
+            actorContainerDiv.append(actorImage, actorNameP);
+
+            componentContainerDiv.append(actorContainerDiv);
             actorNameP.onblur = () => updateTextContents(this.type, componentContainerDiv);
         }
         return componentContainerDiv;
