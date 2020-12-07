@@ -19,19 +19,20 @@
     
     <script src="scripts/firebase/firebase-configuration.js"></script>
     <script src="scripts/firebase/google-sign-in.js" defer></script>
+    <script src="scripts/firebase/email-password-sign-in.js" defer></script>
 </head>
 
 <body>
     <div class="auth-box">
         <h1>Login</h1>
 
-        <form>
+        <div style="padding: 30px;">
 
             <div>
                 <label for="email">Email</label>
             </div>
             <div>
-                <input class="txt_field" type="email" name="email" id="email_tf" value="Just click Login button">
+                <input class="txt_field" type="email" name="email" id="email_tf">
             </div>
             <div>
                 <label for="password">Password</label>
@@ -44,7 +45,7 @@
                 <a href="#" >Forgot Password?</a>
             </div>
 
-            <button class="primary" onclick="document.location='documents.html'">Login</button>
+            <button class="primary" id="loginBtn">Login</button>
 
             <p><b>Or</b></p>
 
@@ -58,7 +59,7 @@
             <div class="signup_link">
                 Not a member? <a href="signup.html">Sign Up</a>!
             </div>
-        </form>
+        </div>
     </div>
 </body>
 </html>
