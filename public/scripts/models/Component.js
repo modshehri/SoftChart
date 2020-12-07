@@ -46,8 +46,8 @@ class Component {
         };
     
         componentContainerDiv.onmouseleave = function() {
-            $(`#${this.id + "header"}`).animate({ opacity: 1.0 });
-            $(`#${this.id + "delete"}`).animate({ opacity: 1.0 });
+            $(`#${this.id + "header"}`).animate({ opacity: 0.0 });
+            $(`#${this.id + "delete"}`).animate({ opacity: 0.0 });
         };
 
         if (this.type == 'CLASS') {
