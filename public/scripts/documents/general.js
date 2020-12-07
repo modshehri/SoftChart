@@ -1,18 +1,21 @@
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
-const logout = document.getElementById("Logout")
-const documentAdd = document.getElementById("document-add")
-const userDocuments = document.getElementById("user-documents")
+const logout = document.getElementById("Logout");
+const documentAdd = document.getElementById("document-add");
+const userDocuments = document.getElementById("user-documents");
 const userInvitations = document.getElementById("user-invitations");
 
 const invitationsDialogDiv = document.getElementById("invitations-dialog");
 const documentsShadowDiv = document.getElementById("documents-shadow");
 const userInvitationsButton = document.getElementById("user-invitations-button");
 
+const searchDocs = document.getElementById("searchDocs");
+
 var documentsListener
 var invitationsListener
 var userId = null
+var visibaleUserDocuments = [];
 
 var isAnimating = false
 
@@ -184,12 +187,30 @@ function loadDocuments() {
     documentsListener = firestore.collection('documents')
         .where('users', 'array-contains', userId)
         .onSnapshot(querySnapshot => {
-            clearDocumentsHTML()
+            clearDocumentsHTML();
+            visibaleUserDocuments = [];
             queryCanvases = querySnapshot.docs.map(doc => {
                 var document = new Document(doc.id, doc.data().adminUid, doc.data().name, doc.data().components, doc.data().user);
+                visibaleUserDocuments.push(document);
                 addDocumentToHTML(document);
             })
         })
+}
+
+searchDocs.oninput = function() {
+    var target = ""+searchDocs.value;
+    
+    
+    clearDocumentsHTML();
+
+    for (var i =0; i < visibaleUserDocuments.length ; i++){
+        if(visibaleUserDocuments[i].name.includes(target)){
+            addDocumentToHTML(visibaleUserDocuments[i]);
+        }
+    }
+    
+
+
 }
 
 function unsubscribeListeners() {
