@@ -16,11 +16,6 @@ var userId = null
 
 var isAnimating = false
 
-window.onload = function() {
-    $.getScript("scripts/models/Document.js");
-    $.getScript("scripts/models/Invitation.js");
-};
-
 userInvitationsButton.onclick = function() {
     console.log("hello from the other side")
     $(`#${documentsShadowDiv.id}`).css({"z-index": "1"});
@@ -192,7 +187,6 @@ function loadDocuments() {
             clearDocumentsHTML()
             queryCanvases = querySnapshot.docs.map(doc => {
                 var document = new Document(doc.id, doc.data().adminUid, doc.data().name, doc.data().components, doc.data().user);
-                console.log(document.isDocumentAdmin(userId))
                 addDocumentToHTML(document);
             })
         })
