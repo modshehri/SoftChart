@@ -80,16 +80,11 @@ function makeComponentDraggable(htmlElement, component) {
     });
 
     $("#" + component.id + "delete").click(function(event) {
-        firestore
-            .collection('documents')
-            .doc(documentObject.id)
-            .collection('components')
-            .doc(component.id)
-            .delete();
+        handleDeletionClick(component.id);
     });
 
     $("#" + component.id + "connect").click(function(event) {
-        handleConnectionClick(component.id)
+        handleConnectionClick(component.id);
     });
 
     function dragElement(elmnt) {
@@ -247,4 +242,25 @@ function handleConnectionClick(clickedId) {
 
         $("#connection-prompt").fadeOut();
     }
+}
+
+function handleDeletionClick(clickedId) {
+    for (connectionIndex in this.connections) {
+        var conc = this.connections[connectionIndex];
+        if (conc.fromId == clickedId || conc.toId == clickedId) {
+            firestore
+                .collection('documents')
+                .doc(documentObject.id)
+                .collection('connections')
+                .doc(conc.id)
+                .delete();
+        }
+    }
+    
+    firestore
+        .collection('documents')
+        .doc(documentObject.id)
+        .collection('components')
+        .doc(clickedId)
+        .delete();
 }
