@@ -1,6 +1,6 @@
 const auth = firebase.auth();
 const firestore = firebase.firestore();
-
+const supportBtn = document.getElementById("supportBtn");
 const accountBtn = document.getElementById("account-btn");
 
 auth.onAuthStateChanged(user => {
