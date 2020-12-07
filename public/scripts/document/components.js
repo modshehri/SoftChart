@@ -8,11 +8,12 @@ var components = [];
 var connections = [];
 var drawnConnections = [];
 
+var connectFromId;
+
 canvas.onclick = function() {
     if (currentModifyingComponent == null) {
         return;
     }
-    console.log("saving..." + currentModifyingComponent.id);
 
     firestore
         .collection('documents')
@@ -81,6 +82,10 @@ function makeComponentDraggable(htmlElement, component) {
             .delete();
     });
 
+    $("#" + component.id + "connect").click(function(event) {
+        handleConnectionClick(component.id)
+    });
+
     function dragElement(elmnt) {
         // A neewly dropped element has id == null is not saved in the database, therefore, save it.
         if (component.id == null) {
@@ -127,8 +132,6 @@ function makeComponentDraggable(htmlElement, component) {
         }
 
         function closeDragElement(e) {
-            console.log("Ended Dragging");
-
             firestore
                 .collection('documents')
                 .doc(documentObject.id)
@@ -194,7 +197,6 @@ function drawAllConnections(connections) {
     for (index in connections) {
         var conc = connections[index];
         var drawnConc = new LeaderLine(document.getElementById(conc.fromId), document.getElementById(conc.toId));
-        console.log(drawnConc);
         drawnConc.setOptions({
             color: "black",
             path: "grid",
@@ -220,4 +222,23 @@ function clearDrawnConnections() {
         this.drawnConnections[index].remove();
     }
     this.drawnConnections = [];
+}
+
+function handleConnectionClick(clickedId) {
+    if (!this.connectFromId) {
+        this.connectFromId = clickedId;
+        console.log(this.connectFromId);
+        $("#connection-prompt").fadeIn();
+    } else {
+        var connection = Connection.create(this.connectFromId, clickedId);
+        this.connectFromId = null;
+        firestore
+            .collection('documents')
+            .doc(documentObject.id)
+            .collection('connections')
+            .withConverter(connectionConverter)
+            .add(connection);
+
+        $("#connection-prompt").fadeOut();
+    }
 }
