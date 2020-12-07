@@ -10,6 +10,11 @@ const invitationsDialogDiv = document.getElementById("invitations-dialog");
 const documentsShadowDiv = document.getElementById("documents-shadow");
 const userInvitationsButton = document.getElementById("user-invitations-button");
 
+const allDocumentsBtn = document.getElementById("allDocumentsBtn"); 
+const yourDocumentsBtn = document.getElementById("yourDocumentsBtn");
+const sharedWithYouBtn = document.getElementById("sharedWithYouBtn");    
+const trashBtn = document.getElementById("trashBtn");
+
 const searchDocs = document.getElementById("searchDocs");
 
 var documentsListener
@@ -18,6 +23,54 @@ var userId = null
 var visibaleUserDocuments = [];
 
 var isAnimating = false
+
+allDocumentsBtn.onclick = function(){
+    allDocumentsBtn.className = "selected";
+    yourDocumentsBtn.className = "unselected";
+    sharedWithYouBtn.className = "unselected";
+    trashBtn.className = "unselected";
+
+    loadDocuments();
+}
+
+yourDocumentsBtn.onclick = function(){
+    allDocumentsBtn.className = "unselected";
+    yourDocumentsBtn.className = "selected";
+    sharedWithYouBtn.className = "unselected";
+    trashBtn.className = "unselected";
+
+    clearDocumentsHTML();
+
+    for (var i =0; i < visibaleUserDocuments.length ; i++){
+        if(visibaleUserDocuments[i].adminUid == userId){
+            addDocumentToHTML(visibaleUserDocuments[i]);
+        }
+    }
+
+}
+
+sharedWithYouBtn.onclick = function(){
+    allDocumentsBtn.className = "unselected";
+    yourDocumentsBtn.className = "unselected";
+    sharedWithYouBtn.className = "selected";
+    trashBtn.className = "unselected";
+
+    clearDocumentsHTML();
+
+    for (var i =0; i < visibaleUserDocuments.length ; i++){
+        if(visibaleUserDocuments[i].adminUid != userId){
+            addDocumentToHTML(visibaleUserDocuments[i]);
+        }
+    }
+
+}
+
+trashBtn.onclick = function(){
+    allDocumentsBtn.className = "unselected";
+    yourDocumentsBtn.className = "unselected";
+    sharedWithYouBtn.className = "unselected";
+    trashBtn.className = "selected";
+}
 
 userInvitationsButton.onclick = function() {
     console.log("hello from the other side")
@@ -199,7 +252,7 @@ function loadDocuments() {
 
 searchDocs.oninput = function() {
     var target = ""+searchDocs.value;
-    
+    []
     
     clearDocumentsHTML();
 

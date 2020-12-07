@@ -34,7 +34,7 @@ hr {
     margin-bottom: 20px;
 }
 
-#selected {
+.selected {
     background: linear-gradient(90deg, #3A00A9 0%, #6052EC 100%);
     color: white;
     width: 100%;
