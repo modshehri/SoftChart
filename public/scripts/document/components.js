@@ -1,6 +1,5 @@
 const canvas = document.getElementById("canvas");
 
-
 var componentsListener;
 var connectionsListener;
 
@@ -10,9 +9,17 @@ var drawnConnections = [];
 
 var connectFromId;
 
-canvas.onclick = function() {
+var draggingComponent = null;
+var currentModifyingComponent = null;
+
+document.onclick = function() {
     if (currentModifyingComponent == null) {
         return;
+    }
+
+    if (connectFromId != null) {
+        $("#connection-prompt").fadeOut();
+        connectFromId = null;
     }
 
     firestore
@@ -25,8 +32,7 @@ canvas.onclick = function() {
     currentModifyingComponent = null;
 }
 
-var draggingComponent = null;
-var currentModifyingComponent = null;
+
 
 function allowDrop(ev) {
     ev.preventDefault();
