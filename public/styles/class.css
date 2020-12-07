@@ -30,3 +30,9 @@ table, th, td {
 .table-component-header {
     text-align: center;
 }
+
+.component-icon {
+    width: 20px;
+    cursor: pointer;
+    opacity: 0;
+}

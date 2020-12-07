@@ -23,6 +23,32 @@ class Component {
     getHTMLElement() {
         var componentContainerDiv = document.createElement("div");
         componentContainerDiv.className = "canvas-component";
+        componentContainerDiv.id = this.id;
+
+        var dragHeader = document.createElement("div");
+
+        var dragImage = document.createElement("img");
+        dragImage.src = "images/drag.png";
+        dragImage.className = "component-icon";
+        dragImage.id = this.id + "header";
+
+        var deleteComponentImage = document.createElement("img");
+        deleteComponentImage.src = "images/delete-component.png";
+        deleteComponentImage.className = "component-icon";
+        deleteComponentImage.id = this.id + "delete";
+
+        dragHeader.append(dragImage, deleteComponentImage);
+        componentContainerDiv.append(dragHeader);
+        
+        componentContainerDiv.onmouseenter = function() {
+            $(`#${this.id + "header"}`).animate({ opacity: 1.0 });
+            $(`#${this.id + "delete"}`).animate({ opacity: 1.0 });
+        };
+    
+        componentContainerDiv.onmouseleave = function() {
+            $(`#${this.id + "header"}`).animate({ opacity: 1.0 });
+            $(`#${this.id + "delete"}`).animate({ opacity: 1.0 });
+        };
 
         if (this.type == 'CLASS') {
             var classNameHeader = document.createElement("th");
@@ -126,7 +152,6 @@ class Component {
         } else if (type == 'ACTOR') {
             var componentActorName = html.getElementsByTagName("p")[0].innerHTML;
             this.textContents = [componentActorName];
-
         }
     }
 }

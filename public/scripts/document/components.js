@@ -1,6 +1,23 @@
 const canvas = document.getElementById("canvas");
 
+canvas.onclick = function() {
+    if (currentModifyingComponent == null) {
+        return;
+    }
+    console.log("saving..." + currentModifyingComponent.id);
+
+    firestore
+        .collection('documents')
+        .doc(documentObject.id)
+        .collection('components')
+        .doc(currentModifyingComponent.id)
+        .update({ textContents: currentModifyingComponent.textContents } );
+
+    currentModifyingComponent = null;
+}
+
 var draggingComponent = null;
+var currentModifyingComponent = null;
 
 function allowDrop(ev) {
     ev.preventDefault();
@@ -18,10 +35,10 @@ function drawComponents(components) {
 
 function drawComponent(component) {
     var html = component.getHTMLElement();
-    html.style.left = (component.x - 125) + "px";
-    html.style.top = (component.y - 65) + "px";
-    makeComponentDraggable(html, component);
+    html.style.left = (component.x - 10) + "px";
+    html.style.top = (component.y - 10) + "px";
     canvas.append(html);
+    makeComponentDraggable(html, component);
 }
 
 function dropComponent(event) {
@@ -34,14 +51,31 @@ function dropComponent(event) {
 function drawNewComponent(componentType, x, y) {
     var component = Component.create(componentType, x, y);
     var componentHTMLElement = component.getHTMLElement();
-    componentHTMLElement.style.left = (x - 125) + "px";
-    componentHTMLElement.style.top = (y - 65) + "px";
-    makeComponentDraggable(componentHTMLElement, component);
+    componentHTMLElement.style.left = (x - 10) + "px";
+    componentHTMLElement.style.top = (y - 10) + "px";
     canvas.append(componentHTMLElement);
+    makeComponentDraggable(componentHTMLElement, component);
 }
 
 function makeComponentDraggable(htmlElement, component) {
     dragElement(htmlElement);
+
+    htmlElement.onclick = function() {
+        currentModifyingComponent = component;
+    }
+
+    $("#" + component.id).click(function(event) {
+        event.stopPropagation();
+    });
+
+    $("#" + component.id + "delete").click(function(event) {
+        firestore
+            .collection('documents')
+            .doc(documentObject.id)
+            .collection('components')
+            .doc(component.id)
+            .delete();
+    });
 
     function dragElement(elmnt) {
         // A neewly dropped element has id == null is not saved in the database, therefore, save it.
@@ -58,14 +92,13 @@ function makeComponentDraggable(htmlElement, component) {
         if (document.getElementById(elmnt.id + "header")) {
             // if present, the header is where you move the DIV from:
             document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+
         } else {
             // otherwise, move the DIV from anywhere inside the DIV:
             elmnt.onmousedown = dragMouseDown;
         }
 
         function dragMouseDown(e) {
-            console.log("Started Dragging");
-
             e = e || window.event;
             e.preventDefault();
             // get the mouse cursor position at startup:
@@ -77,8 +110,6 @@ function makeComponentDraggable(htmlElement, component) {
         }
 
         function elementDrag(e) {
-            console.log("Dragging");
-
             e = e || window.event;
             e.preventDefault();
             // calculate the new cursor position:
@@ -93,14 +124,14 @@ function makeComponentDraggable(htmlElement, component) {
 
         function closeDragElement(e) {
             console.log("Ended Dragging");
-            console.log(component.textContents);
+
             firestore
                 .collection('documents')
                 .doc(documentObject.id)
                 .collection('components')
                 .doc(component.id)
                 .update({ textContents: component.textContents, x: e.clientX, y: e.clientY } );
-
+            
             // stop moving when mouse button is released:
             document.onmouseup = null;
             document.onmousemove = null;
