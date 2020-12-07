@@ -1,5 +1,13 @@
 const canvas = document.getElementById("canvas");
 
+
+var componentsListener;
+var connectionsListener;
+
+var components = [];
+var connections = [];
+var drawnConnections = [];
+
 canvas.onclick = function() {
     if (currentModifyingComponent == null) {
         return;
@@ -50,11 +58,7 @@ function dropComponent(event) {
 
 function drawNewComponent(componentType, x, y) {
     var component = Component.create(componentType, x, y);
-    var componentHTMLElement = component.getHTMLElement();
-    componentHTMLElement.style.left = (x - 10) + "px";
-    componentHTMLElement.style.top = (y - 10) + "px";
-    canvas.append(componentHTMLElement);
-    makeComponentDraggable(componentHTMLElement, component);
+    drawComponent(component);
 }
 
 function makeComponentDraggable(htmlElement, component) {
@@ -131,7 +135,8 @@ function makeComponentDraggable(htmlElement, component) {
                 .collection('components')
                 .doc(component.id)
                 .update({ textContents: component.textContents, x: e.clientX, y: e.clientY } );
-            
+
+            repositionAllConnections();
             // stop moving when mouse button is released:
             document.onmouseup = null;
             document.onmousemove = null;
@@ -139,8 +144,28 @@ function makeComponentDraggable(htmlElement, component) {
     }
 }
 
-function retrieveDocumentComponents() {
-    firestore
+function attachDocumentConnectionsListener() {
+    if (this.connectionsListener) { return; }
+
+    connectionsListener = firestore
+        .collection('documents')
+        .doc(documentObject.id)
+        .collection('connections')
+        .onSnapshot(function (querySnapshot) {
+            clearAllConnections();
+            var connections = [];
+            querySnapshot.forEach(function (doc) {
+                var c = new Connection(doc.id, doc.data().fromId, doc.data().toId);
+                connections.push(c);
+            });
+            drawAllConnections(connections);
+    });
+}
+
+function attachDocumentComponentsListener() {
+    if (this.componentsListener) { return; }
+
+    componentsListener = firestore
         .collection('documents')
         .doc(documentObject.id)
         .collection('components')
@@ -151,9 +176,48 @@ function retrieveDocumentComponents() {
                 components.push(new Component(doc.id, doc.data().type, doc.data().textContents, doc.data().x, doc.data().y));
             });
             drawComponents(components);
-        });
+        
+        attachDocumentConnectionsListener();
+    });
+}
+
+function repositionAllConnections() {
+    clearDrawnConnections();
+    drawAllConnections(this.connections);
 }
 
 function clearAllComponents() {
     canvas.innerHTML = "";
+}
+
+function drawAllConnections(connections) {
+    for (index in connections) {
+        var conc = connections[index];
+        var drawnConc = new LeaderLine(document.getElementById(conc.fromId), document.getElementById(conc.toId));
+        console.log(drawnConc);
+        drawnConc.setOptions({
+            color: "black",
+            path: "grid",
+            endPlug: "arrow3",
+            size: 3
+        });
+        drawnConc.show();
+        this.drawnConnections.push(drawnConc);
+    }
+    this.connections = connections;
+}
+
+function clearAllConnections() {
+    for (index in this.drawnConnections) {
+        this.drawnConnections[index].remove();
+    }
+    this.drawnConnections = [];
+    this.connections = [];
+}
+
+function clearDrawnConnections() {
+    for (index in this.drawnConnections) {
+        this.drawnConnections[index].remove();
+    }
+    this.drawnConnections = [];
 }
