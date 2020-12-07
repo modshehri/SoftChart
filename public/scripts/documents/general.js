@@ -21,7 +21,7 @@ var documentsListener
 var invitationsListener
 var userId = null
 var visibaleUserDocuments = [];
-var deletedDocuments = [];
+var unVisibaleDocuments = [];
 
 var isAnimating = false
 
@@ -31,6 +31,7 @@ allDocumentsBtn.onclick = function(){
     sharedWithYouBtn.className = "unselected";
     trashBtn.className = "unselected";
 
+    unVisibaleDocuments = [];
     loadDocuments();
 }
 
@@ -40,14 +41,17 @@ yourDocumentsBtn.onclick = function(){
     sharedWithYouBtn.className = "unselected";
     trashBtn.className = "unselected";
 
+    unVisibaleDocuments = [];
     clearDocumentsHTML();
 
     for (var i =0; i < visibaleUserDocuments.length ; i++){
         if(visibaleUserDocuments[i].adminUid == userId){
             addDocumentToHTML(visibaleUserDocuments[i]);
         }
+        else{
+            unVisibaleDocuments.push(visibaleUserDocuments[i]);
+        }
     }
-
 }
 
 sharedWithYouBtn.onclick = function(){
@@ -56,14 +60,17 @@ sharedWithYouBtn.onclick = function(){
     sharedWithYouBtn.className = "selected";
     trashBtn.className = "unselected";
 
+    unVisibaleDocuments = [];
     clearDocumentsHTML();
 
     for (var i =0; i < visibaleUserDocuments.length ; i++){
         if(visibaleUserDocuments[i].adminUid != userId){
             addDocumentToHTML(visibaleUserDocuments[i]);
         }
+        else{
+            unVisibaleDocuments.push(visibaleUserDocuments[i]);
+        }
     }
-
 }
 
 trashBtn.onclick = function(){
@@ -252,13 +259,13 @@ function loadDocuments() {
 }
 
 searchDocs.oninput = function() {
-    var target = ""+searchDocs.value;
+    var target = ""+searchDocs.value.toLowerCase();
     []
     
     clearDocumentsHTML();
 
     for (var i =0; i < visibaleUserDocuments.length ; i++){
-        if(visibaleUserDocuments[i].name.includes(target)){
+        if(visibaleUserDocuments[i].name.toLowerCase().includes(target) && !unVisibaleDocuments.includes(visibaleUserDocuments[i])){
             addDocumentToHTML(visibaleUserDocuments[i]);
         }
     }
