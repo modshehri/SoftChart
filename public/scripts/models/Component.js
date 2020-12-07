@@ -15,7 +15,7 @@ class Component {
         } else if (type == 'USECASE') {
             return new Component(null, 'USECASE', ['Use Case'], x, y);
         } else if (type == 'ACTOR') {
-            return new Component(null, 'ACTOR', ['Actor Nameasdasdasdasdasdasdasd'], x, y);
+            return new Component(null, 'ACTOR', ['Actor Name'], x, y);
         }
         return null;
     }
