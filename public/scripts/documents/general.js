@@ -21,6 +21,7 @@ var documentsListener
 var invitationsListener
 var userId = null
 var visibaleUserDocuments = [];
+var deletedDocuments = [];
 
 var isAnimating = false
 
