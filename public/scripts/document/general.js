@@ -34,7 +34,7 @@ function loadData() {
                 return;
             }
 
-            retrieveDocumentComponents();
+            attachDocumentComponentsListener();
             retrieveDocumentUsers();
         } else {
             redirectToIndex();

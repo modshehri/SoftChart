@@ -37,17 +37,25 @@ class Component {
         deleteComponentImage.className = "component-icon";
         deleteComponentImage.id = this.id + "delete";
 
-        dragHeader.append(dragImage, deleteComponentImage);
+        var createConnectionImage = document.createElement("img");
+        createConnectionImage.src = "images/connect-component.png";
+        createConnectionImage.className = "component-icon";
+        createConnectionImage.id = this.id + "connect";
+
+        dragHeader.append(dragImage, deleteComponentImage, createConnectionImage);
+
         componentContainerDiv.append(dragHeader);
         
         componentContainerDiv.onmouseenter = function() {
             $(`#${this.id + "header"}`).animate({ opacity: 1.0 });
             $(`#${this.id + "delete"}`).animate({ opacity: 1.0 });
+            $(`#${this.id + "connect"}`).animate({ opacity: 1.0 });
         };
     
         componentContainerDiv.onmouseleave = function() {
             $(`#${this.id + "header"}`).animate({ opacity: 0.0 });
             $(`#${this.id + "delete"}`).animate({ opacity: 0.0 });
+            $(`#${this.id + "connect"}`).animate({ opacity: 0.0 });
         };
 
         if (this.type == 'CLASS') {

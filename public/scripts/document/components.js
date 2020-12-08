@@ -1,10 +1,26 @@
 const canvas = document.getElementById("canvas");
 
-canvas.onclick = function() {
+var componentsListener;
+var connectionsListener;
+
+var components = [];
+var connections = [];
+var drawnConnections = [];
+
+var connectFromId;
+
+var draggingComponent = null;
+var currentModifyingComponent = null;
+
+document.onclick = function() {
     if (currentModifyingComponent == null) {
         return;
     }
-    console.log("saving..." + currentModifyingComponent.id);
+
+    if (connectFromId != null) {
+        $("#connection-prompt").fadeOut();
+        connectFromId = null;
+    }
 
     firestore
         .collection('documents')
@@ -16,8 +32,7 @@ canvas.onclick = function() {
     currentModifyingComponent = null;
 }
 
-var draggingComponent = null;
-var currentModifyingComponent = null;
+
 
 function allowDrop(ev) {
     ev.preventDefault();
@@ -50,11 +65,7 @@ function dropComponent(event) {
 
 function drawNewComponent(componentType, x, y) {
     var component = Component.create(componentType, x, y);
-    var componentHTMLElement = component.getHTMLElement();
-    componentHTMLElement.style.left = (x - 10) + "px";
-    componentHTMLElement.style.top = (y - 10) + "px";
-    canvas.append(componentHTMLElement);
-    makeComponentDraggable(componentHTMLElement, component);
+    drawComponent(component);
 }
 
 function makeComponentDraggable(htmlElement, component) {
@@ -69,12 +80,11 @@ function makeComponentDraggable(htmlElement, component) {
     });
 
     $("#" + component.id + "delete").click(function(event) {
-        firestore
-            .collection('documents')
-            .doc(documentObject.id)
-            .collection('components')
-            .doc(component.id)
-            .delete();
+        handleDeletionClick(component.id);
+    });
+
+    $("#" + component.id + "connect").click(function(event) {
+        handleConnectionClick(component.id);
     });
 
     function dragElement(elmnt) {
@@ -178,8 +188,28 @@ function makeComponentDraggable(htmlElement, component) {
     }
 }
 
-function retrieveDocumentComponents() {
-    firestore
+function attachDocumentConnectionsListener() {
+    if (this.connectionsListener) { return; }
+
+    connectionsListener = firestore
+        .collection('documents')
+        .doc(documentObject.id)
+        .collection('connections')
+        .onSnapshot(function (querySnapshot) {
+            clearAllConnections();
+            var connections = [];
+            querySnapshot.forEach(function (doc) {
+                var c = new Connection(doc.id, doc.data().fromId, doc.data().toId);
+                connections.push(c);
+            });
+            drawAllConnections(connections);
+    });
+}
+
+function attachDocumentComponentsListener() {
+    if (this.componentsListener) { return; }
+
+    componentsListener = firestore
         .collection('documents')
         .doc(documentObject.id)
         .collection('components')
@@ -190,9 +220,87 @@ function retrieveDocumentComponents() {
                 components.push(new Component(doc.id, doc.data().type, doc.data().textContents, doc.data().x, doc.data().y));
             });
             drawComponents(components);
-        });
+        
+        attachDocumentConnectionsListener();
+    });
+}
+
+function repositionAllConnections() {
+    clearDrawnConnections();
+    drawAllConnections(this.connections);
 }
 
 function clearAllComponents() {
     canvas.innerHTML = "";
+}
+
+function drawAllConnections(connections) {
+    for (index in connections) {
+        var conc = connections[index];
+        var drawnConc = new LeaderLine(document.getElementById(conc.fromId), document.getElementById(conc.toId));
+        drawnConc.setOptions({
+            color: "black",
+            path: "grid",
+            endPlug: "arrow3",
+            size: 2
+        });
+        drawnConc.show();
+        this.drawnConnections.push(drawnConc);
+    }
+    this.connections = connections;
+}
+
+function clearAllConnections() {
+    for (index in this.drawnConnections) {
+        this.drawnConnections[index].remove();
+    }
+    this.drawnConnections = [];
+    this.connections = [];
+}
+
+function clearDrawnConnections() {
+    for (index in this.drawnConnections) {
+        this.drawnConnections[index].remove();
+    }
+    this.drawnConnections = [];
+}
+
+function handleConnectionClick(clickedId) {
+    if (!this.connectFromId) {
+        this.connectFromId = clickedId;
+        console.log(this.connectFromId);
+        $("#connection-prompt").fadeIn();
+    } else {
+        var connection = Connection.create(this.connectFromId, clickedId);
+        this.connectFromId = null;
+        firestore
+            .collection('documents')
+            .doc(documentObject.id)
+            .collection('connections')
+            .withConverter(connectionConverter)
+            .add(connection);
+
+        $("#connection-prompt").fadeOut();
+    }
+}
+
+function handleDeletionClick(clickedId) {
+    for (connectionIndex in this.connections) {
+        var conc = this.connections[connectionIndex];
+        if (conc.fromId == clickedId || conc.toId == clickedId) {
+            firestore
+                .collection('documents')
+                .doc(documentObject.id)
+                .collection('connections')
+                .doc(conc.id)
+                .delete();
+        }
+    }
+    
+    firestore
+        .collection('documents')
+        .doc(documentObject.id)
+        .collection('components')
+        .doc(clickedId)
+        .delete();
 }
