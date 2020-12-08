@@ -117,20 +117,59 @@ function makeComponentDraggable(htmlElement, component) {
             pos2 = pos4 - e.clientY;
             pos3 = e.clientX;
             pos4 = e.clientY;
+            var canvasPositioning = document.getElementById("canvas").getBoundingClientRect();
+            var elementPositioning = elmnt.getBoundingClientRect();
+            var elementWidth = elementPositioning.right - elementPositioning.left;
+            var elementHeight = elementPositioning.bottom - elementPositioning.top;
+            
             // set the element's new position:
-            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            
+            if((elmnt.offsetTop - pos2 >= canvasPositioning.top) && (elmnt.offsetTop - pos2  + elementHeight<= canvasPositioning.bottom)){
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            }
+            
+            if(elmnt.offsetLeft - pos1 >= canvasPositioning.left && elmnt.offsetLeft - pos1 + elementWidth<= canvasPositioning.right){
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+            
         }
 
         function closeDragElement(e) {
+
+
             console.log("Ended Dragging");
+
+            var canvasPositioning = document.getElementById("canvas").getBoundingClientRect();
+            var elementPositioning = elmnt.getBoundingClientRect();
+            var elementWidth = elementPositioning.right - elementPositioning.left;
+            var elementHeight = elementPositioning.bottom - elementPositioning.top;
+            var x= e.clientX;
+            var y= e.clientY;
+
+            
+            if(y <= canvasPositioning.top){
+                console.log("Higher")
+                y = canvasPositioning.top;
+            }
+            if((y + elementHeight>= canvasPositioning.bottom)){
+                console.log("Lower")
+                y = canvasPositioning.bottom - elementHeight;
+            }
+            if(x<= canvasPositioning.left){
+                console.log("Lefter")
+                x = canvasPositioning.left
+            }
+            if (x + elementWidth >= canvasPositioning.right){
+                console.log("Righter")
+                x = canvasPositioning.right - elementWidth;
+            }
 
             firestore
                 .collection('documents')
                 .doc(documentObject.id)
                 .collection('components')
                 .doc(component.id)
-                .update({ textContents: component.textContents, x: e.clientX, y: e.clientY } );
+                .update({ textContents: component.textContents, x: x, y: y } );
             
             // stop moving when mouse button is released:
             document.onmouseup = null;
