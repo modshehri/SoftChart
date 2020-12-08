@@ -202,7 +202,7 @@ function drawAllConnections(connections) {
             color: "black",
             path: "grid",
             endPlug: "arrow3",
-            size: 3
+            size: 2
         });
         drawnConc.show();
         this.drawnConnections.push(drawnConc);
