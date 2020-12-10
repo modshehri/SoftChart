@@ -18,7 +18,6 @@ function attachDocumentConnectionsListener() {
                 var c = new Connection(doc.id, doc.data().fromId, doc.data().toId);
                 connections.push(c);
             });
-            console.log(connections);
             drawAllConnections(connections);
     });
 }

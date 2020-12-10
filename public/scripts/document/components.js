@@ -115,5 +115,5 @@ function handleDeletionClick(clickedId) {
         }
     }
     
-    deleteComponent(ocumentObject.id, clickedId);
+    deleteComponent(documentObject.id, clickedId);
 }
