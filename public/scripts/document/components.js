@@ -40,6 +40,7 @@ function attachDocumentComponentsListener() {
             });
             drawComponents(components);
         
+        // A call to query all the connections between components (->connections.js).
         attachDocumentConnectionsListener();
     });
 }

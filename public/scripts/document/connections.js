@@ -1,9 +1,9 @@
-var connectionsListener;
+var connectionsListener = null;
+var connections         = [];
+var drawnConnections    = [];
+var connectFromId       = null;
 
-var connections = [];
-var drawnConnections = [];
-var connectFromId;
-
+// Firestore Function
 function attachDocumentConnectionsListener() {
     if (this.connectionsListener) { return; }
 
@@ -23,6 +23,26 @@ function attachDocumentConnectionsListener() {
     });
 }
 
+function deleteConnection(docId, connId) {
+    firestore
+        .collection('documents')
+        .doc(docId)
+        .collection('connections')
+        .doc(connId)
+        .delete();
+}
+
+function addConnection(docId, connection) {
+    firestore
+        .collection('documents')
+        .doc(docId)
+        .collection('connections')
+        .withConverter(connectionConverter)
+        .add(connection);
+}
+
+
+// Rendering Connections Functions
 function repositionAllConnections() {
     clearDrawnConnections();
     drawAllConnections(this.connections);
@@ -72,24 +92,6 @@ function handleConnectionClick(clickedId) {
         this.connectFromId = null;
         setConnectionPromptHidden(true);
     }
-}
-
-function deleteConnection(docId, connId) {
-    firestore
-        .collection('documents')
-        .doc(docId)
-        .collection('connections')
-        .doc(connId)
-        .delete();
-}
-
-function addConnection(docId, connection) {
-    firestore
-        .collection('documents')
-        .doc(docId)
-        .collection('connections')
-        .withConverter(connectionConverter)
-        .add(connection);
 }
 
 function setConnectionPromptHidden(hidden) {
