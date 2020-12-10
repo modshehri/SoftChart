@@ -1,5 +1,5 @@
 const umcButton = document.getElementById("user-management-button");
-const canvasShadowDiv = document.getElementById("canvas-shadow");
+const documentShadowDiv = document.getElementById("document-shadow");
 const userManagementDiv = document.getElementById("user-management");
 const inviteEmailTextField = document.getElementById("invite-email-text-field");
 const inviteButton = document.getElementById("invite-button");
@@ -43,22 +43,22 @@ inviteButton.onclick = async function () {
 }
 
 umcButton.onclick = function () {
-    setUsersDialogHidden(true);
+    setUsersDialogHidden(false);
 }
 
-canvasShadowDiv.onclick = function () {
+documentShadowDiv.onclick = function () {
     setUsersDialogHidden(true);
 }
 
 function setUsersDialogHidden(hidden) {
     if (!hidden) {
-        $(`#${canvasShadowDiv.id}`).css({ "z-index": "1" });
+        $(`#${documentShadowDiv.id}`).css({ "z-index": "1" });
         $(`#${userManagementDiv.id}`).css({ "z-index": "1" });
-        $(`#${canvasShadowDiv.id}`).fadeIn('slow');
+        $(`#${documentShadowDiv.id}`).fadeIn('slow');
         $(`#${userManagementDiv.id}`).fadeIn('slow');
     } else {
-        $(`#${canvasShadowDiv.id}`).fadeOut('slow', function () {
-            $(`#${canvasShadowDiv.id}`).css({ "z-index": "0" });
+        $(`#${documentShadowDiv.id}`).fadeOut('slow', function () {
+            $(`#${documentShadowDiv.id}`).css({ "z-index": "0" });
         });
     
         $(`#${userManagementDiv.id}`).fadeOut('slow', function () {
