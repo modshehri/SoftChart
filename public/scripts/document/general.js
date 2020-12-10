@@ -1,11 +1,11 @@
-const auth = firebase.auth();
+const auth      = firebase.auth();
 const firestore = firebase.firestore();
 
 const myDocs = document.getElementById("DocsButton");
 
-var documentObject;
-var documentListener;
-var user;
+var documentObject   = null;
+var documentListener = null;
+var user             = null;
 
 auth.onAuthStateChanged(user => {
     if (user) {
@@ -34,7 +34,10 @@ function loadData() {
                 return;
             }
 
+            // A call to query all the components in the document (->components.js).
             attachDocumentComponentsListener();
+
+            // A call to query all the users in the document (->user-management.js).
             retrieveDocumentUsers();
         } else {
             redirectToIndex();
