@@ -12,27 +12,30 @@ var connectFromId;
 var draggingComponent = null;
 var currentModifyingComponent = null;
 
+/*
+    This method is used to achieve two goals. And it is called when ever the document gets clicked.
+    1- If a user was modifying a component (e.g. changing the class name),
+    this method will call the "updateComponent" method which will save the modified component to the database.
+
+    2- If the user initiated a "connection" process (i.e. connecting two components with a line),
+    this method will abort the connection process and hide the connection prompt.
+*/
+
 document.onclick = function() {
-    if (currentModifyingComponent == null) {
-        return;
-    }
-
-    if (connectFromId != null) {
-        $("#connection-prompt").fadeOut();
-        connectFromId = null;
-    }
-
-    firestore
-        .collection('documents')
-        .doc(documentObject.id)
-        .collection('components')
-        .doc(currentModifyingComponent.id)
-        .update({ textContents: currentModifyingComponent.textContents } );
-
-    currentModifyingComponent = null;
+    //If the document was clicked, and a connection was initiated, abort the connection.
+    if (connectFromId != null) { abortConnectingComponents(); }
+    if (currentModifyingComponent != null) { updateRecentlyModifiedComponent(); }
 }
 
+function abortConnectingComponents() {
+    setConnectionPromptHidden(true);
+    connectFromId = null;
+}
 
+function updateRecentlyModifiedComponent() {
+    updateComponent(documentObject.id, currentModifyingComponent.id, { textContents: currentModifyingComponent.textContents });
+    currentModifyingComponent = null;
+}
 
 function allowDrop(ev) {
     ev.preventDefault();
@@ -88,100 +91,82 @@ function makeComponentDraggable(htmlElement, component) {
     });
 
     function dragElement(elmnt) {
-        // A neewly dropped element has id == null is not saved in the database, therefore, save it.
+        // A neewly dropped element has id == null is not saved in the database, therefore, save it by adding it to Firestore.
         if (component.id == null) {
-            firestore
-                .collection('documents')
-                .doc(documentObject.id)
-                .collection('components')
-                .withConverter(componentConverter)
-                .add(component)
+            addComponent(documentObject.id, component);
         }
         
         var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-        if (document.getElementById(elmnt.id + "header")) {
-            // if present, the header is where you move the DIV from:
-            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
 
+        // Set drag point
+        if (document.getElementById(elmnt.id + "header")) {
+            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
         } else {
-            // otherwise, move the DIV from anywhere inside the DIV:
             elmnt.onmousedown = dragMouseDown;
         }
 
+        // Called when clicked on an element
         function dragMouseDown(e) {
             e = e || window.event;
             e.preventDefault();
-            // get the mouse cursor position at startup:
             pos3 = e.clientX;
             pos4 = e.clientY;
             document.onmouseup = closeDragElement;
-            // call a function whenever the cursor moves:
             document.onmousemove = elementDrag;
         }
 
+        // Called when dragging an element
         function elementDrag(e) {
             e = e || window.event;
             e.preventDefault();
-            // calculate the new cursor position:
+
             pos1 = pos3 - e.clientX;
             pos2 = pos4 - e.clientY;
             pos3 = e.clientX;
             pos4 = e.clientY;
+
             var canvasPositioning = document.getElementById("canvas").getBoundingClientRect();
             var elementPositioning = elmnt.getBoundingClientRect();
             var elementWidth = elementPositioning.right - elementPositioning.left;
             var elementHeight = elementPositioning.bottom - elementPositioning.top;
-            
-            // set the element's new position:
-            
-            if((elmnt.offsetTop - pos2 >= canvasPositioning.top) && (elmnt.offsetTop - pos2  + elementHeight<= canvasPositioning.bottom)){
+
+            // Prevent dragging components outside of document.
+            if((elmnt.offsetTop - pos2 >= canvasPositioning.top) && (elmnt.offsetTop - pos2  + elementHeight <= canvasPositioning.bottom)){
                 elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
             }
-            
-            if(elmnt.offsetLeft - pos1 >= canvasPositioning.left && elmnt.offsetLeft - pos1 + elementWidth<= canvasPositioning.right){
+            if(elmnt.offsetLeft - pos1 >= canvasPositioning.left && elmnt.offsetLeft - pos1 + elementWidth <= canvasPositioning.right){
                 elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
             }
-            
         }
 
+        // Called after dropping an element
         function closeDragElement(e) {
-            console.log("Ended Dragging");
-
             var canvasPositioning = document.getElementById("canvas").getBoundingClientRect();
+
             var elementPositioning = elmnt.getBoundingClientRect();
             var elementWidth = elementPositioning.right - elementPositioning.left;
             var elementHeight = elementPositioning.bottom - elementPositioning.top;
             var x= e.clientX;
             var y= e.clientY;
 
-            if(y <= canvasPositioning.top){
-                console.log("Higher")
+            // Prevent dropping element out of document
+            if(y <= canvasPositioning.top) {
                 y = canvasPositioning.top;
             }
-            if((y + elementHeight>= canvasPositioning.bottom)){
-                console.log("Lower")
+            if((y + elementHeight >= canvasPositioning.bottom)) {
                 y = canvasPositioning.bottom - elementHeight;
             }
-            if(x<= canvasPositioning.left){
-                console.log("Lefter")
+            if(x <= canvasPositioning.left) {
                 x = canvasPositioning.left
             }
-            if (x + elementWidth >= canvasPositioning.right){
-                console.log("Righter")
+            if (x + elementWidth >= canvasPositioning.right) {
                 x = canvasPositioning.right - elementWidth;
             }
 
-
-            firestore
-                .collection('documents')
-                .doc(documentObject.id)
-                .collection('components')
-                .doc(component.id)
-                .update({ textContents: component.textContents, x: x, y: y } );
-
+            updateComponent(documentObject.id, component.id, { textContents: component.textContents, x: x, y: y });
             repositionAllConnections();
 
-            // stop moving when mouse button is released:
+            // Stop moving when mouse button is released
             document.onmouseup = null;
             document.onmousemove = null;
         }
@@ -269,18 +254,12 @@ function handleConnectionClick(clickedId) {
     if (!this.connectFromId) {
         this.connectFromId = clickedId;
         console.log(this.connectFromId);
-        $("#connection-prompt").fadeIn();
+        setConnectionPromptHidden(false);
     } else {
         var connection = Connection.create(this.connectFromId, clickedId);
         this.connectFromId = null;
-        firestore
-            .collection('documents')
-            .doc(documentObject.id)
-            .collection('connections')
-            .withConverter(connectionConverter)
-            .add(connection);
-
-        $("#connection-prompt").fadeOut();
+        addConnection(documentObject.id, connection);
+        setConnectionPromptHidden(true);
     }
 }
 
@@ -288,19 +267,58 @@ function handleDeletionClick(clickedId) {
     for (connectionIndex in this.connections) {
         var conc = this.connections[connectionIndex];
         if (conc.fromId == clickedId || conc.toId == clickedId) {
-            firestore
-                .collection('documents')
-                .doc(documentObject.id)
-                .collection('connections')
-                .doc(conc.id)
-                .delete();
+            deleteConnection(documentObject.id, conc.id);
         }
     }
     
+    deleteComponent(ocumentObject.id, clickedId);
+}
+
+function deleteComponent(docId, compId) {
     firestore
         .collection('documents')
-        .doc(documentObject.id)
+        .doc(docId)
         .collection('components')
-        .doc(clickedId)
+        .doc(compId)
         .delete();
+}
+
+function deleteConnection(docId, connId) {
+    firestore
+        .collection('documents')
+        .doc(docId)
+        .collection('connections')
+        .doc(connId)
+        .delete();
+}
+
+function addComponent(docId, component) {
+    firestore
+        .collection('documents')
+        .doc(docId)
+        .collection('components')
+        .withConverter(componentConverter)
+        .add(component)
+}
+
+function addConnection(docId, connection) {
+    firestore
+        .collection('documents')
+        .doc(docId)
+        .collection('connections')
+        .withConverter(connectionConverter)
+        .add(connection);
+}
+
+function setConnectionPromptHidden(hidden) {
+    hidden ? $("#connection-prompt").fadeOut() : $("#connection-prompt").fadeIn();
+}
+
+function updateComponent(docId, compId, fields) {
+    firestore
+        .collection('documents')
+        .doc(docId)
+        .collection('components')
+        .doc(compId)
+        .update(fields);
 }
