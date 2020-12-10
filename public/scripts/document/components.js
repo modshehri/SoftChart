@@ -1,15 +1,7 @@
 const canvas = document.getElementById("canvas");
 
-var componentsListener;
-var connectionsListener;
-
-var components = [];
-var connections = [];
-var drawnConnections = [];
-
-var connectFromId;
-
-var draggingComponent = null;
+var componentsListener        = null;
+var components                = [];
 var currentModifyingComponent = null;
 
 /*
@@ -21,45 +13,18 @@ var currentModifyingComponent = null;
     this method will abort the connection process and hide the connection prompt.
 */
 
+// Event Handler Functions
 document.onclick = function() {
     //If the document was clicked, and a connection was initiated, abort the connection.
     if (connectFromId != null) { abortConnectingComponents(); }
-    if (currentModifyingComponent != null) { updateRecentlyModifiedComponent(); }
-}
 
-function abortConnectingComponents() {
-    setConnectionPromptHidden(true);
-    connectFromId = null;
-}
-
-function updateRecentlyModifiedComponent() {
-    updateComponent(documentObject.id, currentModifyingComponent.id, { textContents: currentModifyingComponent.textContents });
-    currentModifyingComponent = null;
-}
-
-function allowDrop(ev) {
-    ev.preventDefault();
-}
-
-function dragComponent(ev, componentType) {
-    ev.dataTransfer.setData("ComponentType", componentType);
-}
-
-function drawComponents(components) {
-    for (index in components) {
-        drawComponent(components[index]);
+    if (currentModifyingComponent != null) {
+        updateComponent(documentObject.id, currentModifyingComponent.id, { textContents: currentModifyingComponent.textContents });
+        currentModifyingComponent = null;
     }
 }
 
-function drawComponent(component) {
-    var html = component.getHTMLElement();
-    html.style.left = (component.x - 10) + "px";
-    html.style.top = (component.y - 10) + "px";
-    canvas.append(html);
-    makeComponentDraggable(html, component);
-    setComponentEventHandlers(component.id);
-}
-
+// Firestore Functions
 function attachDocumentComponentsListener() {
     if (this.componentsListener) { return; }
 
@@ -77,21 +42,6 @@ function attachDocumentComponentsListener() {
         
         attachDocumentConnectionsListener();
     });
-}
-
-function clearAllComponents() {
-    canvas.innerHTML = "";
-}
-
-function handleDeletionClick(clickedId) {
-    for (connectionIndex in this.connections) {
-        var conc = this.connections[connectionIndex];
-        if (conc.fromId == clickedId || conc.toId == clickedId) {
-            deleteConnection(documentObject.id, conc.id);
-        }
-    }
-    
-    deleteComponent(ocumentObject.id, clickedId);
 }
 
 function deleteComponent(docId, compId) {
@@ -119,4 +69,50 @@ function updateComponent(docId, compId, fields) {
         .collection('components')
         .doc(compId)
         .update(fields);
+}
+
+// Component Rendering Functions
+function drawComponent(component) {
+    var html = component.getHTMLElement();
+    html.style.left = (component.x - 10) + "px";
+    html.style.top = (component.y - 10) + "px";
+    canvas.append(html);
+    makeComponentDraggable(html, component);
+    setComponentEventHandlers(component.id);
+}
+
+function setComponentEventHandlers(componentId) {
+    $("#" + componentId).click(function(event) {
+        event.stopPropagation();
+    });
+
+    $("#" + componentId + "delete").click(function(event) {
+        handleDeletionClick(componentId);
+    });
+
+    $("#" + componentId + "connect").click(function(event) {
+        event.stopPropagation();
+        handleConnectionClick(componentId);
+    });
+}
+
+function drawComponents(components) {
+    for (index in components) {
+        drawComponent(components[index]);
+    }
+}
+
+function clearAllComponents() {
+    canvas.innerHTML = "";
+}
+
+function handleDeletionClick(clickedId) {
+    for (connectionIndex in this.connections) {
+        var conc = this.connections[connectionIndex];
+        if (conc.fromId == clickedId || conc.toId == clickedId) {
+            deleteConnection(documentObject.id, conc.id);
+        }
+    }
+    
+    deleteComponent(ocumentObject.id, clickedId);
 }

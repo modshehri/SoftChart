@@ -1,3 +1,9 @@
+var connectionsListener;
+
+var connections = [];
+var drawnConnections = [];
+var connectFromId;
+
 function attachDocumentConnectionsListener() {
     if (this.connectionsListener) { return; }
 
@@ -88,4 +94,9 @@ function addConnection(docId, connection) {
 
 function setConnectionPromptHidden(hidden) {
     hidden ? $("#connection-prompt").fadeOut() : $("#connection-prompt").fadeIn();
+}
+
+function abortConnectingComponents() {
+    setConnectionPromptHidden(true);
+    connectFromId = null;
 }

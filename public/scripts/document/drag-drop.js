@@ -7,20 +7,12 @@ function dropComponent(event) {
     drawComponent(component);
 }
 
-function setComponentEventHandlers(componentId) {
-    console.log("#" + componentId);
-    $("#" + componentId).click(function(event) {
-        event.stopPropagation();
-    });
+function dragComponent(ev, componentType) {
+    ev.dataTransfer.setData("ComponentType", componentType);
+}
 
-    $("#" + componentId + "delete").click(function(event) {
-        handleDeletionClick(componentId);
-    });
-
-    $("#" + componentId + "connect").click(function(event) {
-        event.stopPropagation();
-        handleConnectionClick(componentId);
-    });
+function allowDrop(ev) {
+    ev.preventDefault();
 }
 
 function makeComponentDraggable(htmlElement, component) {
@@ -29,7 +21,7 @@ function makeComponentDraggable(htmlElement, component) {
     htmlElement.onclick = function() {
         currentModifyingComponent = component;
     }
-    
+
     function dragElement(elmnt) {
         // A neewly dropped element has id == null is not saved in the database, therefore, save it by adding it to Firestore.
         if (component.id == null) {
