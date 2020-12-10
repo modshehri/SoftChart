@@ -19,32 +19,34 @@ auth.onAuthStateChanged(user => {
 });
 
 function loadData() {
+    if (this.documentListener) { return; }
+
     documentListener = firestore
-    .collection('documents')
-    .doc(findGetParameter("id"))
-    .onSnapshot(documentSnapshot => {
-        let documentExists = documentSnapshot.exists;
-        if (documentExists) {
-            let documentData = documentSnapshot.data();
+        .collection('documents')
+        .doc(findGetParameter("id"))
+        .onSnapshot(documentSnapshot => {
+            let documentExists = documentSnapshot.exists;
+            if (documentExists) {
+                let documentData = documentSnapshot.data();
 
-            this.documentObject = new Document(documentSnapshot.id, documentData.adminUid, documentData.name, documentData.users);
+                this.documentObject = new Document(documentSnapshot.id, documentData.adminUid, documentData.name, documentData.users);
 
-            if (!this.documentObject.users.includes(this.user.uid)) {
+                if (!this.documentObject.users.includes(this.user.uid)) {
+                    redirectToIndex();
+                    return;
+                }
+
+                // A call to query all the components in the document (->components.js).
+                attachDocumentComponentsListener();
+
+                // A call to query all the users in the document (->user-management.js).
+                retrieveDocumentUsers();
+            } else {
                 redirectToIndex();
-                return;
             }
-
-            // A call to query all the components in the document (->components.js).
-            attachDocumentComponentsListener();
-
-            // A call to query all the users in the document (->user-management.js).
-            retrieveDocumentUsers();
-        } else {
+        }, err => {
             redirectToIndex();
-        }
-    }, err => {
-        redirectToIndex();
-    });
+        });
 }
 
 function unsubscribeListeners() {
