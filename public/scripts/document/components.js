@@ -145,8 +145,6 @@ function makeComponentDraggable(htmlElement, component) {
         }
 
         function closeDragElement(e) {
-
-
             console.log("Ended Dragging");
 
             var canvasPositioning = document.getElementById("canvas").getBoundingClientRect();
@@ -156,7 +154,6 @@ function makeComponentDraggable(htmlElement, component) {
             var x= e.clientX;
             var y= e.clientY;
 
-            
             if(y <= canvasPositioning.top){
                 console.log("Higher")
                 y = canvasPositioning.top;
@@ -174,13 +171,16 @@ function makeComponentDraggable(htmlElement, component) {
                 x = canvasPositioning.right - elementWidth;
             }
 
+
             firestore
                 .collection('documents')
                 .doc(documentObject.id)
                 .collection('components')
                 .doc(component.id)
                 .update({ textContents: component.textContents, x: x, y: y } );
-            
+
+            repositionAllConnections();
+
             // stop moving when mouse button is released:
             document.onmouseup = null;
             document.onmousemove = null;
