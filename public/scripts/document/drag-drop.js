@@ -3,7 +3,12 @@ function dropComponent(event) {
     var x = event.clientX;
     var y = event.clientY;
 
-    var component = Component.create(componentType, x, y);
+    var canvasPositioning = document.getElementById("canvas").getBoundingClientRect();
+
+    var pureX = x - canvasPositioning.left;
+    var pureY = y - canvasPositioning.top;
+
+    var component = Component.create(componentType, pureX, pureY);
     drawComponent(component);
 }
 
@@ -57,16 +62,11 @@ function makeComponentDraggable(htmlElement, component) {
             pos3 = e.clientX;
             pos4 = e.clientY;
 
-            var canvasPositioning = document.getElementById("canvas").getBoundingClientRect();
-            var elementPositioning = elmnt.getBoundingClientRect();
-            var elementWidth = elementPositioning.right - elementPositioning.left;
-            var elementHeight = elementPositioning.bottom - elementPositioning.top;
-
             // Prevent dragging components outside of document.
-            if((elmnt.offsetTop - pos2 >= canvasPositioning.top) && (elmnt.offsetTop - pos2  + elementHeight <= canvasPositioning.bottom)){
+            if((elmnt.offsetTop - pos2 >= 0)) {
                 elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
             }
-            if(elmnt.offsetLeft - pos1 >= canvasPositioning.left && elmnt.offsetLeft - pos1 + elementWidth <= canvasPositioning.right){
+            if(elmnt.offsetLeft - pos1 >= 0) {
                 elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
             }
         }
@@ -75,27 +75,17 @@ function makeComponentDraggable(htmlElement, component) {
         function closeDragElement(e) {
             var canvasPositioning = document.getElementById("canvas").getBoundingClientRect();
 
-            var elementPositioning = elmnt.getBoundingClientRect();
-            var elementWidth = elementPositioning.right - elementPositioning.left;
-            var elementHeight = elementPositioning.bottom - elementPositioning.top;
             var x= e.clientX;
             var y= e.clientY;
 
-            // Prevent dropping element out of document
-            if(y <= canvasPositioning.top) {
-                y = canvasPositioning.top;
-            }
-            if((y + elementHeight >= canvasPositioning.bottom)) {
-                y = canvasPositioning.bottom - elementHeight;
-            }
-            if(x <= canvasPositioning.left) {
-                x = canvasPositioning.left
-            }
-            if (x + elementWidth >= canvasPositioning.right) {
-                x = canvasPositioning.right - elementWidth;
-            }
+            var pureX = x - canvasPositioning.left;
+            var pureY = y - canvasPositioning.top;
 
-            updateComponent(documentObject.id, component.id, { textContents: component.textContents, x: x, y: y });
+            // Prevent dropping element out of document
+            pureY = pureY < 0 ? 10 : pureY;
+            pureX = pureX < 0 ? 10 : pureX;
+
+            updateComponent(documentObject.id, component.id, { textContents: component.textContents, x: pureX, y: pureY });
             repositionAllConnections();
 
             // Stop moving when mouse button is released

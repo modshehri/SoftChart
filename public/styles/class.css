@@ -4,7 +4,7 @@ table, th, td {
 }
 
 .canvas-component {
-    position: fixed;
+    position: absolute;
 }
 
 .table-component {
@@ -41,4 +41,8 @@ table, th, td {
 
 .actor-container {
     text-align: center;
+}
+
+.leader-line {
+    position: absolute;
 }

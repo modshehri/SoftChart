@@ -35,11 +35,17 @@ body {
 }
 
 #canvas-container{
-    height: 1000px;
     background-color:#EEEEEE;
+    height: 94vh;
+    padding-left: 10px;
+    padding-top: 8px;
 }
 
-#menu{
+#menu-outer {
+    height: 6vh;
+}
+
+#menu {
     color: #989898;
     list-style-type: none;
     margin: 0;
@@ -63,15 +69,22 @@ body {
 }
 
 #canvas {
+    position: relative;
     object-fit: contain;
     background-size: cover;
-    min-width: 90%;
+    width: 100%;
+    height: 100%;
+    /* min-width: 90%;
     max-width: 90%;
     max-height: 90%;
     min-height: 95%;
     margin-top: 10px;
-    margin-left: 10px;
+    margin-left: 10px; */
     background-image: url(../images/Canvas.png);
+    background-repeat: repeat;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    cursor: grab;
 }
 
 .ClassComponent {

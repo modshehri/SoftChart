@@ -3,8 +3,13 @@ var connections         = [];
 var drawnConnections    = [];
 var connectFromId       = null;
 
+canvas.onscroll = function() {
+    repositionAllConnections();
+}
+
 // Firestore Function
 function attachDocumentConnectionsListener() {
+    repositionAllConnections();
     if (this.connectionsListener) { return; }
 
     connectionsListener = firestore
