@@ -260,7 +260,6 @@ function loadDocuments() {
 
 searchDocs.oninput = function() {
     var target = ""+searchDocs.value.toLowerCase();
-    []
     
     clearDocumentsHTML();
 
@@ -269,9 +268,6 @@ searchDocs.oninput = function() {
             addDocumentToHTML(visibaleUserDocuments[i]);
         }
     }
-    
-
-
 }
 
 function unsubscribeListeners() {
@@ -283,7 +279,9 @@ function unsubscribeListeners() {
 function addDocument() {
     var name = prompt("Document Name:", "");
 
-    if (name == null || name == "") {
+    if (name == null) { return; }
+
+    if (name == "") {
         name = "Untitled"
     }
 
@@ -301,6 +299,7 @@ function addDocumentToHTML(document) {
 function getDocumentHTMLComponent(documentObj) {
     var documentDiv = document.createElement("div")
     documentDiv.className = "document"
+    documentDiv.id = documentObj.id
 
     var documentImg = document.createElement("img")
     documentImg.className = "document-image"
@@ -310,12 +309,12 @@ function getDocumentHTMLComponent(documentObj) {
     documentName.className = "document-name"
     documentName.innerHTML = documentObj.name
 
-    var deleteDocumentButton = document.createElement("img")
+    var deleteDocumentButton = document.createElement("input")
+    deleteDocumentButton.type = "image";
     deleteDocumentButton.className = "delete-document"
-    deleteDocumentButton.id = documentObj.id
+    deleteDocumentButton.id = "delete" + documentObj.id
     deleteDocumentButton.src = "images/delete.svg"
-    deleteDocumentButton.onclick = () => deleteDocument(documentObj.id)
-
+    
     var documentTypeImage = document.createElement("img")
     documentTypeImage.className = "document-type"
     documentTypeImage.src = documentObj.isDocumentAdmin(userId) ? "images/document-admin-icon.svg" : "images/shared-document-icon.svg"
@@ -325,16 +324,23 @@ function getDocumentHTMLComponent(documentObj) {
     documentDiv.append(deleteDocumentButton)
     documentDiv.append(documentTypeImage)
 
-    documentDiv.onclick = function() {
-        location.href = `document.html?id=${documentObj.id}`;
-    };
+    $(document).ready(function() {
+        $("#delete" + documentObj.id).click(function(event) {
+            deleteDocument(documentObj.id);
+            event.stopPropagation();
+        });
+    
+        $("#" + documentObj.id).click(function(event) {
+            location.href = `document.html?id=${documentObj.id}`;
+        });
+    });
 
     documentDiv.onmouseenter = function() {
-        $(`#${documentObj.id}`).animate({ opacity: 1.0 });
+        $(`#delete${documentObj.id}`).animate({ opacity: 1.0 });
     };
 
     documentDiv.onmouseleave = function() {
-        $(`#${documentObj.id}`).animate({ opacity: 0.0 });
+        $(`#delete${documentObj.id}`).animate({ opacity: 0.0 });
     };
     
     return documentDiv
@@ -345,6 +351,11 @@ function clearDocumentsHTML() {
 }
 
 function deleteDocument(id) {
-    firestore.collection('documents').doc(id).delete()
+    if(confirm("Are you sure you want to delete this document? All other users will lose access to this document.")) {
+        firestore
+            .collection('documents')
+            .doc(id)
+            .delete();
+    }
 }
 
