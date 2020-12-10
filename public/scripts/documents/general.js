@@ -326,7 +326,7 @@ function getDocumentHTMLComponent(documentObj) {
     documentDiv.append(documentTypeImage)
 
     documentDiv.onclick = function() {
-        location.href = `canvas.html?id=${documentObj.id}`;
+        location.href = `document.html?id=${documentObj.id}`;
     };
 
     documentDiv.onmouseenter = function() {
