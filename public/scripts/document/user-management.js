@@ -1,9 +1,9 @@
-const umcButton = document.getElementById("user-management-button");
-const documentShadowDiv = document.getElementById("document-shadow");
-const userManagementDiv = document.getElementById("user-management");
+const umcButton            = document.getElementById("user-management-button");
+const documentShadowDiv    = document.getElementById("document-shadow");
+const userManagementDiv    = document.getElementById("user-management");
 const inviteEmailTextField = document.getElementById("invite-email-text-field");
-const inviteButton = document.getElementById("invite-button");
-const documentUsersDiv = document.getElementById("document-users");
+const inviteButton         = document.getElementById("invite-button");
+const documentUsersDiv     = document.getElementById("document-users");
 
 var documentUsers;
 
@@ -86,7 +86,7 @@ function retrieveDocumentUsers() {
 function setUsersHTML() {
     documentUsersDiv.innerHTML = "";
     for (userIndex in documentUsers) {
-        let user = documentUsers[userIndex];
+        let user = documentUsers[documentUsers.length - 1 - userIndex];
         documentUsersDiv.append(createUserHTMLElement(user, user.id == this.documentObject.adminUid));
     }
 }
