@@ -218,3 +218,10 @@ hr {
     padding: 0;
     position: relative;
 }
+
+#footer {
+    background-color: #252525; 
+    height: 100px; 
+    bottom:0vh; 
+    position: absolute;
+}
