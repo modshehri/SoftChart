@@ -10,24 +10,27 @@ var documentUsers;
 inviteButton.onclick = async function () {
     let email = inviteEmailTextField.value;
 
+    // Validate email string
     if (email == null || email == "" || !isValidEmail(email)) {
         alert("Error: Please enter a valid email.");
-        return
+        return;
     }
 
     let recipientId = await userIdWithEmail(email);
 
+    // Check if document includes this user already
     if (documentObject.users.includes(recipientId)) {
         alert(`The user with email ${email} already exists in this document.`);
-        return
+        return;
     }
 
     if (recipientId != null) {
+        // Check if an invitation has been sent before (and the user did not yet accept or reject it).
         invitationSentPreviously = await checkIfInviteSentPreviously(recipientId);
-
+        
         if (invitationSentPreviously) {
             alert(`An invitation has already been sent to the user with email: ${email}.`);
-            return
+            return;
         }
 
         sendInvite(recipientId);
@@ -35,25 +38,33 @@ inviteButton.onclick = async function () {
 
     } else {
         alert(`No user with the email ${email} exists.`);
-        return
+        return;
     }
 }
 
 umcButton.onclick = function () {
-    $(`#${canvasShadowDiv.id}`).css({ "z-index": "1" });
-    $(`#${userManagementDiv.id}`).css({ "z-index": "1" });
-    $(`#${canvasShadowDiv.id}`).fadeIn('slow');
-    $(`#${userManagementDiv.id}`).fadeIn('slow');
+    setUsersDialogHidden(true);
 }
 
 canvasShadowDiv.onclick = function () {
-    $(`#${canvasShadowDiv.id}`).fadeOut('slow', function () {
-        $(`#${canvasShadowDiv.id}`).css({ "z-index": "0" });
-    });
+    setUsersDialogHidden(true);
+}
 
-    $(`#${userManagementDiv.id}`).fadeOut('slow', function () {
-        $(`#${userManagementDiv.id}`).css({ "z-index": "0" });
-    });
+function setUsersDialogHidden(hidden) {
+    if (!hidden) {
+        $(`#${canvasShadowDiv.id}`).css({ "z-index": "1" });
+        $(`#${userManagementDiv.id}`).css({ "z-index": "1" });
+        $(`#${canvasShadowDiv.id}`).fadeIn('slow');
+        $(`#${userManagementDiv.id}`).fadeIn('slow');
+    } else {
+        $(`#${canvasShadowDiv.id}`).fadeOut('slow', function () {
+            $(`#${canvasShadowDiv.id}`).css({ "z-index": "0" });
+        });
+    
+        $(`#${userManagementDiv.id}`).fadeOut('slow', function () {
+            $(`#${userManagementDiv.id}`).css({ "z-index": "0" });
+        });
+    }
 }
 
 function retrieveDocumentUsers() {
@@ -170,5 +181,5 @@ function sendInvite(recipientId) {
     firestore
         .collection('invitations')
         .withConverter(invitationConverter)
-        .add(invitation)
+        .add(invitation);
 }

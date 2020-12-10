@@ -45,9 +45,9 @@ function loadData() {
 }
 
 function unsubscribeListeners() {
-    if (documentListener != null) {
-        documentListener.unsubscribe()
-    }
+    if (documentListener != null) { documentListener(); }
+    if (componentsListener != null) { componentsListener(); }
+    if (connectionsListener != null) { connectionsListener(); }
 }
 
 function redirectToIndex() {
