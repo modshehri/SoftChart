@@ -152,15 +152,19 @@ function setHTMLInvitations(invitations) {
         var invitationDocumentName = document.createElement("p");
         invitationDocumentName.innerHTML = `<b>${invitation.docName}</b><br>From: ${invitation.senderEmail}`;
         invitationDocumentName.className = "invitation-document-name";
-
+        
         var decisionButtons = document.createElement("div");
     
         var acceptButton = document.createElement("button");
         acceptButton.innerHTML = "Accept";
+        acceptButton.className = "btn btn-success";
+        acceptButton.style = "margin: 3px; background: #6052EC"
         acceptButton.onclick = () => acceptInvitation(invitation);
 
         var rejectButton = document.createElement("button");
         rejectButton.innerHTML = "Reject";
+        rejectButton.className = "btn btn-danger";
+        rejectButton.style = "margin: 3px; background: #FF5B5B;"
         rejectButton.onclick = () => rejectInvitation(invitation);
 
         decisionButtons.append(acceptButton, rejectButton);

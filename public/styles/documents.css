@@ -225,3 +225,7 @@ hr {
     bottom:0vh; 
     position: absolute;
 }
+
+.invitation{
+    align-content: center;
+}
