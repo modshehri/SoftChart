@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SoftChart - Make UML Charts</title>
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="styles/primary.css">
     <link rel="stylesheet" href="styles/index.css">
 
@@ -18,43 +20,37 @@
     <script src="scripts/index/general.js" defer></script>
 </head>
 <body>
+    <div id="container-fluid">
+        <div class="row" style="margin-bottom: 60px; margin-top: 30px;">
+            <div class="col-xl-8 col-lg-7 col-md-5 col-12">
+                <p class="logo">SoftChart</p>
+            </div>
 
-    <header id="top-nav-bar">
-        <p class="logo">SoftChart</p>
-        <button id="supportBtn" class="navigation" onclick="location.href='mailto:admin@softchart.tech'">Support</button>
-        <button class="primary" id="account-btn" onclick="document.location='login.html'">My Account</button>
-    </header>
-
-    <table id="promotion-table">
-        <tr>
-            <td id="promotional-left-column">
+            <div class="col-xl-4 col-lg-5 col-md-7 col-12" style="display: flex; align-items: center;">
+                <button id="supportBtn" class="navigation" onclick="location.href='mailto:admin@softchart.tech'" style="margin-right: 16px;">Support</button>
+                <button class="primary" id="account-btn" onclick="document.location='login.html'">My Account</button>
+            </div>
+        </div>
+        
+        
+        <div class="row" id="promotional-row">
+            <div class="col-md-6 col-12" style="margin-bottom: 60px;">
                 <div>
-                    <p id="promotion-text">
+                    <p id="promotion-text" style="font-size: calc(32px + 1vw);">
                         Create UML Charts That <i>inspire</i>.
                     </p>
             
-                    <p id="join-free-text">
+                    <p id="join-free-text"  style="font-size: calc(28px + 1vw);">
                         Join us for <u>FREE!</u>
                     </p>
             
                     <button class="primary" onclick="document.location='signup.html'">Join Us!</button>
                 </div>
-            </td>
-
-            <td id="promotional-right-column">
-                <div>
-                    <img src="images/promotional-image.png" alt="">
-                </div>
-            </td>
-        </tr>
-    </table>
-
-    <footer id="footer">
-        <p><a href="">Privacy Policy</a></p>
-        <p> • </p>
-        <p><a href="">Terms of Service</a></p>
-        <p> • </p>
-        <p><a href="">About Us</a></p>
-    </footer>
+            </div>
+            <div class="col-md-6 col-12">
+                <img src="images/promotional-image.png" alt="" style="width: 100%;">
+            </div>
+        </div>
+    </div>
 </body>
 </html>

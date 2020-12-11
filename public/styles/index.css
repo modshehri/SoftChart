@@ -7,24 +7,16 @@ body {
     font-size: 40px;
     margin: 0 0;
     font-weight: bold;
-    float: left;
     margin-left: 60px;
 }
 
 
 button.navigation {
     margin-left: 54px;
-    margin-top: 7px;
 }
 
 button.primary {
     margin-right: 60px;
-}
-
-#top-nav-bar {
-    width: 100%;
-    margin-top: 30px;
-    margin-bottom: 30px;
 }
 
 #promotion-text {
@@ -70,4 +62,8 @@ button.primary {
 
 #account-btn {
     float: right;
+}
+
+#promotional-row {
+    padding: 0 40px;
 }
