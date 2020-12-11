@@ -78,15 +78,12 @@ myDocs.onclick = function () {
 };
 
 exportDocumentButton.onclick = function () {
-    html2canvas(document.querySelector("#canvas"), {
-        useCORS: true,
-        imageTimeout: 0,
-        allowTaint: true
-    }).then(function (canvas) {
-        var img = canvas.toDataURL("image/png");
-        var link = document.createElement('a');
-        link.download = img;
-        link.href = img;
-        link.click();
-    })
+    // document.getElementById('canvas').appendChild(document.querySelector('.leader-line'));
+    html2canvas(document.getElementById('canvas')).then(function (canvas) {
+        var img = canvas.toDataURL("image/png", 1);
+        let a = document.createElement("a");
+        a.href = img;
+        a.download = img;
+        a.click();
+    });
 }
