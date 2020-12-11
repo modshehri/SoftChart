@@ -21,22 +21,9 @@ body {
     text-decoration: none;
 }
 
-#DocsButton {
-    float: left;
-    margin-right: 10px;
-    float: right;
-    margin-top: 10px;
-    width: 138px;
-    height: 31px;
-    font-size: 0.7em;
-    background: #6D61E8;
-    border-radius: 12px;
-    filter: drop-shadow(0px 0.8px 1px rgba(0, 0, 0, 0.1)), drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.2));
-}
-
 #canvas-container{
     background-color:#EEEEEE;
-    height: 94vh;
+    height: 93vh;
     padding-left: 10px;
     padding-top: 8px;
 }
@@ -256,4 +243,8 @@ body {
 
 .cursor-email {
     font-size: small;
+}
+
+#shapes-bar {
+    background-color: #fafbfc;
 }
