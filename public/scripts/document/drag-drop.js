@@ -56,7 +56,8 @@ function makeComponentDraggable(htmlElement, component) {
         function elementDrag(e) {
             e = e || window.event;
             e.preventDefault();
-
+            e.stopPropagation();
+            
             pos1 = pos3 - e.clientX;
             pos2 = pos4 - e.clientY;
             pos3 = e.clientX;
