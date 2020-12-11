@@ -83,17 +83,17 @@ function drawComponent(component) {
 }
 
 function setComponentEventHandlers(componentId) {
-    $("#" + componentId).click(function(event) {
+    $("#" + componentId + "container").click(function(event) {
         event.stopPropagation();
     });
 
-    $("#" + componentId + "delete").click(function(event) {
+    $("#" + componentId + "containerdelete").click(function(event) {
         handleDeletionClick(componentId);
     });
 
-    $("#" + componentId + "connect").click(function(event) {
-        event.stopPropagation();
+    $("#" + componentId + "containerconnect").click(function(event) {
         handleConnectionClick(componentId);
+        event.stopPropagation();
     });
 }
 

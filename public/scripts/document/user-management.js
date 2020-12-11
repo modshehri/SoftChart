@@ -4,6 +4,7 @@ const userManagementDiv    = document.getElementById("user-management");
 const inviteEmailTextField = document.getElementById("invite-email-text-field");
 const inviteButton         = document.getElementById("invite-button");
 const documentUsersDiv     = document.getElementById("document-users");
+const closeUserManagementDialog = document.getElementById("close-user-management-dialog");
 
 var documentUsers;
 
@@ -40,6 +41,10 @@ inviteButton.onclick = async function () {
         alert(`No user with the email ${email} exists.`);
         return;
     }
+}
+
+closeUserManagementDialog.onclick = function () {
+    setUsersDialogHidden(true);
 }
 
 umcButton.onclick = function () {

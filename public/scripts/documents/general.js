@@ -14,6 +14,7 @@ const allDocumentsBtn = document.getElementById("allDocumentsBtn");
 const yourDocumentsBtn = document.getElementById("yourDocumentsBtn");
 const sharedWithYouBtn = document.getElementById("sharedWithYouBtn");    
 const trashBtn = document.getElementById("trashBtn");
+const closeInvitationsDialog = document.getElementById("close-invitations-dialog");
 
 const searchDocs = document.getElementById("searchDocs");
 
@@ -23,9 +24,9 @@ var userId = null
 var visibaleUserDocuments = [];
 var unVisibaleDocuments = [];
 
-var isAnimating = false
+var isAnimating = false;
 
-allDocumentsBtn.onclick = function(){
+allDocumentsBtn.onclick = function() {
     allDocumentsBtn.className = "selected";
     yourDocumentsBtn.className = "unselected";
     sharedWithYouBtn.className = "unselected";
@@ -80,22 +81,33 @@ trashBtn.onclick = function(){
     trashBtn.className = "selected";
 }
 
+closeInvitationsDialog.onclick = function() {
+    setInvitationsDialogHidden(true);
+}
+
 userInvitationsButton.onclick = function() {
-    console.log("hello from the other side")
-    $(`#${documentsShadowDiv.id}`).css({"z-index": "1"});
-    $(`#${invitationsDialogDiv.id}`).css({"z-index": "1"});
-    $(`#${documentsShadowDiv.id}`).fadeIn('slow');
-    $(`#${invitationsDialogDiv.id}`).fadeIn('slow');
+    setInvitationsDialogHidden(false);
 }
 
 documentsShadowDiv.onclick = function() {
-    $(`#${documentsShadowDiv.id}`).fadeOut('slow', function() {
-        $(`#${documentsShadowDiv.id}`).css({"z-index": "0"});
-    });
+    setInvitationsDialogHidden(true);
+}
 
-    $(`#${invitationsDialogDiv.id}`).fadeOut('slow', function() {
-        $(`#${invitationsDialogDiv.id}`).css({"z-index": "0"});
-    });
+function setInvitationsDialogHidden(hidden) {
+    if (hidden) {
+        $(`#${documentsShadowDiv.id}`).fadeOut('slow', function() {
+            $(`#${documentsShadowDiv.id}`).css({"z-index": "0"});
+        });
+
+        $(`#${invitationsDialogDiv.id}`).fadeOut('slow', function() {
+            $(`#${invitationsDialogDiv.id}`).css({"z-index": "0"});
+        });
+    } else {
+        $(`#${documentsShadowDiv.id}`).css({"z-index": "1"});
+        $(`#${invitationsDialogDiv.id}`).css({"z-index": "1"});
+        $(`#${documentsShadowDiv.id}`).fadeIn('slow');
+        $(`#${invitationsDialogDiv.id}`).fadeIn('slow');
+    }
 }
 
 logout.onclick = auth.signOut;

@@ -23,24 +23,24 @@ class Component {
     getHTMLElement() {
         var componentContainerDiv = document.createElement("div");
         componentContainerDiv.className = "canvas-component";
-        componentContainerDiv.id = this.id;
+        componentContainerDiv.id = this.id + "container";
 
         var dragHeader = document.createElement("div");
 
         var dragImage = document.createElement("img");
         dragImage.src = "images/drag.png";
         dragImage.className = "component-icon";
-        dragImage.id = this.id + "header";
+        dragImage.id = componentContainerDiv.id + "header";
 
         var deleteComponentImage = document.createElement("img");
         deleteComponentImage.src = "images/delete-component.png";
         deleteComponentImage.className = "component-icon";
-        deleteComponentImage.id = this.id + "delete";
+        deleteComponentImage.id = componentContainerDiv.id + "delete";
 
         var createConnectionImage = document.createElement("img");
         createConnectionImage.src = "images/connect-component.png";
         createConnectionImage.className = "component-icon";
-        createConnectionImage.id = this.id + "connect";
+        createConnectionImage.id = componentContainerDiv.id + "connect";
 
         dragHeader.append(dragImage, deleteComponentImage, createConnectionImage);
 
@@ -81,7 +81,8 @@ class Component {
             classMethodsRow.append(classMethodsDetails);
 
             var table = document.createElement("table");
-            table.className = "table-component"; //todo implement its css
+            table.className = "table-component";
+            table.id = this.id;
             table.append(classNameRow, classAttributesRow, classMethodsRow);
 
             componentContainerDiv.append(table);
@@ -109,6 +110,7 @@ class Component {
 
             var table = document.createElement("table");
             table.className = "table-component";
+            table.id = this.id;
             table.append(interfaceNameRow, interfaceMethodsRow);
 
             componentContainerDiv.append(table);
@@ -117,14 +119,15 @@ class Component {
             interfaceMethodsDetails.onblur = () => this.updateTextContents(this.type, componentContainerDiv);
 
         } else if (this.type == 'USECASE') {
-            var useCaseDiv = document.createElement("div");
-            useCaseDiv.innerHTML = this.textContents[0];
-            useCaseDiv.className = "use-case";
-            useCaseDiv.contentEditable = "true";
+            var useCaseP = document.createElement("p");
+            useCaseP.innerHTML = this.textContents[0];
+            useCaseP.contentEditable = "true";
+            useCaseP.className = "use-case";
+            useCaseP.id = this.id;
+            
+            componentContainerDiv.append(useCaseP);
 
-            componentContainerDiv.append(useCaseDiv);
-
-            useCaseDiv.onblur = () => updateTextContents(this.type, componentContainerDiv);
+            useCaseP.onblur = () => this.updateTextContents(this.type, componentContainerDiv);
         } else if (this.type == 'ACTOR') {
             var actorImage = document.createElement("img");
             actorImage.src = "images/actor.png";
@@ -138,10 +141,11 @@ class Component {
 
             var actorContainerDiv = document.createElement("div");
             actorContainerDiv.className = "actor-container";
+            actorContainerDiv.id = this.id;
             actorContainerDiv.append(actorImage, actorNameP);
 
             componentContainerDiv.append(actorContainerDiv);
-            actorNameP.onblur = () => updateTextContents(this.type, componentContainerDiv);
+            actorNameP.onblur = () => this.updateTextContents(this.type, componentContainerDiv);
         }
         return componentContainerDiv;
     }
@@ -159,7 +163,7 @@ class Component {
             this.textContents = [componentInterfaceName, componentInterfaceMethods];
             
         } else if (type == 'USECASE') {
-            var componentUseCase = html.getElementsByTagName("div")[0].innerHTML;
+            var componentUseCase = html.getElementsByTagName("p")[0].innerHTML;
             this.textContents = [componentUseCase];
 
         } else if (type == 'ACTOR') {
