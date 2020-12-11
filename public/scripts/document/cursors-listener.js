@@ -12,16 +12,16 @@ function attachCursorsListener() {
             var cursorUserId = childSnapshot.key;
             var cursorX = childSnapshot.val().x;
             var cursorY = childSnapshot.val().y;
+            var email = documentUsers.find(user => user.id == cursorUserId).email;
 
-            if (cursorUserId != user.uid && cursorX > 0 && cursorY > 0) {
-                var email = documentUsers.find(user => user.id == cursorUserId).email;
+            if (cursorUserId != user.uid && cursorX > 0 && cursorY > 0 && email != null) {
                 var cursorHTML = createCursorHTML(email, childSnapshot.val().x, childSnapshot.val().y);
                 document.getElementById("cursors").append(cursorHTML);
             }
         });
     });
 }
-
+    
 function clearAllCursors() {
     cursorsDiv.innerHTML = "";
 }

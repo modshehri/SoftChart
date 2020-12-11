@@ -330,7 +330,11 @@ function getDocumentHTMLComponent(documentObj) {
 
     $(document).ready(function() {
         $("#delete" + documentObj.id).click(function(event) {
-            deleteDocument(documentObj.id);
+            if (documentObj.isDocumentAdmin(this.userId)) {
+                deleteDocument(documentObj.id);
+            } else {
+                leaveDocument(documentObj.id);
+            }
             event.stopPropagation();
         });
     
@@ -363,3 +367,13 @@ function deleteDocument(id) {
     }
 }
 
+function leaveDocument(id) {
+    if(confirm("Are you sure you want to leave this document?")) {
+        firestore
+            .collection('documents')
+            .doc(id)
+            .update({
+                users: firebase.firestore.FieldValue.arrayRemove(userId)
+            });
+    }
+}
