@@ -1,5 +1,6 @@
 const auth = firebase.auth();
 const firestore = firebase.firestore();
+const realtimeDatabase = firebase.database();
 
 const myDocs = document.getElementById("DocsButton");
 const exportDocumentButton = document.getElementById("export-document-button");
@@ -36,6 +37,9 @@ function loadData() {
                     redirectToIndex();
                     return;
                 }
+
+                // A call to listen for all cursor changes (mouse movements) (->cursors-listener.js).
+                attachCursorsListener()
 
                 // A call to query all the components in the document (->components.js).
                 attachDocumentComponentsListener();

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const ele = document.getElementById('canvas');
-    ele.style.cursor = 'grab';
+    ele.style.cursor = 'auto';
 
     let pos = { top: 0, left: 0, x: 0, y: 0 };
 
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     const mouseUpHandler = function() {
-        ele.style.cursor = 'grab';
+        ele.style.cursor = 'auto';
         ele.style.removeProperty('user-select');
 
         document.removeEventListener('mousemove', mouseMoveHandler);
