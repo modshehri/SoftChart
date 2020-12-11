@@ -28,6 +28,8 @@
     <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
     <script src="scripts/firebase/firebase-configuration.js"></script>
 
+    <script src="scripts/html2canvas.js"></script>
+
     <!-- Data Models -->
     <script src="scripts/models/Component.js"></script>
     <script src="scripts/models/Document.js"></script>
@@ -45,28 +47,28 @@
 
     <!-- 3rd Party Scripts -->
     <script src="scripts/leader-line-master/leader-line.min.js" defer></script>
-
+    <script src="scripts/canvg.js"></script>
 </head>
 
 <body>
-     <!-- Shadow To Cover Canvas -->
-     <div id="document-shadow"></div>
+    <!-- Shadow To Cover Canvas -->
+    <div id="document-shadow"></div>
 
-     <!-- User Management Dialog -->
-     <div id="user-management">
-         <h3>Manage Users</h3>
-         <hr>
-         <h5>Invite</h5>
-         <div style="width: 100%; padding-right: 20px; position: relative;">
-             <input id="invite-email-text-field" type="email" placeholder="Email"
-                 style="width: 80%; height: 24px; font-size: small;">
-             <button id="invite-button" style="float: right;">Invite</button>
-         </div>
-         <hr>
-         <h5>Users</h5>
-         <div style="overflow-y: scroll; height: 45%; padding: 0;" id="document-users">
-         </div>
-     </div>
+    <!-- User Management Dialog -->
+    <div id="user-management">
+        <h3>Manage Users</h3>
+        <hr>
+        <h5>Invite</h5>
+        <div style="width: 100%; padding-right: 20px; position: relative;">
+            <input id="invite-email-text-field" type="email" placeholder="Email"
+                style="width: 80%; height: 24px; font-size: small;">
+            <button id="invite-button" style="float: right;">Invite</button>
+        </div>
+        <hr>
+        <h5>Users</h5>
+        <div style="overflow-y: scroll; height: 45%; padding: 0;" id="document-users">
+        </div>
+    </div>
 
     <div class="container-fluid">
         <div id="connection-prompt">
@@ -87,7 +89,7 @@
                             <a type="button" class="btn dropdown menu-button" data-toggle="dropdown">File</a>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="#">Save</a>
-                                <a class="dropdown-item" href="#">Export</a>
+                                <a class="dropdown-item" id="export-document-button" href="#">Export</a>
                             </div>
                         </div>
                     </li>
@@ -147,5 +149,4 @@
         </div>
     </div>
 </body>
-
 </html>

@@ -1,9 +1,9 @@
 var connectionsListener = null;
-var connections         = [];
-var drawnConnections    = [];
-var connectFromId       = null;
+var connections = [];
+var drawnConnections = [];
+var connectFromId = null;
 
-canvas.onscroll = function() {
+canvas.onscroll = function () {
     repositionAllConnections();
 }
 
@@ -24,7 +24,7 @@ function attachDocumentConnectionsListener() {
                 connections.push(c);
             });
             drawAllConnections(connections);
-    });
+        });
 }
 
 function deleteConnection(docId, connId) {
@@ -66,6 +66,7 @@ function drawAllConnections(connections) {
         this.drawnConnections.push(drawnConc);
     }
     this.connections = connections;
+    refuckConnections();
 }
 
 function clearAllConnections() {
@@ -105,4 +106,8 @@ function setConnectionPromptHidden(hidden) {
 function abortConnectingComponents() {
     setConnectionPromptHidden(true);
     connectFromId = null;
+}
+
+function refuckConnections() {
+    // document.getElementById('canvas').appendChild(document.querySelector('.leader-line'));
 }

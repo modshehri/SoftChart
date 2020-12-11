@@ -1,11 +1,12 @@
-const auth      = firebase.auth();
+const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 const myDocs = document.getElementById("DocsButton");
+const exportDocumentButton = document.getElementById("export-document-button");
 
-var documentObject   = null;
+var documentObject = null;
 var documentListener = null;
-var user             = null;
+var user = null;
 
 auth.onAuthStateChanged(user => {
     if (user) {
@@ -75,3 +76,17 @@ function findGetParameter(parameterName) {
 myDocs.onclick = function () {
     location.href = "documents.html";
 };
+
+exportDocumentButton.onclick = function () {
+    html2canvas(document.querySelector("#canvas"), {
+        useCORS: true,
+        imageTimeout: 0,
+        allowTaint: true
+    }).then(function (canvas) {
+        var img = canvas.toDataURL("image/png");
+        var link = document.createElement('a');
+        link.download = img;
+        link.href = img;
+        link.click();
+    })
+}
