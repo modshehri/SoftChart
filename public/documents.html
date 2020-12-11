@@ -32,8 +32,24 @@
         <div id="user-invitations"></div>
     </div>
 
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">SoftChart</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="mailto:admin@softchart.tech">Support <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+          <button class="primary" id="user-invitations-button">Invitations</button>
+        </div>
+      </nav>
+
     <div class="container-fluid">
-        <div id="logo-row" class="row">
+        <!-- <div id="logo-row" class="row">
             <div class="col-12" style="display: flex; align-items: center; justify-content: space-between; padding: 0;">
                 <div style="display: flex; align-items: center;">
                     <a id="logo-link" href="index.html">SoftChart</a>
@@ -41,15 +57,11 @@
                 </div>
                 <button class="primary" id="user-invitations-button">Invitations</button>
             </div>
-            <div>
-                <p id="welcoming">Good evening, Abdulelah!</p>
-            </div>
-        </div>
-    
+        </div> -->
         <hr id="under-logo-seperator">
     
         <div class="row" id="main-documents-row">
-            <div class="col-2" id="docCatagories">
+            <div class="col-lg-2 col-md-3 col-sm-4 col-12" id="docCatagories">
                 <input id="searchDocs" type="text" placeholder="Search Documents...">
     
                 <button id="allDocumentsBtn" class="selected">
@@ -73,9 +85,17 @@
                 </button>
             </div>
     
-            <div class="col-10" id="documents">
-                <div id="user-documents">
+            <div class="col-lg-10 col-md-9 col-sm-8 col-12" id="documents">
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                        <img src="images/documents.svg" alt="" style="width: 36px; margin-right: 10px;">
+                        <h2 id="documents-headline" style="padding: 0; margin: 0;">Documents</h2>
+                    </div>
+                    <hr>
                 </div>
+                
+               
+                <div id="user-documents"></div>
                 
                 <div class="document" id="document-add">
                     <img class="document-image" src="images/document-add.svg" alt="">
@@ -84,9 +104,9 @@
             </div>
         </div>
     
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-12" id="footer"></div>
-        </div>
+        </div> -->
     </div>
 </body>
 </html>

@@ -16,16 +16,9 @@ hr {
     margin: 0;
 }
 
-#welcoming {
-    font-weight: lighter;
-    font-style: normal;
-    font-size: 28px;
-    padding: 0;
-    margin: 0;
-}
-
 #docCatagories{
     padding-top: 20px;
+    background-color: #fafbfc;
 }
 
 #docCatagories button {
@@ -58,7 +51,7 @@ hr {
 }
 
 .unselected {
-    background: #F2F2F2;
+    background: #e6e6e6;
     width: 100%;
     text-align: left;
     padding: 6px 16px;
@@ -228,4 +221,8 @@ hr {
 
 .invitation{
     align-content: center;
+}
+
+#main-documents-row {
+    height: 93vh;
 }
