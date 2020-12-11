@@ -10,8 +10,12 @@ function attachCursorsListener() {
         clearAllCursors();
         snapshot.forEach(function (childSnapshot) {
             var cursorUserId = childSnapshot.key;
-            if (cursorUserId != user.uid) {
-                var cursorHTML = createCursorHTML(childSnapshot.key, childSnapshot.val().x, childSnapshot.val().y);
+            var cursorX = childSnapshot.val().x;
+            var cursorY = childSnapshot.val().y;
+
+            if (cursorUserId != user.uid && cursorX > 0 && cursorY > 0) {
+                var email = documentUsers.find(user => user.id == cursorUserId).email;
+                var cursorHTML = createCursorHTML(email, childSnapshot.val().x, childSnapshot.val().y);
                 document.getElementById("cursors").append(cursorHTML);
             }
         });
@@ -22,10 +26,20 @@ function clearAllCursors() {
     cursorsDiv.innerHTML = "";
 }
 
-function createCursorHTML(id, x, y) {
+function createCursorHTML(email, x, y) {
+    var cursorImg = document.createElement("img");
+    cursorImg.src = "images/cursor.svg"
+    cursorImg.style.width = "100%";
+    cursorImg.style.height = "100%";
+
+    var cursorEmail = document.createElement("p");
+    cursorEmail.innerHTML = email.substring(0, email.indexOf("@"));
+    cursorEmail.className = "cursor-email";
+
     var cursorContainer = document.createElement("div");
-    cursorContainer.innerHTML = "*";
     cursorContainer.className = "cursor";
+    cursorContainer.append(cursorImg, cursorEmail);
+
     cursorContainer.style.left = x + "px";
     cursorContainer.style.top = y + "px";
     return cursorContainer;

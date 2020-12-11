@@ -251,4 +251,9 @@ body {
 
 .cursor {
     position: absolute;
+    width: 24px;
+}
+
+.cursor-email {
+    font-size: small;
 }
