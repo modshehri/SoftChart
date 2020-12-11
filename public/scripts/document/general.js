@@ -43,9 +43,6 @@ function loadData() {
 
                 // A call to query all the users in the document (->user-management.js).
                 retrieveDocumentUsers();
-
-                // A call to listen for all cursor changes (mouse movements) (->cursors-listener.js).
-                attachCursorsListener();
             } else {
                 redirectToIndex();
             }

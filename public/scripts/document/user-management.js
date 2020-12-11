@@ -80,6 +80,9 @@ function retrieveDocumentUsers() {
             });
             this.documentUsers = users;
             setUsersHTML(documentObject.users);
+
+            // A call to listen for all cursor changes (mouse movements) (->cursors-listener.js).
+            attachCursorsListener();
         });
 }
 
