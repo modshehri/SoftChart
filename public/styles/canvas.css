@@ -84,7 +84,6 @@ body {
     background-repeat: repeat;
     overflow-x: scroll;
     overflow-y: scroll;
-    cursor: grab;
 }
 
 .ClassComponent {
@@ -248,4 +247,13 @@ body {
 #creating-connection-title {
     font-weight: bold;
     color: #09a762;
+}
+
+.cursor {
+    position: absolute;
+    width: 24px;
+}
+
+.cursor-email {
+    font-size: small;
 }
