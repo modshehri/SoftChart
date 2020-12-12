@@ -4,6 +4,7 @@ const passwordTxt = document.getElementById("password_tf");
 
 
 loginBtn.addEventListener('click', e => {
+    console.log(1);
     email = emailTxt.value;
     password = passwordTxt.value;
     

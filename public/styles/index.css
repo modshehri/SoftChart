@@ -48,3 +48,17 @@ button.primary {
 #promotional-row {
     padding: 0 40px;
 }
+
+#footer-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding-top: 20px;
+
+}
