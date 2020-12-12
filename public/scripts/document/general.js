@@ -6,6 +6,8 @@ const myDocs = document.getElementById("DocsButton");
 const exportDocumentButton = document.getElementById("export-document-button");
 const documentsHeadline = document.getElementById("documents-headline");
 
+const adminPanelLink = document.getElementById("admin-panel-link");
+
 var documentObject = null;
 var documentListener = null;
 var user = null;
@@ -20,6 +22,10 @@ auth.onAuthStateChanged(user => {
         redirectToDocuments();
     }
 });
+
+function hello() {
+
+}
 
 function loadData() {
     if (this.documentListener) { return; }

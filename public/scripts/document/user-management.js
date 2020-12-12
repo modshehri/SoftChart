@@ -81,7 +81,7 @@ function retrieveDocumentUsers() {
             var users = [];
 
             querySnapshot.forEach(function(doc) {
-                users.push(new User(doc.id, doc.data().email));
+                users.push(new User(doc.id, doc.data().email, doc.data().isWebsiteAdmin, doc.data().isBlocked));
             });
             this.documentUsers = users;
             setUsersHTML(documentObject.users);

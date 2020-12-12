@@ -3,6 +3,7 @@ class User {
         this.id = id;
         this.email = email;
         this.isWebsiteAdmin = isWebsiteAdmin;
+        this.isBlocked = isBlocked;
     }
 }
 
@@ -10,11 +11,12 @@ var documentConveter = {
     toFirestore: function(user) {
         return {
             email: user.email,
-            isWebsiteAdmin: user.isWebsiteAdmin
+            isWebsiteAdmin: user.isWebsiteAdmin,
+            isBlocked: user.isBlocked
         }
     },
     fromFirestore: function(snapshot, options) {
         const data = snapshot.data(options);
-        return new User(data.id, data.email, data.isWebsiteAdmin);
+        return new User(data.id, data.email, data.isWebsiteAdmin, data.isBlocked);
     }
 }
