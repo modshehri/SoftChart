@@ -7,7 +7,7 @@ class User {
     }
 }
 
-var documentConveter = {
+var userConverter = {
     toFirestore: function(user) {
         return {
             email: user.email,

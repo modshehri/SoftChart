@@ -284,7 +284,8 @@ function loadDocuments() {
             clearDocumentsHTML();
             visibaleUserDocuments = [];
             queryCanvases = querySnapshot.docs.map(doc => {
-                var document = new Document(doc.id, doc.data().adminUid, doc.data().name, doc.data().components, doc.data().user);
+                console.log("here")
+                var document = new Document(doc.id, doc.data().adminUid, doc.data().name, doc.data().components, doc.data().users);
                 visibaleUserDocuments.push(document);
                 addDocumentToHTML(document);
             })
@@ -320,7 +321,8 @@ function addDocument() {
 
     var document = Document.create(userId, name);
 
-    firestore.collection('documents')
+    firestore
+        .collection('documents')
         .withConverter(documentConveter)
         .add(document);
 }
