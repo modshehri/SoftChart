@@ -22,6 +22,7 @@ function createWebsiteUsersTable() {
 
         var blockButton = document.createElement("button");
         var adminButton = document.createElement("button");
+        
         if (websiteUsers[index].isBlocked){
             blockButton.className = "btn btn-success"
             blockButton.innerHTML = "Unblock"
@@ -73,11 +74,8 @@ function createWebsiteDocumentsTable() {
         deleteButton.className = "btn btn-danger"
         deleteButton.innerHTML = "Delete"
         deleteCell.appendChild(deleteButton);
-        var j = 0;
-        for (index1 in websiteDocuments[index].users){
-            j++
-        }
-        numberOfUsersCell.innerHTML = `${j}`;
+
+        numberOfUsersCell.innerHTML = `${websiteDocuments[index].users.length}`;
 
         th.scope = "row";
         tr.appendChild(th);

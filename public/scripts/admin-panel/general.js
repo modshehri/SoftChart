@@ -98,7 +98,7 @@ function loadWebsiteDocuments() {
         .onSnapshot(querySnapshot => {
             var websiteDocuments = [];
             querySnapshot.forEach(function (doc) {
-                websiteDocuments.push(new Document(doc.id, doc.data().adminUid, doc.data().name, doc.data().user));
+                websiteDocuments.push(new Document(doc.id, doc.data().adminUid, doc.data().name, doc.data().users));
             });
             this.websiteDocuments = websiteDocuments;
             if (isCurrentTabUsers == false) {
