@@ -73,7 +73,7 @@ function createCursorHTML(email, x, y) {
 })();
 
 function setDatabaseMousePosition(x, y) {
-    if (user == null || documentObject == null) { return; }
+    if (this.user == null || this.documentObject == null) { return; }
 
     realtimeDatabase.ref(`documentSessions/${documentObject.id}/${user.uid}`).set({
         x: `${x}`,

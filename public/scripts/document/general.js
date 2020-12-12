@@ -6,6 +6,8 @@ const myDocs = document.getElementById("DocsButton");
 const exportDocumentButton = document.getElementById("export-document-button");
 const documentsHeadline = document.getElementById("documents-headline");
 
+const adminPanelLink = document.getElementById("admin-panel-link");
+
 var documentObject = null;
 var documentListener = null;
 var user = null;
@@ -17,9 +19,13 @@ auth.onAuthStateChanged(user => {
     } else {
         unsubscribeListeners();
         auth.signOut()
-        redirectToIndex();
+        redirectToDocuments();
     }
 });
+
+function hello() {
+
+}
 
 function loadData() {
     if (this.documentListener) { return; }
@@ -35,20 +41,21 @@ function loadData() {
                 this.documentObject = new Document(documentSnapshot.id, documentData.adminUid, documentData.name, documentData.users);
 
                 if (!this.documentObject.users.includes(this.user.uid)) {
-                    redirectToIndex();
+                    redirectToDocuments();
                     return;
                 }
                 documentsHeadline.innerHTML = this.documentObject.name;
+                documentsHeadline.onblur = () => updateDocument(documentObject.id, { name: documentsHeadline.innerHTML })
                 // A call to query all the components in the document (->components.js).
                 attachDocumentComponentsListener();
 
                 // A call to query all the users in the document (->user-management.js).
                 retrieveDocumentUsers();
             } else {
-                redirectToIndex();
+                redirectToDocuments();
             }
         }, err => {
-            redirectToIndex();
+            redirectToDocuments();
         });
 }
 
@@ -58,8 +65,8 @@ function unsubscribeListeners() {
     if (connectionsListener != null) { connectionsListener(); }
 }
 
-function redirectToIndex() {
-    location.href = "index.html";
+function redirectToDocuments() {
+    location.href = "documents.html";
 }
 
 function findGetParameter(parameterName) {
@@ -88,4 +95,11 @@ exportDocumentButton.onclick = function () {
         a.download = img;
         a.click();
     });
+}
+
+function updateDocument(docId, fields) {
+    firestore
+        .collection('documents')
+        .doc(docId)
+        .update(fields);
 }
