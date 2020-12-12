@@ -3,6 +3,7 @@ const firestore = firebase.firestore();
 
 const websiteUsersTab = document.getElementById("Users");
 const websiteDocumentsTab = document.getElementById("Documents");
+const headline = document.getElementById("headline");
 
 var user = null;
 var userId = null;
@@ -24,6 +25,7 @@ websiteUsersTab.onclick = function() {
     websiteDocumentsTab.className = "unselected";
     usersTable.style.display='block';
     documentsTable.style.display='none';
+    headline.innerHTML = "Users";
 }
 
 websiteDocumentsTab.onclick = function() {
@@ -34,6 +36,7 @@ websiteDocumentsTab.onclick = function() {
     websiteDocumentsTab.className = "selected";
     usersTable.style.display='none';
     documentsTable.style.display='block';
+    headline.innerHTML = "Documents";
 }
 
 auth.onAuthStateChanged(user => {
@@ -59,19 +62,15 @@ function loadUser() {
                 let documentData = documentSnapshot.data();
                 var user = new User(documentSnapshot.id, documentData.email, documentData.isWebsiteAdmin, documentData.isBlocked);
                 if (user.isWebsiteAdmin == false || user.isBlocked) {
-                    redirectToIndex();
-                    return;
+                    setTimeout(() => {
+                        redirectToIndex();
+                        return;
+                    }, 500);
                 }
                 this.user = user;
                 loadWebsiteUsers();
                 loadWebsiteDocuments();
-            } else {
-                redirectToIndex();
-                return;
             }
-        }, err => {
-            redirectToIndex();
-            return;
         });
 }
 
@@ -132,7 +131,6 @@ function setUserAdminRole(id, isAdmin) {
     }
 
     if (confirm(message)) {
-        console.log("here");
         firestore
             .collection('users')
             .doc(id)

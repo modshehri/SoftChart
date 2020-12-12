@@ -47,6 +47,7 @@ function createWebsiteUsersTable() {
             adminButton.className = "btn btn-primary"
             adminButton.innerHTML = "Promote"
         }
+        
         adminButton.onclick = function() {
             setUserAdminRole(user.id, !(user.isWebsiteAdmin));
         }

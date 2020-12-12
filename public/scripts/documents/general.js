@@ -16,9 +16,12 @@ const sharedWithYouBtn = document.getElementById("sharedWithYouBtn");
 const closeInvitationsDialog = document.getElementById("close-invitations-dialog");
 
 const searchDocs = document.getElementById("searchDocs");
+const adminPanelLink = document.getElementById("admin-panel-link");
 
-var documentsListener
-var invitationsListener
+var documentsListener;
+var invitationsListener;
+var userListener;
+
 var userId = null;
 var visibaleUserDocuments = [];
 var unVisibaleDocuments = [];
@@ -115,9 +118,34 @@ auth.onAuthStateChanged(user => {
     }
 })
 
+function setAdminPanelLinkHidden(hidden) {
+    if (hidden) {
+        adminPanelLink.style.display = "none";
+    } else {
+        adminPanelLink.style.display = "block";
+    }
+}
+
 function loadData() {
+    loadUser();
     loadDocuments()
     loadInvitations()
+}
+
+function loadUser() {
+    if (userListener) { return; }
+
+    userListener = firestore
+        .collection('users')
+        .doc(userId)
+        .onSnapshot(documentSnapshot => {
+            let documentExists = documentSnapshot.exists;
+            if (documentExists) {
+                let documentData = documentSnapshot.data();
+                var user = new User(documentSnapshot.id, documentData.email, documentData.isWebsiteAdmin, documentData.isBlocked);
+                setAdminPanelLinkHidden(!(user.isWebsiteAdmin));
+            }
+        });
 }
 
 function loadInvitations() {
