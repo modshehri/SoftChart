@@ -35,7 +35,7 @@ function loadData() {
                 this.documentObject = new Document(documentSnapshot.id, documentData.adminUid, documentData.name, documentData.users);
 
                 if (!this.documentObject.users.includes(this.user.uid)) {
-                    redirectToIndex();
+                    redirectToDocuments();
                     return;
                 }
                 documentsHeadline.innerHTML = this.documentObject.name;
@@ -45,10 +45,10 @@ function loadData() {
                 // A call to query all the users in the document (->user-management.js).
                 retrieveDocumentUsers();
             } else {
-                redirectToIndex();
+                redirectToDocuments();
             }
         }, err => {
-            redirectToIndex();
+            redirectToDocuments();
         });
 }
 
@@ -58,8 +58,8 @@ function unsubscribeListeners() {
     if (connectionsListener != null) { connectionsListener(); }
 }
 
-function redirectToIndex() {
-    location.href = "index.html";
+function redirectToDocuments() {
+    location.href = "documents.html";
 }
 
 function findGetParameter(parameterName) {
