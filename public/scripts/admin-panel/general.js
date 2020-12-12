@@ -44,11 +44,17 @@ auth.onAuthStateChanged(user => {
         this.userId = user.uid;
         loadUser();
     } else {
+        console.log("called");
         unsubscribeListeners();
-        auth.signOut()
-        redirectToIndex();
+        redirectToIndex();        
     }
 });
+
+function unsubscribeListeners() {
+    if (userListener) { userListener(); }
+    if (websiteUsersListener) { websiteUsersListener(); }
+    if (websiteDocumentsListener) { websiteDocumentsListener(); }
+}
 
 function loadUser() {
     if (userListener) { return; }
@@ -63,10 +69,11 @@ function loadUser() {
                 var user = new User(documentSnapshot.id, documentData.email, documentData.isWebsiteAdmin, documentData.isBlocked);
                 if (user.isWebsiteAdmin == false || user.isBlocked) {
                     setTimeout(() => {
-                        redirectToIndex();
+                        auth.signOut();
                         return;
                     }, 500);
                 }
+
                 this.user = user;
                 loadWebsiteUsers();
                 loadWebsiteDocuments();

@@ -24,8 +24,6 @@ singupBtn.addEventListener('click', e => {
     }else {
         alert("Password is too short (less than 8 characters)")
     }
-
-
 });
 
 function validateEmail(email) {

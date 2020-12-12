@@ -9,10 +9,26 @@ auth.onAuthStateChanged(user => {
         firestore
             .collection('users')
             .doc(user.uid)
-            .update( { email: user.email } )
+            .get()
             .then(function(docRef) {
-                location.href = "documents.html";
+                if (docRef.exists) {
+                    if (docRef.data().isBlocked) {
+                        auth.signOut();
+                        alert("Sorry, your account has been blocked by an admin.");
+                        return;
+                    }
+                    location.href = "documents.html";
+                } else {
+                    firestore
+                        .collection('users')
+                        .doc(user.uid)
+                        .set( { email: user.email, isWebsiteAdmin: false, isBlocked: false } )
+                        .then(function(docRef) {
+                            location.href = "documents.html";
+                        });
+                }
             });
+        
     } else {
         signInGoogleBtn.onclick = () => auth.signInWithPopup(provider);
     }
