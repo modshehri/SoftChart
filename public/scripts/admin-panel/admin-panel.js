@@ -51,7 +51,7 @@ function createWebsiteUsersTable() {
         usersTableBody.appendChild(tr);
     }
 }
-id, adminUid, name, users
+
 function createWebsiteDocumentsTable() {
     var i = 1;
     for(index in websiteDocuments) {
