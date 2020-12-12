@@ -13,14 +13,13 @@ const userInvitationsButton = document.getElementById("user-invitations-button")
 const allDocumentsBtn = document.getElementById("allDocumentsBtn"); 
 const yourDocumentsBtn = document.getElementById("yourDocumentsBtn");
 const sharedWithYouBtn = document.getElementById("sharedWithYouBtn");    
-const trashBtn = document.getElementById("trashBtn");
 const closeInvitationsDialog = document.getElementById("close-invitations-dialog");
 
 const searchDocs = document.getElementById("searchDocs");
 
 var documentsListener
 var invitationsListener
-var userId = null
+var userId = null;
 var visibaleUserDocuments = [];
 var unVisibaleDocuments = [];
 
@@ -74,13 +73,6 @@ sharedWithYouBtn.onclick = function(){
     }
 }
 
-trashBtn.onclick = function(){
-    allDocumentsBtn.className = "unselected";
-    yourDocumentsBtn.className = "unselected";
-    sharedWithYouBtn.className = "unselected";
-    trashBtn.className = "selected";
-}
-
 closeInvitationsDialog.onclick = function() {
     setInvitationsDialogHidden(true);
 }
@@ -114,7 +106,7 @@ logout.onclick = auth.signOut;
 
 auth.onAuthStateChanged(user => {
     if (user) {
-        userId = user.uid
+        this.userId = user.uid;
         loadData()
         documentAdd.onclick = addDocument
         logout.onclick = () => auth.signOut()
@@ -342,7 +334,7 @@ function getDocumentHTMLComponent(documentObj) {
 
     $(document).ready(function() {
         $("#delete" + documentObj.id).click(function(event) {
-            if (documentObj.isDocumentAdmin(this.userId)) {
+            if (documentObj.isDocumentAdmin(userId)) {
                 deleteDocument(documentObj.id);
             } else {
                 leaveDocument(documentObj.id);
