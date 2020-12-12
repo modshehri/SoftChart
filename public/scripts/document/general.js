@@ -4,6 +4,7 @@ const realtimeDatabase = firebase.database();
 
 const myDocs = document.getElementById("DocsButton");
 const exportDocumentButton = document.getElementById("export-document-button");
+const documentsHeadline = document.getElementById("documents-headline");
 
 var documentObject = null;
 var documentListener = null;
@@ -37,7 +38,7 @@ function loadData() {
                     redirectToIndex();
                     return;
                 }
-                
+                documentsHeadline.innerHTML = this.documentObject.name;
                 // A call to query all the components in the document (->components.js).
                 attachDocumentComponentsListener();
 
