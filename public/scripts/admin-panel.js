@@ -1,26 +1,27 @@
+var webSiteUsers = [];
+var documents = [];
+
 var usersTable = document.getElementById("users-table");
 var usersTableBody = document.getElementById("users-table-body");
 
-function createWebsiteUsersTable() {
-    console.log(this.websiteUsers);
-    var i = 1;
-    for(index in websiteUsers) {
+
+
+function createWebSiteUsersTable(){
+    for(index in webSiteUsers){
         var tr = document.createElement("tr");
         var th = document.createElement("th");
-
         var emailCell = document.createElement("td");
         var IDCell = document.createElement("td");
         var statusCell = document.createElement("td");
         var prevligesCell = document.createElement("td");
 
-        th.innerHTML = `${i}`;
-        i++
-        emailCell.innerHTML = websiteUsers[index].email;
-        IDCell.innerHTML = websiteUsers[index].id;
+        th.innerHTML = `${i+1}`;
+        emailCell.innerHTML = webSiteUsers[index].email;
+        IDCell.innerHTML = webSiteUsers[index].id;
 
         var blockButton = document.createElement("button");
         var adminButton = document.createElement("button");
-        if (websiteUsers[index].isBlocked){
+        if (webSiteUsers[index].isBlocked){
             blockButton.className = "btn btn-success"
             blockButton.innerHTML = "Unblock"
         }else {
@@ -29,7 +30,7 @@ function createWebsiteUsersTable() {
         }
         statusCell.appendChild(blockButton);
 
-        if (websiteUsers[index].isAdmin){
+        if (webSiteUsers[index].isAdmin){
             adminButton.className = "btn btn-warning"
             adminButton.innerHTML = "Depromote"
         }else {
@@ -48,8 +49,4 @@ function createWebsiteUsersTable() {
 
         usersTableBody.appendChild(tr);
     }
-}
-
-function createWebsiteDocumentsTable() {
-
 }
