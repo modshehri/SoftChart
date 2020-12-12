@@ -18,6 +18,7 @@ var isCurrentTabUsers = true;
 
 websiteUsersTab.onclick = function() {
     isCurrentTabUsers = true;
+    if (websiteUsers == null) { return; }
     createWebsiteUsersTable();
     websiteUsersTab.className = "selected";
     websiteDocumentsTab.className = "unselected";
@@ -27,6 +28,7 @@ websiteUsersTab.onclick = function() {
 
 websiteDocumentsTab.onclick = function() {
     isCurrentTabUsers = false;
+    if (websiteDocuments == null) { return; }
     createWebsiteDocumentsTable();
     websiteUsersTab.className = "unselected";
     websiteDocumentsTab.className = "selected";
@@ -84,9 +86,7 @@ function loadWebsiteUsers() {
                 websiteUsers.push(new User(doc.id, doc.data().email, doc.data().isWebsiteAdmin, doc.data().isBlocked));
             });
             this.websiteUsers = websiteUsers;
-            if (isCurrentTabUsers) {
-                createWebsiteUsersTable();
-            }
+            createWebsiteUsersTable();
         });
 }
 
@@ -101,24 +101,43 @@ function loadWebsiteDocuments() {
                 websiteDocuments.push(new Document(doc.id, doc.data().adminUid, doc.data().name, doc.data().users));
             });
             this.websiteDocuments = websiteDocuments;
-            if (isCurrentTabUsers == false) {
-                createWebsiteDocumentsTable();
-            }
+            createWebsiteDocumentsTable();
         });
 }
 
 function setUserBlocked(id, blocked) {
-    firestore
-        .collection('users')
-        .doc(id)
-        .update({ isBlocked: blocked });
+    var message;
+
+    if (blocked) {
+        message = "Are you sure you want to block this user from SoftChart?";
+    } else {
+        message = "Are you sure you want to unblock this user from SoftChart?";
+    }
+
+    if (confirm(message)) {
+        firestore
+            .collection('users')
+            .doc(id)
+            .update({ isBlocked: blocked });
+    }
 }
 
 function setUserAdminRole(id, isAdmin) {
-    firestore
-        .collection('users')
-        .doc(id)
-        .update({ isWebsiteAdmin: isAdmin })
+    var message;
+
+    if (isAdmin) {
+        message = "Are you sure you want to assign this user as an admin role?";
+    } else {
+        message = "Are you you want to revoke the admin role from this user?"
+    }
+
+    if (confirm(message)) {
+        console.log("here");
+        firestore
+            .collection('users')
+            .doc(id)
+            .update({ isWebsiteAdmin: isAdmin });
+    }
 }
 
 function deleteDocument(id) {
