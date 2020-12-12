@@ -17,7 +17,7 @@ auth.onAuthStateChanged(user => {
     } else {
         unsubscribeListeners();
         auth.signOut()
-        redirectToIndex();
+        redirectToDocuments();
     }
 });
 
@@ -39,6 +39,7 @@ function loadData() {
                     return;
                 }
                 documentsHeadline.innerHTML = this.documentObject.name;
+                documentsHeadline.onblur = () => updateDocument(documentObject.id, { name: documentsHeadline.innerHTML })
                 // A call to query all the components in the document (->components.js).
                 attachDocumentComponentsListener();
 
@@ -88,4 +89,11 @@ exportDocumentButton.onclick = function () {
         a.download = img;
         a.click();
     });
+}
+
+function updateDocument(docId, fields) {
+    firestore
+        .collection('documents')
+        .doc(docId)
+        .update(fields);
 }
