@@ -29,7 +29,6 @@ allDocumentsBtn.onclick = function() {
     allDocumentsBtn.className = "selected";
     yourDocumentsBtn.className = "unselected";
     sharedWithYouBtn.className = "unselected";
-    trashBtn.className = "unselected";
 
     unVisibaleDocuments = [];
     loadDocuments();
@@ -39,7 +38,6 @@ yourDocumentsBtn.onclick = function(){
     allDocumentsBtn.className = "unselected";
     yourDocumentsBtn.className = "selected";
     sharedWithYouBtn.className = "unselected";
-    trashBtn.className = "unselected";
 
     unVisibaleDocuments = [];
     clearDocumentsHTML();
@@ -58,7 +56,6 @@ sharedWithYouBtn.onclick = function(){
     allDocumentsBtn.className = "unselected";
     yourDocumentsBtn.className = "unselected";
     sharedWithYouBtn.className = "selected";
-    trashBtn.className = "unselected";
 
     unVisibaleDocuments = [];
     clearDocumentsHTML();
