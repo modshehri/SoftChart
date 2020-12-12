@@ -9,7 +9,7 @@ auth.onAuthStateChanged(user => {
         firestore
             .collection('users')
             .doc(user.uid)
-            .set( { email: user.email, isWebsiteAdmin: false, isBlocked: false} )
+            .update( { email: user.email } )
             .then(function(docRef) {
                 location.href = "documents.html";
             });
