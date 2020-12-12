@@ -121,6 +121,15 @@ function setUserAdminRole(id, isAdmin) {
         .update({ isWebsiteAdmin: isAdmin })
 }
 
+function deleteDocument(id) {
+    if(confirm("Are you sure you want to delete this document?")) {
+        firestore
+            .collection('documents')
+            .doc(id)
+            .delete();
+    }
+}
+
 function redirectToIndex() {
     location.href = "index.html";
 }
