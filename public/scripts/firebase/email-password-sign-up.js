@@ -19,7 +19,7 @@ singupBtn.addEventListener('click', e => {
                 alert("The email is not valid");
             }
         }else{
-            alert("The password does not match its confiration");
+            alert("The password does not match its confirmation");
         }
     }else {
         alert("Password is too short (less than 8 characters)")
