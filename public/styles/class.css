@@ -26,6 +26,23 @@ table, th, td {
     display: flex;
 }
 
+.activity {
+    position: absolute;
+    background-color: white;
+    border: 1pt solid black;
+    border-radius: 10%;
+    padding: 16px;
+    min-height: 60px;
+    min-width: 150px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.text {
+    position: absolute;
+}
+
 .actor {
     height: 160px;
 }

@@ -16,6 +16,10 @@ class Component {
             return new Component(null, 'USECASE', ['Use Case'], x, y);
         } else if (type == 'ACTOR') {
             return new Component(null, 'ACTOR', ['Actor Name'], x, y);
+        } else if (type == 'ACTIVITY') {
+            return new Component(null, 'ACTIVITY', ['Activity'], x, y);
+        } else if (type == 'TEXT') {
+            return new Component(null, 'TEXT', ['Text'], x, y);
         }
         return null;
     }
@@ -146,7 +150,26 @@ class Component {
 
             componentContainerDiv.append(actorContainerDiv);
             actorNameP.onblur = () => this.updateTextContents(this.type, componentContainerDiv);
+        } else if (this.type == 'ACTIVITY') {
+            var activity = document.createElement("p");
+            activity.innerHTML = this.textContents[0];
+            activity.contentEditable = "true";
+            activity.className = "activity";
+            activity.id = this.id;
+            
+            componentContainerDiv.append(activity);
+            activity.onblur = () => this.updateTextContents(this.type, componentContainerDiv);
+        } else if (this.type == 'TEXT') {
+            var textP = document.createElement("p");
+            textP.className = "text";
+            textP.innerHTML = this.textContents[0];
+            textP.id = this.id;
+            textP.contentEditable = "true";
+
+            componentContainerDiv.append(textP);
+            textP.onblur = () => this.updateTextContents(this.type, componentContainerDiv);
         }
+
         return componentContainerDiv;
     }
 
@@ -169,6 +192,12 @@ class Component {
         } else if (type == 'ACTOR') {
             var componentActorName = html.getElementsByTagName("p")[0].innerHTML;
             this.textContents = [componentActorName];
+        } else if (type == 'ACTIVITY') {
+            var componentActivity = html.getElementsByTagName("p")[0].innerHTML;
+            this.textContents = [componentActivity];
+        } else if (type == 'TEXT') {
+            var componentText = html.getElementsByTagName("p")[0].innerHTML;
+            this.textContents = [componentText];
         }
     }
 }
