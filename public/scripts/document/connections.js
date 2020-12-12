@@ -66,7 +66,6 @@ function drawAllConnections(connections) {
         this.drawnConnections.push(drawnConc);
     }
     this.connections = connections;
-    refuckConnections();
 }
 
 function clearAllConnections() {
@@ -106,8 +105,4 @@ function setConnectionPromptHidden(hidden) {
 function abortConnectingComponents() {
     setConnectionPromptHidden(true);
     connectFromId = null;
-}
-
-function refuckConnections() {
-    // document.getElementById('canvas').appendChild(document.querySelector('.leader-line'));
 }
