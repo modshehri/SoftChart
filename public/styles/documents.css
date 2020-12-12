@@ -86,7 +86,7 @@ hr {
 #documents {
     border-left: 1px solid #F0F0F0;
     padding-top: 20px;
-    height: 70vh;
+    height: 64vh;
 }
 
 .document {
@@ -224,5 +224,6 @@ hr {
 }
 
 #main-documents-row {
-    height: 93vh;
+    height: 94vh;
+    overflow: scroll;
 }

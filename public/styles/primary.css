@@ -44,3 +44,44 @@ button.navigation:hover {
 button.navigation:active {
     background-color: #5a50c5;
 }
+
+.footer {
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.github-username {
+    color: white;
+    font-size: small;
+    margin-bottom: 6px;
+}
+
+.github-icon {
+    width: 36px;
+    height: 36px;
+}
+
+.github-link {
+    margin-right: 32px;
+}
+
+#footer-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+#copyright-notice {
+    margin: 0;
+    padding: 0;
+    font-size: small;
+    color: rgb(139, 139, 139);
+}
