@@ -1,8 +1,10 @@
 var usersTable = document.getElementById("users-table");
 var usersTableBody = document.getElementById("users-table-body");
 
+var documentsTable = document.getElementById("documents-table");
+var documentsTableBody = document.getElementById("documents-table-body");
+
 function createWebsiteUsersTable() {
-    console.log(this.websiteUsers);
     var i = 1;
     for(index in websiteUsers) {
         var tr = document.createElement("tr");
@@ -49,7 +51,40 @@ function createWebsiteUsersTable() {
         usersTableBody.appendChild(tr);
     }
 }
-
+id, adminUid, name, users
 function createWebsiteDocumentsTable() {
+    var i = 1;
+    for(index in websiteDocuments) {
+        var tr = document.createElement("tr");
+        var th = document.createElement("th");
+        var IDCell = document.createElement("td");
+        var adminCell = document.createElement("td");
+        var nameCell = document.createElement("td");
+        var numberOfUsersCell = document.createElement("td");
+        var deleteCell = document.createElement("td");
+
+        th.innerHTML = `${i}`;
+        i++
+        IDCell.innerHTML = websiteDocuments[index].id;
+        adminCell.innerHTML = websiteDocuments[index].adminUid;
+        nameCell.innerHTML = websiteDocuments[index].name;
+
+        var deleteButton = document.createElement("button");
+        deleteButton.className = "btn btn-danger"
+        deleteButton.innerHTML = "Delete"
+        deleteCell.appendChild(deleteButton);
+
+        numberOfUsersCell.innerHTML = `${websiteDocuments[index].users.length}`;
+
+        th.scope = "row";
+        tr.appendChild(th);
+        tr.appendChild(IDCell);
+        tr.appendChild(adminCell);
+        tr.appendChild(nameCell);
+        tr.appendChild(numberOfUsersCell);
+        tr.appendChild(ndeleteCell);
+
+        usersTableBody.appendChild(tr);
+    }
 
 }
