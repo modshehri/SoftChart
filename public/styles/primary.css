@@ -45,12 +45,22 @@ button.navigation:active {
     background-color: #5a50c5;
 }
 
+.footer p{
+    display: inline-block;
+    color: white;
+}
+
+.footer p a{
+    color: white;
+    text-decoration: none;
+}
+
 .footer {
     position: relative;
     left: 0;
     bottom: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
+    right: 0;
+    width: 100vw;
     color: white;
     text-align: center;
     margin: 0;
@@ -73,10 +83,17 @@ button.navigation:active {
 }
 
 #footer-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3);
+    text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0;
     padding-top: 20px;
+
 }
 
 #copyright-notice {

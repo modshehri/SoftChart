@@ -41,25 +41,6 @@ button.primary {
     padding-right: 10%;
 }
 
-#footer {
-    position: absolute;
-    bottom: 0;
-    height: 5%;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.2);
-    text-align: center;
-}
-
-#footer p{
-    display: inline-block;
-    color: white;
-}
-
-#footer p a{
-    color: white;
-    text-decoration: none;
-}
-
 #account-btn {
     float: right;
 }
