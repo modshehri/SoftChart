@@ -73,8 +73,11 @@ function createWebsiteDocumentsTable() {
         deleteButton.className = "btn btn-danger"
         deleteButton.innerHTML = "Delete"
         deleteCell.appendChild(deleteButton);
-
-        numberOfUsersCell.innerHTML = `${websiteDocuments[index].users.length}`;
+        var j = 0;
+        for (index1 in websiteDocuments[index].users){
+            j++
+        }
+        numberOfUsersCell.innerHTML = `${j}`;
 
         th.scope = "row";
         tr.appendChild(th);
@@ -82,9 +85,9 @@ function createWebsiteDocumentsTable() {
         tr.appendChild(adminCell);
         tr.appendChild(nameCell);
         tr.appendChild(numberOfUsersCell);
-        tr.appendChild(ndeleteCell);
+        tr.appendChild(deleteCell);
 
-        usersTableBody.appendChild(tr);
+        documentsTableBody.appendChild(tr);
     }
 
 }

@@ -21,6 +21,8 @@ websiteUsersTab.onclick = function() {
     createWebsiteUsersTable();
     websiteUsersTab.className = "selected";
     websiteDocumentsTab.className = "unselected";
+    usersTable.style.display='block';
+    documentsTable.style.display='none';
 }
 
 websiteDocumentsTab.onclick = function() {
@@ -28,6 +30,8 @@ websiteDocumentsTab.onclick = function() {
     createWebsiteDocumentsTable();
     websiteUsersTab.className = "unselected";
     websiteDocumentsTab.className = "selected";
+    usersTable.style.display='none';
+    documentsTable.style.display='block';
 }
 
 auth.onAuthStateChanged(user => {
