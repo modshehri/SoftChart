@@ -73,6 +73,7 @@ function createWebsiteDocumentsTable() {
         var deleteButton = document.createElement("button");
         deleteButton.className = "btn btn-danger"
         deleteButton.innerHTML = "Delete"
+
         deleteCell.appendChild(deleteButton);
 
         numberOfUsersCell.innerHTML = `${websiteDocuments[index].users.length}`;
@@ -86,6 +87,9 @@ function createWebsiteDocumentsTable() {
         tr.appendChild(deleteCell);
 
         documentsTableBody.appendChild(tr);
+        deleteButton.onclick = function(){
+            deleteDocument(websiteDocuments[index].id);
+        }
     }
 
 }
