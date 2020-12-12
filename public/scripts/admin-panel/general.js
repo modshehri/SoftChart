@@ -1,10 +1,12 @@
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
-const websiteUsersTab = null;
-const websiteDocumentsTab = null;
+const websiteUsersTab = document.getElementById("Users");
+const websiteDocumentsTab = document.getElementById("Documents");
 
 var user = null;
+var userId = null;
+
 var websiteUsers = null;
 var websiteDocuments = null;
 
@@ -30,6 +32,7 @@ websiteDocumentsTab.onclick = function() {
 
 auth.onAuthStateChanged(user => {
     if (user) {
+        this.userId = user.uid;
         loadUser();
     } else {
         unsubscribeListeners();
@@ -43,7 +46,7 @@ function loadUser() {
 
     userListener = firestore
         .collection('users')
-        .doc(user.uid)
+        .doc(userId)
         .onSnapshot(documentSnapshot => {
             let documentExists = documentSnapshot.exists;
             if (documentExists) {
@@ -74,7 +77,7 @@ function loadWebsiteUsers() {
         .onSnapshot(querySnapshot => {
             var websiteUsers = [];
             querySnapshot.forEach(function (doc) {
-                websiteUsers.push(new User(doc.id, doc.data().email), doc.data().isWebsiteAdmin, doc.data().isBlocked);
+                websiteUsers.push(new User(doc.id, doc.data().email, doc.data().isWebsiteAdmin, doc.data().isBlocked));
             });
             this.websiteUsers = websiteUsers;
             if (isCurrentTabUsers) {

@@ -1,5 +1,5 @@
 class User {
-    constructor(id, email, isWebsiteAdmin) {
+    constructor(id, email, isWebsiteAdmin, isBlocked) {
         this.id = id;
         this.email = email;
         this.isWebsiteAdmin = isWebsiteAdmin;
